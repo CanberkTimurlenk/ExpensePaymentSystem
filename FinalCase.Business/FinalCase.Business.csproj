@@ -7,7 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="FluentValidation" Version="11.9.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
     <PackageReference Include="MediatR" Version="12.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Features\Accounts\" />
+    <Folder Include="Features\ApplicationUsers\Admins\" />
+    <Folder Include="Features\ApplicationUsers\FieldEmployees\Commands\" />
+    <Folder Include="Features\ApplicationUsers\Profiles\" />
+    <Folder Include="Features\Payments\" />
+    <Folder Include="Features\Reports\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FinalCase.Repositories\FinalCase.Repositories.csproj" />
+    <ProjectReference Include="..\FinalCase.Schema\FinalCase.Schema.csproj" />
   </ItemGroup>
 
 </Project>

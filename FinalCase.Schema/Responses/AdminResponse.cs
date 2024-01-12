@@ -11,7 +11,7 @@ public record AdminResponse
     public DateTime DateOfBirth { get; init; }
     public bool IsActive { get; init; }
 
-    public virtual ICollection<PaymentReponse> PaymentsResponse { get; set; }
-    public virtual ICollection<ApprovedExpenseResponse> ApprovedExpensesResponse { get; set; }
-    public virtual ICollection<RejectedExpenseResponse> RejectedExpensesResponse { get; set; }
+    //public virtual ICollection<PaymentReponse> PaymentsResponse { get; set; }
+    //public virtual ICollection<ApprovedExpenseResponse> ApprovedExpensesResponse { get; set; }
+    //public virtual ICollection<RejectedExpenseResponse> RejectedExpensesResponse { get; set; }
 }

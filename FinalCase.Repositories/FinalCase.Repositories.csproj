@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FinalCase.Base\FinalCase.Base.csproj" />
+    <Folder Include="UnitOfWork\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FinalCase.Data\FinalCase.Data.csproj" />
   </ItemGroup>
 
 </Project>

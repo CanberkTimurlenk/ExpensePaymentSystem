@@ -1,10 +1,6 @@
-﻿using System.Text.Json.Serialization;
-
-namespace FinalCase.Schema.Requests;
-
-public record DocumentRequest
+﻿namespace FinalCase.Schema.Response;
+public record DocumentResponse
 {
-    [JsonIgnore]
     public int Id { get; init; }
     public string Name { get; init; }
     public string Description { get; init; }
