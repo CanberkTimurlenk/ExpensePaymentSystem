@@ -7,6 +7,8 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinalCase.Business.Features.ApplicationUsers.FieldEmployee.Queries.GetById;
+
+/*
 public class GetFieldEmployeeByIdQueryHandler(FinalCaseDbContext dbContext, IMapper mapper)
     : IRequestHandler<GetFieldEmployeeByIdQuery, ApiResponse<FieldEmployeeResponse>>
 {
@@ -32,3 +34,4 @@ public class GetFieldEmployeeByIdQueryHandler(FinalCaseDbContext dbContext, IMap
         return new ApiResponse<FieldEmployeeResponse>(response);
     }
 }
+*/

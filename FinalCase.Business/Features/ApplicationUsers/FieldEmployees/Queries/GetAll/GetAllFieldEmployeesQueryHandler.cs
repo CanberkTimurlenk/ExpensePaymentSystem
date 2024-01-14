@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinalCase.Business.Features.ApplicationUsers.FieldEmployee.Queries.GetAll;
 
+/*
 public class GetAllFieldEmployeesQueryHandler(FinalCaseDbContext dbContext, IMapper mapper)
         : IRequestHandler<GetAllFieldEmployeesQuery, ApiResponse<IEnumerable<FieldEmployeeResponse>>>
 {
@@ -16,7 +17,7 @@ public class GetAllFieldEmployeesQueryHandler(FinalCaseDbContext dbContext, IMap
 
     public async Task<ApiResponse<IEnumerable<FieldEmployeeResponse>>> Handle(GetAllFieldEmployeesQuery request, CancellationToken cancellationToken)
     {
-        /*
+        
         var fieldEmployees = await dbContext.FieldEmployees
             .Include(x => x.Expenses)
             .Include(x => x.Payments)
@@ -27,8 +28,9 @@ public class GetAllFieldEmployeesQueryHandler(FinalCaseDbContext dbContext, IMap
         var response = mapper.Map<IEnumerable<FieldEmployeeResponse>>(fieldEmployees);
 
         return new ApiResponse<IEnumerable<FieldEmployeeResponse>>(response);
-        */
+        
 
         return null;
     }
 }
+*/

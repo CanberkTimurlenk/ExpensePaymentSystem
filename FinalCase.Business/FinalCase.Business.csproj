@@ -19,12 +19,11 @@
     <Folder Include="Features\ApplicationUsers\Admins\" />
     <Folder Include="Features\ApplicationUsers\FieldEmployees\Commands\" />
     <Folder Include="Features\ApplicationUsers\Profiles\" />
-    <Folder Include="Features\Payments\" />
     <Folder Include="Features\Reports\" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FinalCase.Repositories\FinalCase.Repositories.csproj" />
+    <ProjectReference Include="..\FinalCase.BackgroundJobs\FinalCase.BackgroundJobs.csproj" />
     <ProjectReference Include="..\FinalCase.Schema\FinalCase.Schema.csproj" />
   </ItemGroup>
 
