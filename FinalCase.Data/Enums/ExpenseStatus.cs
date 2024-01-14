@@ -1,7 +1,7 @@
 ﻿namespace FinalCase.Data.Enums;
 public enum ExpenseStatus
 {
-    Pending,
+    Pending = 1,
     Approved,
     Rejected
 }

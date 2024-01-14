@@ -7,7 +7,7 @@ public class ExpenseRequest
 {
     [JsonIgnore]
     public int Id { get; set; }
-    public string EmployeeDescription { get; set; }
+    public string EmployeeDescription { get; set; } 
     public decimal Amount { get; set; }
     public DateTime Date { get; set; }
     public string Location { get; set; }

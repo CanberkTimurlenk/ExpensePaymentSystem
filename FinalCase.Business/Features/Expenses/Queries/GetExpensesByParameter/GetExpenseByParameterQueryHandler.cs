@@ -6,10 +6,9 @@ using MediatR;
 using LinqKit;
 using FinalCase.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-using static FinalCase.Base.Helpers.Linq.LinqHelper;
+using static FinalCase.Base.Helpers.Linq.ExpressionStarterExtensions;
 
 namespace FinalCase.Business.Features.Expenses.Queries.GetExpenseByParameter;
-
 public class GetExpenseByParameterQueryHandler(FinalCaseDbContext dbContext, IMapper mapper)
     // primary constructor
     : IRequestHandler<GetExpensesByParameterQuery, ApiResponse<IEnumerable<ExpenseResponse>>>
@@ -19,16 +18,15 @@ public class GetExpenseByParameterQueryHandler(FinalCaseDbContext dbContext, IMa
 
     public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> Handle(GetExpensesByParameterQuery request, CancellationToken cancellationToken)
     {
-        var predicate = PredicateBuilder.New<Expense>(true);
-
-        // updates the predicate with LinqKit, if the condition is true
-        predicate = AddCondition(request.CreatorEmployeeId != default, predicate, e => e.CreatorEmployeeId == request.CreatorEmployeeId);
-        predicate = AddCondition(request.CategoryId != default, predicate, e => e.CategoryId == request.CategoryId);
-        predicate = AddCondition(request.MinAmount != default, predicate, e => e.Amount >= request.MinAmount);
-        predicate = AddCondition(request.MaxAmount != default, predicate, e => e.Amount <= request.MaxAmount);
-        predicate = AddCondition(request.InitialDate != default, predicate, e => e.Date >= request.InitialDate);
-        predicate = AddCondition(request.FinalDate != default, predicate, e => e.Date <= request.FinalDate);
-        predicate = AddCondition(!string.IsNullOrEmpty(request.Location), predicate, e => e.Location == request.Location);
+        var predicate = PredicateBuilder.New<Expense>(true)
+            // An extension method was implemented to add a condition to the predicate based on the given boolean condition.                        
+            .AddIf(request.CreatorEmployeeId != default, e => e.CreatorEmployeeId == request.CreatorEmployeeId)
+            .AddIf(request.CategoryId != default, e => e.CategoryId == request.CategoryId)
+            .AddIf(request.MinAmount != default, e => e.Amount >= request.MinAmount)
+            .AddIf(request.MaxAmount != default, e => e.Amount <= request.MaxAmount)
+            .AddIf(request.InitialDate != default, e => e.Date >= request.InitialDate)
+            .AddIf(request.FinalDate != default, e => e.Date <= request.FinalDate)
+            .AddIf(!string.IsNullOrEmpty(request.Location), e => e.Location == request.Location);
 
         var expenses = await dbContext.Expenses
             .Where(predicate)

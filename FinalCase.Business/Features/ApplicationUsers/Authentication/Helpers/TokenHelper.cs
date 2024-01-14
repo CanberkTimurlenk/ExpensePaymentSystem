@@ -1,4 +1,5 @@
 ﻿using FinalCase.Base.Token;
+using FinalCase.Business.Features.ApplicationUsers.Authentication.Constants.Jwt;
 using FinalCase.Data.Entities;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -28,9 +29,9 @@ public static class TokenHelper
     {
         var claims = new[]
         {
-            new Claim("Id", user.Id.ToString()),
-            new Claim("Email", user.Email),
-            new Claim("Username", user.Username),
+            new Claim(JwtPayloadFields.Id, user.Id.ToString()),
+            new Claim(JwtPayloadFields.Email, user.Email),
+            new Claim(JwtPayloadFields.Username, user.Username),
             new Claim(ClaimTypes.Role, user.Role)
         };
         return claims;

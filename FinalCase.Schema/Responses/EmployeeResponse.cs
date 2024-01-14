@@ -1,6 +1,6 @@
 ﻿namespace FinalCase.Schema.Responses;
 
-public record FieldEmployeeResponse
+public record EmployeeResponse
 {
     public string IBAN { get; set; }
 

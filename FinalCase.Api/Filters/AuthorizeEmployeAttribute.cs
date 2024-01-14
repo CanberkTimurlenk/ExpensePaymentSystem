@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
+using FinalCase.Api.Constants;
 
 namespace FinalCase.Api.Filters;
 
@@ -7,10 +8,9 @@ namespace FinalCase.Api.Filters;
 /// <summary>
 /// Verifies the identity by comparing the 'id' from the route with the one from the token.
 /// - If they match, the controller method will be executed.
-/// - If they differ, the request will be forbidden.
-/// - If the token does not contain an 'id', the request will be an unauthorized.
+/// - If they differ, the result will be Forbidden(403).
+/// - If the token does not contain an 'id', the result will be Unauthorized(401).
 /// </summary>
-
 [AttributeUsage(AttributeTargets.Method)]
 public class AuthorizeIdMatchAttribute : Attribute, IAuthorizationFilter
 {
@@ -19,14 +19,11 @@ public class AuthorizeIdMatchAttribute : Attribute, IAuthorizationFilter
         var userIdClaim = context.HttpContext.User.FindFirst("Id")?.Value;
 
         if (string.IsNullOrEmpty(userIdClaim))
-        {
             context.Result = new UnauthorizedResult();
-            return;
-        }
 
-        var idFromRoute = context.RouteData.Values["id"] as string;
+        var idFromRoute = context.RouteData.Values[ControllerConstants.EmployeeId] as string;
 
-        if (!int.TryParse(idFromRoute, out var id) || !userIdClaim.Equals(id.ToString()))
+        if (userIdClaim != idFromRoute)
             context.Result = new ForbidResult();
     }
 }

@@ -6,6 +6,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Security.Claims;
+using static FinalCase.Api.Constants.ControllerConstants;
+using FinalCase.Business.Features.ApplicationUsers.Authentication.Constants;
+using FinalCase.Business.Features.ApplicationUsers.Authentication.Constants.Roles;
+using FinalCase.Business.Features.Expenses.Queries.GetExpenseByParameter;
 
 namespace FinalCase.Api.Controllers
 {
@@ -15,29 +19,17 @@ namespace FinalCase.Api.Controllers
     {
         private readonly IMediator mediator = mediator;
 
-        [HttpGet("{employee-id:int}/expenses")] // get expenses
-        [Authorize(Roles = "employee")]
+        [HttpGet("{" + EmployeeId + ":int}/expenses")] // EmployeeId is a constant defined in ControllerConstants.cs, 
+        [Authorize(Roles = Roles.Employee)]
         [AuthorizeIdMatch] // check the summary for more information
-
         //The employee id could have been directly retrieved from the token in this case, 
         //but by adding the id to the route, we are making the semantic structure of the URI more meaningful.
-        public async Task<IActionResult> Get([FromRoute(Name = "employee-id")] int employeeId, int? categoryId, int? minBalance, int? maxBalance,
+        public async Task<IActionResult> Get([FromRoute(Name = EmployeeId)] int employeeId, int? categoryId, int? minBalance, int? maxBalance,
         DateTime? initialDate, DateTime? finalDate, string? location)
         {
-            //GetExpensesByParameterQuery
-
-
-            return Ok();
-
-
-            //var result = await mediator.Send(new GetExpensesByParameterQuery());
-
-
-
-            //return Ok(result);
+            var operation = new GetExpensesByParameterQuery(employeeId, categoryId, minBalance, maxBalance, initialDate, finalDate, location);
+            var response = await mediator.Send(operation);
+            return Ok(response);
         }
-
-
-
     }
 }

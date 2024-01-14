@@ -5,7 +5,7 @@ namespace FinalCase.Schema.Requests;
 public record AdminRequest
 {
     [JsonIgnore]
-    public int Id { get; set; } 
+    public int Id { get; set; }
     public string Username { get; init; }
     public string Firstname { get; init; }
     public string Lastname { get; init; }

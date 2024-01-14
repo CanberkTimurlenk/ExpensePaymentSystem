@@ -9,8 +9,8 @@ public class Expense : BaseEntityWithId
 {
     // Red olan talepler için bir açıklama alanı girişi sağlanmalı
     // ve talep sahibi masraf talebinin neden red olduğunu görebilmeli.    
-    public string? EmployeeDescription { get; set; } // employee could be add description    
-    public string? AdminDescription { get; set; } // admin could be add description
+    public string? EmployeeDescription { get; set; } // employee could be add description
+    public string? AdminDescription { get; set; } // admin could be add description such as the rejection reason
     public decimal Amount { get; set; }
     public DateTime Date { get; set; }
     public ExpenseStatus Status { get; set; }
@@ -21,6 +21,9 @@ public class Expense : BaseEntityWithId
 
     public int CreatorEmployeeId { get; set; }
     public virtual ApplicationUser CreatorEmployee { get; set; }
+
+    public int? ReviewerAdminId { get; set; }
+    public virtual ApplicationUser? ReviewerAdmin { get; set; }
 
     public Payment? Payment { get; set; }
 
