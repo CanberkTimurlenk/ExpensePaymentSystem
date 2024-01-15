@@ -1,10 +1,7 @@
 ﻿using FinalCase.Base.Entities;
 using FinalCase.Data.Enums;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FinalCase.Data.Entities;
-
 public class Expense : BaseEntityWithId
 {
     // Red olan talepler için bir açıklama alanı girişi sağlanmalı
@@ -22,27 +19,13 @@ public class Expense : BaseEntityWithId
     public int CreatorEmployeeId { get; set; }
     public virtual ApplicationUser CreatorEmployee { get; set; }
 
+    public int PaymentMethodId { get; set; }
+    public virtual PaymentMethod PaymentMethod { get; set; }
+
     public int? ReviewerAdminId { get; set; }
     public virtual ApplicationUser? ReviewerAdmin { get; set; }
 
     public Payment? Payment { get; set; }
 
     public virtual ICollection<Document> Documents { get; set; }
-}
-
-
-public class ExpenseConfiguration : IEntityTypeConfiguration<Expense>
-{
-    public void Configure(EntityTypeBuilder<Expense> builder)
-    {
-        builder.HasKey(x => x.Id);
-        builder.Property(x => x.EmployeeDescription).HasMaxLength(500);
-        builder.Property(x => x.AdminDescription).HasMaxLength(500);
-        //builder.Property(x => x.Amount).IsRequired().HasColumnType("decimal(18,2)");
-        //builder.Property(x => x.Date).IsRequired();
-        //builder.Property(x => x.Location).IsRequired().HasMaxLength(200);
-        //builder.Property(x => x.Status).IsRequired().HasDefaultValue(ExpenseStatus.Pending);
-        builder.HasOne(x => x.Category).WithMany(x => x.Expenses).HasForeignKey(x => x.CategoryId);
-        builder.HasOne(x => x.CreatorEmployee).WithMany(x => x.Expenses).HasForeignKey(x => x.CreatorEmployeeId);
-    }
 }

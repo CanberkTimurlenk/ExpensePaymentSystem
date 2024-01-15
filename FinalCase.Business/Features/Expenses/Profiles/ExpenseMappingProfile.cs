@@ -16,15 +16,15 @@ public class ExpenseMappingProfile : Profile
             .ForMember(dest => dest.CategoryDescription, opt => opt.MapFrom(src => src.Category.Description))
             .ForMember(dest => dest.ExpenseStatus, opt => opt.MapFrom(src => src.Status.ToString()));
 
-
         CreateMap<Expense, Payment>()
            .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))
            .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
            .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.CreatorEmployeeId))
            .ForMember(dest => dest.ExpenseId, opt => opt.MapFrom(src => src.Id))
-           .ForMember(dest => dest.ReceiverIban, opt => opt.MapFrom(src => src.CreatorEmployee.Account.Iban))
+           .ForMember(dest => dest.ReceiverIban, opt => opt.MapFrom(src => src.CreatorEmployee.Iban))
            .ForMember(dest => dest.ReceiverName, opt => opt.MapFrom(src => $"{src.CreatorEmployee.Firstname} {src.CreatorEmployee.Lastname}"))
-           .ForMember(dest => dest.Description, opt => opt.MapFrom(src => Base64UrlEncoder.Encode($"{src.CreatorEmployeeId},{src.Id}")));
-
+           .ForMember(dest => dest.Description, opt => opt.MapFrom(src => Base64UrlEncoder.Encode($"{src.CreatorEmployeeId},{src.Id}")))
+           .ForMember(dest => dest.Employee, opt => opt.MapFrom(src => src.CreatorEmployee))
+           .ForMember(dest => dest.Expense, opt => opt.MapFrom(src => src));
     }
 }

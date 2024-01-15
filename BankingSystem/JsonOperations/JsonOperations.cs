@@ -4,7 +4,7 @@ using System.Text.Json;
 namespace BankingSystem.JsonOperations;
 public static class JsonFile
 {
-    public static void Add(ICollection<Payment> payments, Payment payment)
+    public static void Add(ICollection<OutgoingPaymentRequest> payments, OutgoingPaymentRequest payment)
     {
         payments.Add(payment);
         string json = JsonSerializer.Serialize(payments);

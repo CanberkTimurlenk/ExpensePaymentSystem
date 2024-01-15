@@ -15,14 +15,14 @@ public class PaymentsController(IConfiguration configuration) : ControllerBase
     // Our company's IBAN, name, etc. is already known by the banking system
 
     [HttpPost("pay")]
-    public IActionResult Pay([FromBody] Payment payment)
+    public IActionResult Pay([FromBody] OutgoingPaymentRequest payment)
     {
         string json = System.IO.File.ReadAllText(configuration.GetValue<string>("paymentFile"));
 
         if (string.IsNullOrWhiteSpace(json))
             json = "[]";
 
-        ICollection<Payment> data = JsonSerializer.Deserialize<List<Payment>>(json)!;
+        ICollection<OutgoingPaymentRequest> data = JsonSerializer.Deserialize<List<OutgoingPaymentRequest>>(json)!;
 
         JsonFile.Add(data, payment);
 
@@ -37,7 +37,7 @@ public class PaymentsController(IConfiguration configuration) : ControllerBase
         if (string.IsNullOrWhiteSpace(json) || json == "[]")
             return NotFound();
 
-        var payments = JsonSerializer.Deserialize<List<Payment>>(json)?
+        var payments = JsonSerializer.Deserialize<List<OutgoingPaymentRequest>>(json)?
             .Where(p => p.Description == description);
 
         return (payments?.Any() == true) ? Ok(payments) : NotFound();

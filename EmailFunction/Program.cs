@@ -5,20 +5,19 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using EmailFunction;
 
-// With RabbitMQ the email sending could be done async 
+// Introducing RabbitMQ delivers the advantage of asynchronous email sending and also optimizing performance.
 
-// With few changes this function could be used as serverless (AWS Lambda/Azure Functions)
-// with proper changes(a trigger etc) it integrates with RabbitMQ or Azure Service Bus
-// for email service amazon ses could be used
-// for simple operations amazon sns has email sending integration 
-// it could be also used with lambda
+// After proper changes, this function could be used as serverless (AWS Lambda/Azure Functions)
+// a trigger etc could perform integration with RabbitMQ or Azure Service Bus or AWS SNS
 
-// For each email runs a new instance of the function
-// and sends the email
-// this provides high scalability and cost efficiency
+// Amazon SNS, with its email sending integration, is also compatible for simpler operations and can be employed with Lambda.
 
-// A side effect of the serverless architecture could be the cold start problem,
-// but in our case it is not a big deal
+// Amazon has also SES service for email sending, it could be also used with lambda
+
+// Each email triggers a new instance of the function, provides high scalability and cost efficiency.
+
+// While the serverless structure may brings cold start problem as a side effect,
+// However in our scenario, it's not a significant concern.
 static class Program
 {
     static void Main()
@@ -29,17 +28,20 @@ static class Program
             .AddJsonFile("config.json", optional: false).Build();
 
         // RabbitMQ setup
+        var rabbitMqConfig = config.GetSection("RabbitMQ");
         var factory = new ConnectionFactory
         {
-            Uri = new Uri(config["RabbitMQ"])
+            Uri = new Uri(rabbitMqConfig["Url"])
         };
 
+        // Creat the connection and the channel
         using var connection = factory.CreateConnection();
         using var channel = connection.CreateModel();
 
         // Declare the queue
-        channel.QueueDeclare(queue: "email_queue",
-            durable: true,
+        var queueName = rabbitMqConfig["EmailQueue"];
+        channel.QueueDeclare(queue: queueName,
+            durable: false,
             exclusive: false,
             autoDelete: false,
             arguments: null);
@@ -50,19 +52,19 @@ static class Program
         {
             try
             {
-                var email = JsonSerializer.Deserialize<Email>(Encoding.UTF8.GetString(e.Body.Span));
+                var email = JsonSerializer.Deserialize<Email>(Encoding.UTF8.GetString(e.Body.Span)); // Deserialize the email
 
                 if (email is not null)
-                    EmailSender.Send(email, config);
+                    EmailSender.Send(email, config); // Sends the email
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Failed to send email: {ex.Message}");
+                Console.WriteLine($"Failed to send email: {ex.Message}"); // If the email sending fails, writes the error to the console
             }
         };
 
-        channel.BasicConsume("email_queue", true, consumer);
+        channel.BasicConsume(queueName, true, consumer); // Start consuming the queue
 
-        Console.ReadKey();
+        Console.ReadKey(); // Prevents the application from closing
     }
 }

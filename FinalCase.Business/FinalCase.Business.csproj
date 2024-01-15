@@ -17,9 +17,10 @@
   <ItemGroup>
     <Folder Include="Features\Accounts\" />
     <Folder Include="Features\ApplicationUsers\Admins\" />
-    <Folder Include="Features\ApplicationUsers\FieldEmployees\Commands\" />
+    <Folder Include="Features\ApplicationUsers\Employees\Commands\" />
+    <Folder Include="Features\ApplicationUsers\Employees\Queries\GetExpenseHistory\" />
     <Folder Include="Features\ApplicationUsers\Profiles\" />
-    <Folder Include="Features\Reports\" />
+    <Folder Include="Features\Reports\GetEmployeeExpenseReportById\" />
   </ItemGroup>
 
   <ItemGroup>

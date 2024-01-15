@@ -1,6 +1,7 @@
 using FinalCase.Api.Extensions;
 using FinalCase.Business.Assembly;
 using FinalCase.Data.Contexts;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -23,6 +24,7 @@ builder.Services.AddJwtConfiguration(builder.Configuration); // extension method
 builder.Services.AddSwagger(); // extension method
 
 builder.Services.AddAutoMapper(typeof(AssemblyReference).Assembly);
+builder.Services.AddHangfire(builder.Configuration);
 
 
 var app = builder.Build();
@@ -37,6 +39,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseHangfireDashboard();
 
 app.MapControllers();
 

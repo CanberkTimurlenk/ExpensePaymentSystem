@@ -42,7 +42,7 @@ public class ExpensesController(IMediator mediator) : ControllerBase
     [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> ApprovePendingExpenses()
     {
-        //var operation = new ApprovePendingExpensesCommand();
+        // var operation = new ApprovePendingExpensesCommand();
 
 
 
@@ -60,6 +60,8 @@ public class ExpensesController(IMediator mediator) : ControllerBase
 
         return null;
     }
+
+
 
 
 

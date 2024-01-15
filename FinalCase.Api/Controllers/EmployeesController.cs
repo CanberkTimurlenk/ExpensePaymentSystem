@@ -1,13 +1,8 @@
 ﻿using FinalCase.Api.Filters;
-using FinalCase.Business.Features.Expenses.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
-using System.Security.Claims;
 using static FinalCase.Api.Constants.ControllerConstants;
-using FinalCase.Business.Features.ApplicationUsers.Authentication.Constants;
 using FinalCase.Business.Features.ApplicationUsers.Authentication.Constants.Roles;
 using FinalCase.Business.Features.Expenses.Queries.GetExpenseByParameter;
 

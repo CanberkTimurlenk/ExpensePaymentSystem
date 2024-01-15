@@ -9,7 +9,7 @@ namespace FinalCase.Business.Features.Expenses.Commands.ApprovePendingExpenses;
 /// </summary>
 /// <param name="ReviewerAdminId">The identifier of the admin who is approving the expenses.</param>
 /// <param name="Model">The collection of expense requests to be approved.</param>
-public record ApproveExpensesCommand(int ReviewerAdminId, ICollection<ApproveExpenseRequest> Model) : IRequest<ApiResponse<IEnumerable<ExpenseResponse>>>;
+public record ApproveExpensesCommand(int ReviewerAdminId, ICollection<ApproveExpenseRequest> ExpenseIdsToApprove) : IRequest<ApiResponse<IEnumerable<ExpenseResponse>>>;
 
 /// <summary>
 /// Represents a single expense request to be approved.

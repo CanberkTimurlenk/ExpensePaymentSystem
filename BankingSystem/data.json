@@ -1,0 +1,18 @@
+[
+  {
+    "Id": 0,
+    "Amount": 0,
+    "ReceiverIban": "string",
+    "ReceiverName": "string",
+    "Date": "2024-01-15T04:08:32.789Z",
+    "Description": "string"
+  },
+  {
+    "Id": 0,
+    "Amount": 1000.00,
+    "ReceiverIban": "asd",
+    "ReceiverName": "bbbb ccccc",
+    "Date": "0001-01-01T00:00:00",
+    "Description": "MSw2"
+  }
+]

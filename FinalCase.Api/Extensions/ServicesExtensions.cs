@@ -1,6 +1,7 @@
 ﻿using FinalCase.Base.Token;
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -13,7 +14,6 @@ public static class ServicesExtensions
     {
         JwtConfig jwtConfig = configuration.GetSection("JwtConfig").Get<JwtConfig>();
         services.Configure<JwtConfig>(configuration.GetSection("JwtConfig"));
-
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -62,5 +62,21 @@ public static class ServicesExtensions
                 { securityScheme, new string[] { } }
             });
         });
+    }
+
+    public static void AddHangfire(this IServiceCollection services, IConfiguration configuration)
+    {
+
+        services.AddHangfire(config => config
+            .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+            .UseSimpleAssemblyNameTypeSerializer()
+            .UseRecommendedSerializerSettings()
+            .UseSqlServerStorage(configuration.GetConnectionString("HangfireSqlConnection"), new SqlServerStorageOptions
+            {
+                //TransactionSynchronisationTimeout = TimeSpan.FromMinutes(5),
+                //InvisibilityTimeout = TimeSpan.FromMinutes(5),   //Background jobs re-queued instantly even after ungraceful shutdown now. Will be removed 2.0.0s
+                QueuePollInterval = TimeSpan.FromMinutes(5),
+            }));
+        services.AddHangfireServer();
     }
 }
