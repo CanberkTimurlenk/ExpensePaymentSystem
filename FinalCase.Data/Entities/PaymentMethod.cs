@@ -3,7 +3,7 @@
 namespace FinalCase.Data.Entities;
 public class PaymentMethod : BaseEntityWithId
 {
-    public int Name { get; set; }
+    public string Name { get; set; }
     public string Description { get; set; }
 
     public ICollection<Expense> Expenses { get; set; }

@@ -33,9 +33,7 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, IMapper
         // The job sends a request to the banking system to check the status of the payment.
         // If the payment is completed, the payments status will be marked as completed, and the employee will be notified.
         // If the payment is not completed, the job will send the payment request to the banking system again.
-        // If the payments is completed, the employee will be notified.        
-
-        payments.ForEach(p => p.Method = ""); // TODO
+        // If the payments is completed, the employee will be notified.                
 
         await dbContext.Payments.AddRangeAsync(payments, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
@@ -52,6 +50,8 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, IMapper
 
         return await dbContext.Expenses
             .Include(e => e.CreatorEmployee)
+            .Include(e => e.Category)
+            .Include(e => e.PaymentMethod)
             .Where(e => expenseIds.Contains(e.Id)) // If the current value of the e.Id exists in the expenseIds list, select the expense.
             .ToListAsync(cancellationToken);
     }

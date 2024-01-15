@@ -22,6 +22,8 @@ public class ExpenseMappingProfile : Profile
            .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.CreatorEmployeeId))
            .ForMember(dest => dest.ExpenseId, opt => opt.MapFrom(src => src.Id))
            .ForMember(dest => dest.ReceiverIban, opt => opt.MapFrom(src => src.CreatorEmployee.Iban))
+           .ForMember(dest => dest.PaymentMethodId, opt => opt.MapFrom(src => src.PaymentMethodId))
+           .ForMember(dest => dest.PaymentMethodName, opt => opt.MapFrom(src => src.PaymentMethod.Name))
            .ForMember(dest => dest.ReceiverName, opt => opt.MapFrom(src => $"{src.CreatorEmployee.Firstname} {src.CreatorEmployee.Lastname}"))
            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => Base64UrlEncoder.Encode($"{src.CreatorEmployeeId},{src.Id}")))
            .ForMember(dest => dest.Employee, opt => opt.MapFrom(src => src.CreatorEmployee))

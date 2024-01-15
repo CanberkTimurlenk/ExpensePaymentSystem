@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Accounts\**" />
+    <EmbeddedResource Remove="Features\Accounts\**" />
+    <EntityDeploy Remove="Features\Accounts\**" />
+    <None Remove="Features\Accounts\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="Dapper" Version="2.1.28" />
     <PackageReference Include="FluentValidation" Version="11.9.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.0" />
@@ -15,12 +23,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Accounts\" />
     <Folder Include="Features\ApplicationUsers\Admins\" />
     <Folder Include="Features\ApplicationUsers\Employees\Commands\" />
     <Folder Include="Features\ApplicationUsers\Employees\Queries\GetExpenseHistory\" />
     <Folder Include="Features\ApplicationUsers\Profiles\" />
-    <Folder Include="Features\Reports\GetEmployeeExpenseReportById\" />
   </ItemGroup>
 
   <ItemGroup>

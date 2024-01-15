@@ -11,6 +11,7 @@ public class FinalCaseDbContext(DbContextOptions<FinalCaseDbContext> options) : 
     public DbSet<Payment> Payments { get; set; }
     public DbSet<Document> Documents { get; set; }
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+    public DbSet<PaymentMethod> PaymentMethods { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
