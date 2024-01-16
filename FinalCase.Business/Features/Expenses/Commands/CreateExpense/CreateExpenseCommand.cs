@@ -1,6 +1,6 @@
 ﻿using FinalCase.Base.Response;
-using FinalCase.Schema.Requests;
-using FinalCase.Schema.Responses;
+using FinalCase.Schema.Entity.Requests;
+using FinalCase.Schema.Entity.Responses;
 using MediatR;
 
 namespace FinalCase.Business.Features.Expenses.Commands.CreateExpense;

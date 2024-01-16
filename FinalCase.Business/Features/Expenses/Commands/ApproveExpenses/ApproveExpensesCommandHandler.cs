@@ -7,8 +7,9 @@ using FinalCase.Data.Contexts;
 using FinalCase.Data.Entities;
 using FinalCase.Data.Enums;
 using FinalCase.Schema.Email;
-using FinalCase.Schema.Requests;
-using FinalCase.Schema.Responses;
+using FinalCase.Schema.Entity.Requests;
+using FinalCase.Schema.Entity.Responses;
+using FinalCase.Services.NotificationService;
 using LinqKit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +19,12 @@ namespace FinalCase.Business.Features.Expenses.Commands.ApproveExpenses;
 /// <summary>
 /// Handles the approval of a set of pending employee expenses.
 /// </summary>
-public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, IMapper mapper)
+public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, INotificationService notificationService, IMapper mapper)
     : IRequestHandler<ApproveExpensesCommand, ApiResponse<IEnumerable<ExpenseResponse>>>
 {
     private readonly FinalCaseDbContext dbContext = dbContext;
     private readonly IMapper mapper = mapper;
+    private readonly INotificationService notificationService = notificationService;
 
     public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> Handle(ApproveExpensesCommand request, CancellationToken cancellationToken)
     {
@@ -55,7 +57,7 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, IMapper
             .Where(e => expenseIds.Contains(e.Id)) // If the current value of the e.Id exists in the expenseIds list, select the expense.
             .ToListAsync(cancellationToken);
     }
-    private static void SendPayments(IEnumerable<Payment> payments, CancellationToken cancellationToken)
+    private void SendPayments(IEnumerable<Payment> payments, CancellationToken cancellationToken)
     {
         payments.ForEach(p =>
         {
@@ -69,13 +71,13 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, IMapper
             // Instead of mapping a single object with AutoMapper in each iteration,
             // I prefer to map it manually to make it more efficient.
             // Mapping profile is also exists "mapper.Map<OutgoingPaymentRequest>(p)" 
-            new Email
-            {
-                Body = string.Format(PaymentEmailConstants.CompletedBody, p.ReceiverName, p.Amount, p.Expense.Date),
-                Subject = PaymentEmailConstants.CompletedSubject,
-                To = p.Employee.Email
-            }
-            , cancellationToken);
+            new Email(
+                subject: string.Format(PaymentEmailConstants.CompletedBody, p.ReceiverName, p.Amount, p.Expense.Date),
+                body: PaymentEmailConstants.CompletedSubject,
+                to: p.Employee.Email
+            ),
+            notificationService,
+            cancellationToken);
         });
     }
 }

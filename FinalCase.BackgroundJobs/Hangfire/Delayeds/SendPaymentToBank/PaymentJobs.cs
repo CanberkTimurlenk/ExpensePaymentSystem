@@ -1,8 +1,9 @@
 ﻿using FinalCase.Schema.Email;
-using FinalCase.Schema.Requests;
-using FinalCase.Services.PdfCreator;
+using FinalCase.Schema.Entity.Requests;
+using FinalCase.Services.NotificationService;
 using Hangfire;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using RestSharp;
 using System.Net;
 
@@ -15,18 +16,19 @@ public static class PaymentJobs
 {
     private readonly static IConfiguration configuration = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
-        .AddJsonFile("appsettings.json").Build();   // Get the configuration settings.
+        .AddJsonFile("appsettings.json").Build();   // Get the configuration settings.   
 
     /// <summary>
     /// Schedules a job to send a payment request to the banking system and continues with sending if the job is completed.
     /// </summary>
     /// <param name="request">The outgoing payment request.</param>
     /// <param name="email">The email to be sent.</param>
-    /// <param name="configuration">The configuration settings.</param>
-    public static void SendPaymentRequest(OutgoingPaymentRequest request, Email email, CancellationToken cancellationToken)
+    /// <param name="notificationService">The service instance managing notifications.</param>
+    /// 
+    public static void SendPaymentRequest(OutgoingPaymentRequest request, Email email, INotificationService notificationService, CancellationToken cancellationToken)
     {
         var jobId = BackgroundJob.Schedule(() => SendPaymentJobAsync(request, cancellationToken), TimeSpan.FromSeconds(3)); // Schedule a job to send the payment request to the banking system.
-        BackgroundJob.ContinueJobWith(jobId, () => EmailSender.SendEmail(email)); // Schedule a job to send the email to the employee.        
+        BackgroundJob.ContinueJobWith(jobId, () => notificationService.SendEmail(email)); // Schedule a job to send the email to the employee.        
     }
 
     /// <summary>
@@ -68,7 +70,6 @@ public static class PaymentJobs
             RequestFormat = DataFormat.Json,
             Timeout = (int)TimeSpan.FromSeconds(30).TotalMilliseconds
         }.AddBody(body);
-
 
         return client.ExecuteAsync(request, cancellationToken);
     }

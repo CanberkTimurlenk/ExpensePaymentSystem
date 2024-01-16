@@ -1,6 +1,6 @@
 ﻿using FinalCase.Base.Response;
 using FinalCase.Business.Features.Expenses.Commands.ApprovePendingExpenses;
-using FinalCase.Schema.Responses;
+using FinalCase.Schema.Entity.Responses;
 using MediatR;
 
 namespace FinalCase.Business.Features.Expenses.Commands.RejectExpenses;

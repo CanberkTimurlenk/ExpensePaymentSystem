@@ -12,8 +12,7 @@ public record Email
     {
         return JsonSerializer.Serialize(this);
     }
-
-
+    
     public Email(string subject, string body, string to)
     {
         Subject = subject;

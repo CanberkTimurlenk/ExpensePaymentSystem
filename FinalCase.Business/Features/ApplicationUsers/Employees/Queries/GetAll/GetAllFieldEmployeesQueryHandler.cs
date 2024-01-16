@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using FinalCase.Base.Response;
 using FinalCase.Data.Contexts;
-using FinalCase.Schema.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

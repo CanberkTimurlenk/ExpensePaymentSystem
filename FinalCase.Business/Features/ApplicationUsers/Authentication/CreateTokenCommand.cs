@@ -1,6 +1,5 @@
 ﻿using FinalCase.Base.Response;
-using FinalCase.Schema.Requests;
-using FinalCase.Schema.Responses;
+using FinalCase.Schema.Authentication;
 using MediatR;
 
 namespace FinalCase.Business.Features.ApplicationUsers.Authentication;

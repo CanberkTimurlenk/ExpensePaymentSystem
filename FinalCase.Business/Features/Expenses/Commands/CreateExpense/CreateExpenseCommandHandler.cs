@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using FinalCase.Base.Response;
 using FinalCase.Data.Contexts;
-using FinalCase.Schema.Requests;
-using FinalCase.Schema.Responses;
 using MediatR;
 using FinalCase.Data.Entities;
+using FinalCase.Schema.Entity.Responses;
+using FinalCase.Schema.Entity.Requests;
 
 namespace FinalCase.Business.Features.Expenses.Commands.CreateExpense;
 

@@ -13,7 +13,8 @@ namespace FinalCase.Data.Migrations
             migrationBuilder.Sql(@"
                 CREATE VIEW MonthlyExpenseAmountSummary AS
                 SELECT
-                    CAST(Date AS DATE) AS ExpenseDate,
+                    FORMAT(CAST(GETDATE() - DAY(GETDATE()) + 1 AS DATETIME),'yyyy-MM-dd 00:00:00') AS StartDateTime,
+                    GETDATE() AS FinalDateTime,
                     SUM(CASE WHEN Status = 1 THEN Amount ELSE 0 END) AS PendingAmount,
                     SUM(CASE WHEN Status = 2 THEN Amount ELSE 0 END) AS ApprovedAmount,
                     SUM(CASE WHEN Status = 3 THEN Amount ELSE 0 END) AS RejectedAmount

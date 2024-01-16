@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using FinalCase.Data.Entities;
-using FinalCase.Schema.Requests;
+using FinalCase.Schema.Entity.Requests;
 
 namespace FinalCase.Business.Features.Payments.Profiles;
 

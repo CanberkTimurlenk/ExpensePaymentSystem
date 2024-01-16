@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using FinalCase.Data.Constants.Storage;
 using FinalCase.Schema.Reports;
 using Microsoft.Extensions.Configuration;
 using System.Data.SqlClient;
@@ -18,21 +19,21 @@ public static class PeriodicalPaymentReportJob
     /// The method called by Hangfire to create the daily payment report.
     /// </summary>
     /// <returns>Daily Payment Report</returns>
-    public static IEnumerable<PaymentReport> EnableDailyPaymentReports()
+    public static IEnumerable<PaymentScheduledReport> EnableDailyPaymentReports()
         => GetPaymentReports("SELECT * FROM DailyPaymentReport");
 
     /// <summary>
     /// The method called by Hangfire to create the weekly payment report.
     /// </summary>
     /// <returns>Weekly Payment Report</returns>
-    public static IEnumerable<PaymentReport> EnableWeeklyPaymentReports()
+    public static IEnumerable<PaymentScheduledReport> EnableWeeklyPaymentReports()
         => GetPaymentReports("SELECT * FROM WeeklyPaymentReport");
 
     /// <summary>
     /// The method called by Hangfire to create the monthly payment report.
     /// </summary>
     /// <returns>Monthly Payment Report</returns>
-    public static IEnumerable<PaymentReport> EnableMonthlyPaymentReports()
+    public static IEnumerable<PaymentScheduledReport> EnableMonthlyPaymentReports()
         => GetPaymentReports("SELECT * FROM MonthlyPaymentReport");
 
     /// <summary>
@@ -40,14 +41,14 @@ public static class PeriodicalPaymentReportJob
     /// </summary>
     /// <param name="query">The SQL query to retrieve payment reports.</param>
     /// <returns>An IEnumerable which representing the result of the query.</returns>
-    private static IEnumerable<PaymentReport> GetPaymentReports(string query)
+    private static IEnumerable<PaymentScheduledReport> GetPaymentReports(string query)
     {
-        using var connection = new SqlConnection(configuration.GetConnectionString("MsSqlConnection"));
+        using var connection = new SqlConnection(configuration.GetConnectionString(DbKeys.SqlServer));
         connection.Open();
 
-        var result = connection.Query<PaymentReport>(query);
+        var result = connection.Query<PaymentScheduledReport>(query);
 
-
+        return result;
 
     }
 }

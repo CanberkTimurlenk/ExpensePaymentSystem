@@ -1,9 +1,13 @@
 ﻿using FinalCase.BackgroundJobs.QueueService;
+using FinalCase.Services.Queue.Constants;
 using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 
 namespace FinalCase.BackgroundJobs.QueueOperations;
 
+/// <summary>
+/// A queue service implementation.
+/// </summary>
 public class QueueService : IQueueService
 {
     private readonly static IConfiguration configuration = new ConfigurationBuilder()
@@ -13,14 +17,14 @@ public class QueueService : IQueueService
     /// <summary>
     /// Sends the byte array to the specified queue.
     /// </summary>
-    /// <param name="queueName">The key of the queue name where the value is specified in the "RabbitMQ" section in the appsettings.json.</param>
+    /// <param name="queueNameKey">The key of the queue name where the value is specified in the "RabbitMQ" section in the appsettings.json.</param>
     /// <param name="body">The message body to be sent</param>
     public void SendMessage(string queueNameKey, byte[] body)
     {
-        var rabbitMqConfig = configuration.GetSection("RabbitMQ");
+        var rabbitMqConfig = configuration.GetSection(Brokers.RabbitMq);
         var factory = new ConnectionFactory
         {
-            Uri = new Uri(rabbitMqConfig.GetValue<string>("Url"))
+            Uri = new Uri(rabbitMqConfig.GetValue<string>(Brokers.Url))
         };
 
         var connection = factory.CreateConnection();
@@ -35,7 +39,7 @@ public class QueueService : IQueueService
             arguments: null);
 
         channel.BasicPublish(exchange: "",
-            routingKey: queueName,
+            routingKey: name,
             basicProperties: null,
             body: body);
     }

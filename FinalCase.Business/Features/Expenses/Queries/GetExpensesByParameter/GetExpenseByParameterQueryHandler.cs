@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using FinalCase.Base.Response;
 using FinalCase.Data.Contexts;
-using FinalCase.Schema.Responses;
 using MediatR;
 using LinqKit;
 using FinalCase.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using static FinalCase.Base.Helpers.Linq.ExpressionStarterExtensions;
+using FinalCase.Schema.Entity.Responses;
 
 namespace FinalCase.Business.Features.Expenses.Queries.GetExpenseByParameter;
 public class GetExpenseByParameterQueryHandler(FinalCaseDbContext dbContext, IMapper mapper)

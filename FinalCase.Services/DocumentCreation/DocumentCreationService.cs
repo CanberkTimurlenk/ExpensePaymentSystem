@@ -1,4 +1,5 @@
 ﻿using FinalCase.BackgroundJobs.QueueService;
+using FinalCase.Services.Queue.Constants;
 using System.Text;
 
 namespace FinalCase.Services.DocumentCreation;
@@ -9,6 +10,6 @@ public class DocumentCreationService(IQueueService queueService) : IDocumentCrea
 
     public void CreateDocument(string serializedBody)
     {
-        queueService.SendMessage("PdfQueue", Encoding.UTF8.GetBytes(serializedBody));
+        queueService.SendMessage(Queues.Pdf, Encoding.UTF8.GetBytes(serializedBody));
     }
 }

@@ -11,6 +11,8 @@ namespace FinalCase.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("SET DATEFIRST 2");
+
             migrationBuilder.CreateTable(
                 name: "ApplicationUsers",
                 columns: table => new
@@ -258,6 +260,8 @@ namespace FinalCase.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.Sql("SET DATEFIRST 1");
+
             migrationBuilder.DropTable(
                 name: "Documents");
 

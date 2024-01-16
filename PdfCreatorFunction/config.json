@@ -3,5 +3,5 @@
     "Url": "amqps://wbyqwztu:ALMr1hvw6Z3bHEiBDt575FUmnaI6Z4_1@sparrow.rmq.cloudamqp.com/wbyqwztu",
     "EmailQueue": "email_queue",
     "PdfQueue": "pdf_queue"
-  },
+  }
 }

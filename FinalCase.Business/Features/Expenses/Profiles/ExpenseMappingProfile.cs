@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FinalCase.Data.Entities;
-using FinalCase.Schema.Requests;
-using FinalCase.Schema.Responses;
+using FinalCase.Schema.Entity.Requests;
+using FinalCase.Schema.Entity.Responses;
 using Microsoft.IdentityModel.Tokens;
 
 namespace FinalCase.Business.Features.Expenses.Profiles;

@@ -5,7 +5,7 @@ using FinalCase.Business.Features.ApplicationUsers.Authentication.Constants.Mess
 using FinalCase.Business.Features.ApplicationUsers.Authentication.Helpers;
 using FinalCase.Data.Contexts;
 using FinalCase.Data.Entities;
-using FinalCase.Schema.Responses;
+using FinalCase.Schema.Authentication;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;

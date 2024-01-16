@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using FinalCase.Data.Entities;
-using FinalCase.Schema.Requests;
-using FinalCase.Schema.Responses;
+using FinalCase.Schema.Entity.Requests;
+using FinalCase.Schema.Entity.Responses;
 
 namespace FinalCase.Business.Features.ExpenseCategories.Profiles;
 public class ExpenseCategoryMappingProfile : Profile

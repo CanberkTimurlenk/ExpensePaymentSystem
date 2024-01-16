@@ -2,7 +2,7 @@
 using FinalCase.Base.Response;
 using FinalCase.Data.Contexts;
 using FinalCase.Data.Enums;
-using FinalCase.Schema.Responses;
+using FinalCase.Schema.Entity.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
