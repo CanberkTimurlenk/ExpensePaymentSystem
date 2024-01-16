@@ -14,16 +14,14 @@ namespace FinalCase.Data.Migrations
                 CREATE VIEW MonthlyExpenseAmountSummary AS
                 SELECT
                     FORMAT(CAST(GETDATE() - DAY(GETDATE()) + 1 AS DATETIME),'yyyy-MM-dd 00:00:00') AS StartDateTime,
-                    GETDATE() AS FinalDateTime,
+                    FORMAT(EOMONTH(GETDATE()),'yyyy-MM-dd 23:59:59') AS FinalDateTime,
                     SUM(CASE WHEN Status = 1 THEN Amount ELSE 0 END) AS PendingAmount,
                     SUM(CASE WHEN Status = 2 THEN Amount ELSE 0 END) AS ApprovedAmount,
                     SUM(CASE WHEN Status = 3 THEN Amount ELSE 0 END) AS RejectedAmount
                 FROM
                     Expenses as E
                 WHERE
-                    MONTH(E.Date) = MONTH(GETDATE()) AND YEAR(E.Date) = YEAR(GETDATE())
-                GROUP BY
-                    CAST(Date AS DATE);
+                    MONTH(E.Date) = MONTH(GETDATE()) AND YEAR(E.Date) = YEAR(GETDATE())          
             ");
         }
 

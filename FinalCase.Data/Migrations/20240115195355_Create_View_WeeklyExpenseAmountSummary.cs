@@ -13,8 +13,8 @@ namespace FinalCase.Data.Migrations
             migrationBuilder.Sql(@"
                 CREATE VIEW WeeklyExpenseAmountSummary AS
                 SELECT
-                    FORMAT(DATEADD(DAY, 1 - DATEPART(WEEKDAY, GETDATE()), GETDATE()),'yyyy-MM-dd 00:00:00') AS StartDateTime, 
-                    GETDATE() AS FinalDateTime,
+                    FORMAT(DATEADD(DAY, 2 - DATEPART(WEEKDAY, GETDATE()), GETDATE()),'yyyy-MM-dd 00:00:00') AS StartDateTime, 
+                    FORMAT(DATEADD(DAY, 8 - DATEPART(WEEKDAY, GETDATE()), GETDATE()),'yyyy-MM-dd 23:59:59') AS FinalDateTime,
                     SUM(CASE WHEN Status = 1 THEN Amount ELSE 0 END) AS PendingAmount,
                     SUM(CASE WHEN Status = 2 THEN Amount ELSE 0 END) AS ApprovedAmount,
                     SUM(CASE WHEN Status = 3 THEN Amount ELSE 0 END) AS RejectedAmount

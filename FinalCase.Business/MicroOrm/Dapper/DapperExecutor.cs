@@ -1,8 +1,10 @@
 ﻿using Dapper;
+using FinalCase.Data.Constants.DbObjects;
 using FinalCase.Schema.Reports;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection;
 
 namespace FinalCase.Business.MicroOrm.Dapper;
 
@@ -42,6 +44,25 @@ public static class DapperExecutor
         await using var connection = new SqlConnection(connectionString);
         await connection.OpenAsync(cancellationToken);
 
-        return await connection.QueryAsync<T>(view);
+        if (!IsViewNameValid(view)) // To prevent a possible SQL injection, since the parameter is a string
+            throw new ArgumentException("Invalid view name");
+
+        return await connection.QueryAsync<T>($"SELECT * FROM {view}");
+    }
+
+    /// <summary>
+    /// Checks if the provided view name is valid by comparing it to the values
+    /// of the public and static fields in the Views class.
+    /// </summary>
+    /// <param name="view">The view name to be validated.</param>
+    /// <returns>True if the view name is valid; otherwise, false.</returns>
+    private static bool IsViewNameValid(string view)
+    {
+        var fields = typeof(Views).GetFields(BindingFlags.Public | BindingFlags.Static);
+        // Gets all the values of the fields in the Views class
+
+        List<string> values = fields.Select(field => (string)field.GetValue(null)).ToList();
+
+        return values.Any(value => value.Equals(view));
     }
 }

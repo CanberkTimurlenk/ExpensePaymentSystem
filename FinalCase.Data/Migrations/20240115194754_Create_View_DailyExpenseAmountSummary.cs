@@ -21,9 +21,7 @@ namespace FinalCase.Data.Migrations
                 FROM
                     Expenses
                 WHERE
-                    CAST(Date AS DATE) = CAST(GETDATE() AS DATE)
-                GROUP BY
-                    CAST(Date AS DATE);
+                    CAST(Date AS DATE) = CAST(GETDATE() AS DATE)               
             ");
         }
 

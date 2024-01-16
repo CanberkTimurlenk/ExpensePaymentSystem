@@ -4,7 +4,6 @@ using FinalCase.Api.Constants.Controller;
 
 namespace FinalCase.Api.Filters;
 
-
 /// <summary>
 /// Verifies the identity by comparing the 'id' from the route of an endpoint with the one from the token.
 /// - If they match, the controller method will be executed.
