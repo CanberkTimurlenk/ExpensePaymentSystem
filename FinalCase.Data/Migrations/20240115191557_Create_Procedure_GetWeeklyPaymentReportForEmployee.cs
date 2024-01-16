@@ -5,12 +5,12 @@
 namespace FinalCase.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Create_Procedure_GetWeeklyExpenseReportByEmployee : Migration
+    public partial class Create_Procedure_GetWeeklyPaymentReportForEmployee : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
-                CREATE PROCEDURE GetWeeklyExpenseReportByEmployee
+                CREATE PROCEDURE GetWeeklyPaymentReportForEmployee
                     @EmployeeId INT
                 AS
                 BEGIN
@@ -34,7 +34,7 @@ namespace FinalCase.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS GetWeeklyExpenseReportByEmployee");
+            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS GetWeeklyPaymentReportForEmployee");
         }
     }
 }

@@ -22,10 +22,8 @@ namespace FinalCase.Data.Migrations
                         E.Location,
                         E.AdminDescription,
                         E.Status,                        
-                        EC.Name AS CategoryName,
-                        EC.Description AS CategoryDescription,                        
-                        PM.Name AS PaymentMethodName,
-                        PM.Description AS PaymentMethodDescription,
+                        EC.Name AS CategoryName,                        
+                        PM.Name AS PaymentMethodName,                        
                         D.Name AS DocumentName,
                         D.Description AS DocumentDescription,
                         D.Url AS DocumentUrl

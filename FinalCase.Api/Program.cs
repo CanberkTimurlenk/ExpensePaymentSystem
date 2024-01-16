@@ -27,6 +27,7 @@ builder.Services.AddAutoMapper(typeof(AssemblyReference).Assembly);
 builder.Services.AddHangfire(builder.Configuration);
 
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,6 +41,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 app.UseHangfireDashboard();
+
+Jobs.EnableReportingJobs();
 
 app.MapControllers();
 

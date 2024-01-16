@@ -13,11 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinalCase.Schema", "FinalCa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinalCase.Api", "FinalCase.Api\FinalCase.Api.csproj", "{6A5BE60E-57CB-4D25-84D1-0D2DFC2A5D36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankingSystem", "BankingSystem\BankingSystem.csproj", "{F3E60206-9ACC-46EF-82AA-1F51A7031FBE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankingSystem", "BankingSystem\BankingSystem.csproj", "{F3E60206-9ACC-46EF-82AA-1F51A7031FBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinalCase.BackgroundJobs", "FinalCase.BackgroundJobs\FinalCase.BackgroundJobs.csproj", "{36350BFE-1EB9-4CE2-937D-6285CE31F117}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FinalCase.BackgroundJobs", "FinalCase.BackgroundJobs\FinalCase.BackgroundJobs.csproj", "{36350BFE-1EB9-4CE2-937D-6285CE31F117}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailFunction", "EmailFunction\EmailFunction.csproj", "{70C7E5E0-604E-4A88-998F-898FC5C94B47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailFunction", "EmailFunction\EmailFunction.csproj", "{70C7E5E0-604E-4A88-998F-898FC5C94B47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PdfCreatorFunction", "PdfCreatorFunction\PdfCreatorFunction.csproj", "{556C3F82-1CBA-44A7-837F-023821F1FF81}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinalCase.Services", "FinalCase.Services\FinalCase.Services.csproj", "{33A8F2E1-7DC6-4490-9C8E-E8311561B5A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +61,14 @@ Global
 		{70C7E5E0-604E-4A88-998F-898FC5C94B47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{70C7E5E0-604E-4A88-998F-898FC5C94B47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{70C7E5E0-604E-4A88-998F-898FC5C94B47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{556C3F82-1CBA-44A7-837F-023821F1FF81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{556C3F82-1CBA-44A7-837F-023821F1FF81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{556C3F82-1CBA-44A7-837F-023821F1FF81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{556C3F82-1CBA-44A7-837F-023821F1FF81}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33A8F2E1-7DC6-4490-9C8E-E8311561B5A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33A8F2E1-7DC6-4490-9C8E-E8311561B5A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33A8F2E1-7DC6-4490-9C8E-E8311561B5A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33A8F2E1-7DC6-4490-9C8E-E8311561B5A9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

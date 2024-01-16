@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinalCase.Data.Migrations
 {
     [DbContext(typeof(FinalCaseDbContext))]
-    [Migration("20240115191023_Create_Procedure_GetDailyExpenseReportByEmployee")]
-    partial class Create_Procedure_GetDailyExpenseReportByEmployee
+    [Migration("20240115191557_Create_Procedure_GetWeeklyPaymentReportForEmployee")]
+    partial class Create_Procedure_GetWeeklyPaymentReportForEmployee
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -1,12 +1,9 @@
-﻿using FinalCase.BackgroundJobs.BackgroundServices.NotificationService;
-using FinalCase.Schema.Email;
+﻿using FinalCase.Schema.Email;
 using FinalCase.Schema.Requests;
+using FinalCase.Services.PdfCreator;
 using Hangfire;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Linq;
 using RestSharp;
-using System.Diagnostics;
 using System.Net;
 
 namespace FinalCase.BackgroundJobs.Hangfire.Delayeds.Payment;

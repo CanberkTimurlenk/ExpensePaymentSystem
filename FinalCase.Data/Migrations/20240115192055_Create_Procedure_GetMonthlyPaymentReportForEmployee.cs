@@ -5,13 +5,13 @@
 namespace FinalCase.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Create_Procedure_GetDailyExpenseReportByEmployee : Migration
+    public partial class Create_Procedure_GetMonthlyPaymentReportForEmployee : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
-                CREATE PROCEDURE GetDailyExpenseReportByEmployee
+                CREATE PROCEDURE GetMonthlyPaymentReportForEmployee
                     @EmployeeId INT
                 AS
                 BEGIN
@@ -24,17 +24,16 @@ namespace FinalCase.Data.Migrations
                     FROM
                         Payments AS P
                     WHERE
-                        P.Date = CONVERT(DATE, GETDATE())
-                            AND P.EmployeeId = @EmployeeId
+                        MONTH(P.Date) = MONTH(GETDATE()) AND YEAR(P.Date) = YEAR(GETDATE())
+                        AND P.EmployeeId = @EmployeeId
                 END
             ");
-
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS GetDailyExpenseReportByEmployee");
+            migrationBuilder.Sql("DROP PROCEDURE IF EXISTS GetMonthlyPaymentReportForEmployee");
         }
     }
 }
