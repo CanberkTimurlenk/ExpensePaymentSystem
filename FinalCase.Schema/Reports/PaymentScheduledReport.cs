@@ -1,4 +1,10 @@
 ﻿namespace FinalCase.Schema.Reports;
+/// <summary>
+/// Schema for
+///<para> - Daily Payment Report </para>
+///<para> - Weekly Payment Report</para>
+///<para> - Monthly Payment Report</para>
+/// </summary>
 public record PaymentScheduledReport
 {
     public decimal Amount { get; init; }

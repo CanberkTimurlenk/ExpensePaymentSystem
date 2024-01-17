@@ -24,7 +24,7 @@ public static class PaymentJobs
     /// <param name="request">The outgoing payment request.</param>
     /// <param name="email">The email to be sent.</param>
     /// <param name="notificationService">The service instance managing notifications.</param>
-    /// 
+    /// <param name="cancellationToken">Cancellation Token.</param>
     public static void SendPaymentRequest(OutgoingPaymentRequest request, Email email, INotificationService notificationService, CancellationToken cancellationToken)
     {
         var jobId = BackgroundJob.Schedule(() => SendPaymentJobAsync(request, cancellationToken), TimeSpan.FromSeconds(3)); // Schedule a job to send the payment request to the banking system.

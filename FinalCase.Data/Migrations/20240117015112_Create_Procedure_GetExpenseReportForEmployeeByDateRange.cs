@@ -13,8 +13,8 @@ namespace FinalCase.Data.Migrations
             migrationBuilder.Sql(@"
                 CREATE PROCEDURE GetExpenseReportForEmployeeByDateRange
                     @UserId INT,
-                    @StartDate DATE,
-                    @EndDate DATE
+                    @StartDate DATETIME,
+                    @EndDate DATETIME
                 AS
                 BEGIN
                     SELECT

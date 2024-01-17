@@ -1,6 +1,6 @@
 ﻿using Dapper;
+using FinalCase.BackgroundJobs.MicroOrm.Dapper;
 using FinalCase.Base.Response;
-using FinalCase.Business.MicroOrm.Dapper;
 using FinalCase.Data.Constants.DbObjects;
 using FinalCase.Data.Constants.Storage;
 using FinalCase.Schema.Reports;
@@ -27,10 +27,10 @@ public class GetWeeklyExpenseReportForEmployeeQueryHandler(IConfiguration config
     /// <returns></returns>
     private async Task<IEnumerable<EmployeeExpenseReport>> GetWeeklyExpenses(int id, CancellationToken cancellationToken)
     {
-        var parameters = new DynamicParameters(); // Dynamic parameters for stored procedure
-        parameters.Add("@UserId", id, DbType.Int32); // User Id
-        parameters.Add("@StartDate", DateTime.Now.AddDays(DayOfWeek.Monday - DateTime.Now.DayOfWeek), DbType.DateTime); // Start date of week
-        parameters.Add("@EndDate", DateTime.Now, DbType.DateTime); // Today
+        var parameters = new DynamicParameters();
+        parameters.Add("@UserId", id, DbType.Int32); // Employee(User) Id
+        parameters.Add("@StartDate", DateTime.Now.AddDays(DayOfWeek.Monday - DateTime.Now.DayOfWeek).Date, DbType.DateTime); // Start date of week 00:00:00
+        parameters.Add("@EndDate", DateTime.Now.AddDays(7 - (int)DateTime.Now.DayOfWeek).Date.AddMinutes(1439).AddSeconds(59), DbType.DateTime); // Last date of week 23:59:59
 
         return await DapperExecutor.ExecuteStoredProcedureAsync<EmployeeExpenseReport>(
                         StoredProcedures.GetEmployeeExpensesByDateRange,

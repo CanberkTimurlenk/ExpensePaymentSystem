@@ -1,4 +1,9 @@
 ﻿namespace FinalCase.Schema.Reports;
+/// <summary>
+/// Schema for
+///<para> - GetExpenseReportForEmployeeByDateRange </para>
+///<para> - GetEmployeeAllExpensesReport </para>
+/// </summary>
 public record EmployeeExpenseReport
 {
     public decimal Amount { get; set; }

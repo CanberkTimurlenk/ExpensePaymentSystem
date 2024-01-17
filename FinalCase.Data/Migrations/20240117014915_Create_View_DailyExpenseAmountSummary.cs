@@ -13,15 +13,16 @@ namespace FinalCase.Data.Migrations
             migrationBuilder.Sql(@"
                 CREATE VIEW DailyExpenseAmountSummary AS
                 SELECT
-                    FORMAT(GETDATE(), 'yyyy-MM-dd 00:00:00') AS StartDateTime,
-                    GETDATE() AS FinalDateTime,
+                    CAST(DATEDIFF(DAY, 0, GETDATE()) AS DATETIME) AS StartDateTime,
+                    DATEADD(SECOND, -1, DATEADD(DAY, 1, CAST(DATEDIFF(DAY, 0, GETDATE()) AS DATETIME))) AS FinalDateTime,
                     SUM(CASE WHEN Status = 1 THEN Amount ELSE 0 END) AS PendingAmount,
                     SUM(CASE WHEN Status = 2 THEN Amount ELSE 0 END) AS ApprovedAmount,
                     SUM(CASE WHEN Status = 3 THEN Amount ELSE 0 END) AS RejectedAmount
                 FROM
-                    Expenses
+                    Expenses as E
                 WHERE
-                    CAST(Date AS DATE) = CAST(GETDATE() AS DATE)               
+                    E.Date BETWEEN CAST(DATEDIFF(DAY, 0, GETDATE()) AS DATETIME) 
+                        AND DATEADD(SECOND, -1, DATEADD(DAY, 1, CAST(DATEDIFF(DAY, 0, GETDATE()) AS DATETIME)))
             ");
         }
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinalCase.Data.Migrations
 {
     [DbContext(typeof(FinalCaseDbContext))]
-    [Migration("20240115183008_Create_View_WeeklyPaymentReport")]
-    partial class Create_View_WeeklyPaymentReport
+    [Migration("20240117014024_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -199,9 +199,6 @@ namespace FinalCase.Data.Migrations
                     b.Property<int>("PaymentMethodId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PaymentMethodId1")
-                        .HasColumnType("int");
-
                     b.Property<int?>("ReviewerAdminId")
                         .HasColumnType("int");
 
@@ -223,8 +220,6 @@ namespace FinalCase.Data.Migrations
                     b.HasIndex("CreatorEmployeeId");
 
                     b.HasIndex("PaymentMethodId");
-
-                    b.HasIndex("PaymentMethodId1");
 
                     b.HasIndex("ReviewerAdminId");
 
@@ -390,14 +385,10 @@ namespace FinalCase.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("FinalCase.Data.Entities.PaymentMethod", "PaymentMethod")
-                        .WithMany()
+                        .WithMany("Expenses")
                         .HasForeignKey("PaymentMethodId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("FinalCase.Data.Entities.PaymentMethod", null)
-                        .WithMany("Expenses")
-                        .HasForeignKey("PaymentMethodId1");
 
                     b.HasOne("FinalCase.Data.Entities.ApplicationUser", "ReviewerAdmin")
                         .WithMany("ReviewedExpenses")

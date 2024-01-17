@@ -1,6 +1,6 @@
-﻿using FinalCase.Base.Response;
+﻿using FinalCase.BackgroundJobs.MicroOrm.Dapper;
+using FinalCase.Base.Response;
 using FinalCase.Business.Features.Reports.Queries.Admin.GetExpenseAmountSummary.GetDailyExpenseAmountSummary;
-using FinalCase.Business.MicroOrm.Dapper;
 using FinalCase.Data.Constants.DbObjects;
 using FinalCase.Data.Constants.Storage;
 using FinalCase.Schema.Reports;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace FinalCase.Business.Features.Reports.Queries.Admin.GetExpenseAmountSummary.GetMonthlyExpenseAmountSummary;
 
-public class GetMonthlyExpenseAmountQueryHandler(IConfiguration configuration)
+public class GetMonthlyExpenseAmountSummaryQueryHandler(IConfiguration configuration)
     : IRequestHandler<GetMonthlyExpenseAmountSummaryQuery, ApiResponse<ExpenseAmountSummary>>
 {
     private readonly IConfiguration configuration = configuration;

@@ -5,13 +5,13 @@
 namespace FinalCase.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Create_View_DailyPaymentReport : Migration
+    public partial class Create_View_WeeklyPaymentReport : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
-                CREATE VIEW DailyPaymentReport
+                CREATE VIEW WeeklyPaymentReport
                 AS
                 SELECT
                     P.Amount,
@@ -23,7 +23,8 @@ namespace FinalCase.Data.Migrations
                 FROM
                     Payments AS P
                 WHERE
-                    P.Date = CONVERT(DATE, GETDATE())
+                    P.Date BETWEEN CAST(DATEADD(DAY, 2 - DATEPART(WEEKDAY, GETDATE()), DATEDIFF(DAY, 0, GETDATE())) AS DATETIME)
+                               AND DATEADD(SECOND, -1, DATEADD(DAY, 9 - DATEPART(WEEKDAY, GETDATE()), DATEDIFF(DAY, 0, GETDATE())))
             ");
 
         }
@@ -31,7 +32,7 @@ namespace FinalCase.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("DROP VIEW IF EXISTS DailyPaymentReport");
+            migrationBuilder.Sql("DROP VIEW IF EXISTS WeeklyPaymentReport");
         }
     }
 }

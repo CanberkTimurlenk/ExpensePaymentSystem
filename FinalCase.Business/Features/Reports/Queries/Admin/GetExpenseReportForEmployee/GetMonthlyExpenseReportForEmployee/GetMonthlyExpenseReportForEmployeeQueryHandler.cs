@@ -1,6 +1,6 @@
 ﻿using Dapper;
+using FinalCase.BackgroundJobs.MicroOrm.Dapper;
 using FinalCase.Base.Response;
-using FinalCase.Business.MicroOrm.Dapper;
 using FinalCase.Data.Constants.DbObjects;
 using FinalCase.Data.Constants.Storage;
 using FinalCase.Schema.Reports;
@@ -22,9 +22,10 @@ public class GetMonthlyExpenseReportForEmployeeQueryHandler(IConfiguration confi
     private async Task<IEnumerable<EmployeeExpenseReport>> GetMonthlyExpenses(int id, CancellationToken cancellationToken)
     {
         var parameters = new DynamicParameters();
-        parameters.Add("@UserId", id, DbType.Int32);
-        parameters.Add("@StartDate", new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1), DbType.DateTime);
-        parameters.Add("@EndDate", DateTime.Now, DbType.DateTime);
+        parameters.Add("@UserId", id, DbType.Int32); // Employee(User) Id
+        parameters.Add("@StartDate", new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).Date, DbType.DateTime); // First day of the month 00:00:00
+        parameters.Add("@EndDate", new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1).AddMinutes(1439).AddSeconds(59),
+            DbType.DateTime); // Last day of the month 23:59:59
 
         return await DapperExecutor.ExecuteStoredProcedureAsync<EmployeeExpenseReport>(
                         StoredProcedures.GetEmployeeExpensesByDateRange,

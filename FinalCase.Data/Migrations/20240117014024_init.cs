@@ -11,8 +11,6 @@ namespace FinalCase.Data.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("SET DATEFIRST 2");
-
             migrationBuilder.CreateTable(
                 name: "ApplicationUsers",
                 columns: table => new
@@ -93,7 +91,6 @@ namespace FinalCase.Data.Migrations
                     CreatorEmployeeId = table.Column<int>(type: "int", nullable: false),
                     PaymentMethodId = table.Column<int>(type: "int", nullable: false),
                     ReviewerAdminId = table.Column<int>(type: "int", nullable: true),
-                    PaymentMethodId1 = table.Column<int>(type: "int", nullable: true),
                     InsertUserId = table.Column<int>(type: "int", nullable: false),
                     InsertDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETDATE()"),
                     UpdateUserId = table.Column<int>(type: "int", nullable: true),
@@ -126,11 +123,6 @@ namespace FinalCase.Data.Migrations
                         principalTable: "PaymentMethods",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Expenses_PaymentMethods_PaymentMethodId1",
-                        column: x => x.PaymentMethodId1,
-                        principalTable: "PaymentMethods",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -230,11 +222,6 @@ namespace FinalCase.Data.Migrations
                 column: "PaymentMethodId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Expenses_PaymentMethodId1",
-                table: "Expenses",
-                column: "PaymentMethodId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Expenses_ReviewerAdminId",
                 table: "Expenses",
                 column: "ReviewerAdminId");
@@ -260,8 +247,6 @@ namespace FinalCase.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("SET DATEFIRST 1");
-
             migrationBuilder.DropTable(
                 name: "Documents");
 

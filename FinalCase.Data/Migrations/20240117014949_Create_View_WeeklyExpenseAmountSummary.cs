@@ -5,29 +5,30 @@
 namespace FinalCase.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Create_View_MonthlyExpenseAmountSummary : Migration
+    public partial class Create_View_WeeklyExpenseAmountSummary : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.Sql(@"
-                CREATE VIEW MonthlyExpenseAmountSummary AS
+                CREATE VIEW WeeklyExpenseAmountSummary AS
                 SELECT
-                    FORMAT(CAST(GETDATE() - DAY(GETDATE()) + 1 AS DATETIME),'yyyy-MM-dd 00:00:00') AS StartDateTime,
-                    FORMAT(EOMONTH(GETDATE()),'yyyy-MM-dd 23:59:59') AS FinalDateTime,
+                    CAST(DATEADD(DAY, 2 - DATEPART(WEEKDAY, GETDATE()), DATEDIFF(DAY, 0, GETDATE())) AS DATETIME) AS StartDateTime, 
+                    DATEADD(SECOND, -1, DATEADD(DAY, 9 - DATEPART(WEEKDAY, GETDATE()), DATEDIFF(DAY, 0, GETDATE()))) AS FinalDateTime,
                     SUM(CASE WHEN Status = 1 THEN Amount ELSE 0 END) AS PendingAmount,
                     SUM(CASE WHEN Status = 2 THEN Amount ELSE 0 END) AS ApprovedAmount,
                     SUM(CASE WHEN Status = 3 THEN Amount ELSE 0 END) AS RejectedAmount
                 FROM
                     Expenses as E
                 WHERE
-                    MONTH(E.Date) = MONTH(GETDATE()) AND YEAR(E.Date) = YEAR(GETDATE())          
+                    E.Date BETWEEN CAST(DATEADD(DAY, 2 - DATEPART(WEEKDAY, GETDATE()), DATEDIFF(DAY, 0, GETDATE())) AS DATETIME)
+                        AND DATEADD(SECOND, -1, DATEADD(DAY, 9 - DATEPART(WEEKDAY, GETDATE()), DATEDIFF(DAY, 0, GETDATE())))
             ");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.Sql("DROP VIEW IF EXISTS MonthlyExpenseAmountSummary;");
+            migrationBuilder.Sql("DROP VIEW IF EXISTS WeeklyExpenseAmountSummary;");
         }
     }
 }

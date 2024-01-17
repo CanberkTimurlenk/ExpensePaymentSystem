@@ -3,7 +3,7 @@ using FinalCase.Data.Entities;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FinalCase.Data.Configurations;
-public class PaymentMethodTypeConfiguration : BaseEntityWithIdTypeConfiguration<PaymentMethod>
+public class PaymentMethodConfiguration : BaseEntityWithIdTypeConfiguration<PaymentMethod>
 {
     public override void Configure(EntityTypeBuilder<PaymentMethod> builder)
     {

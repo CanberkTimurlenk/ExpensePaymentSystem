@@ -5,9 +5,9 @@ using System.Data;
 using FinalCase.Data.Enums;
 using FinalCase.Schema.Reports;
 using FinalCase.Base.Response;
-using FinalCase.Business.MicroOrm.Dapper;
 using FinalCase.Data.Constants.Storage;
 using FinalCase.Data.Constants.DbObjects;
+using FinalCase.BackgroundJobs.MicroOrm.Dapper;
 
 namespace FinalCase.Business.Features.Reports.Queries.Employee.GetEmployeeAllExpenseReport;
 
@@ -34,7 +34,8 @@ public class GetEmployeeAllExpenseReportByIdQueryHandler(IConfiguration configur
                 cancellationToken);
 
         foreach (var report in expenseReports)
-            report.ExpenseStatus = Enum.GetName(typeof(ExpenseStatus), report.ExpenseStatus);
+            report.ExpenseStatus = Enum.GetName(typeof(ExpenseStatus), int.Parse(report.ExpenseStatus))!;
+        // expense status is not not nullable
 
         return expenseReports;
     }
