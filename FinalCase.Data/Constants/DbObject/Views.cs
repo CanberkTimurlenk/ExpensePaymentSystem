@@ -10,4 +10,8 @@ public static class Views
     public const string DailyExpenseAmountSummary = "DailyExpenseAmountSummary";
     public const string WeeklyExpenseAmountSummary = "WeeklyExpenseAmountSummary";
     public const string MonthlyExpenseAmountSummary = "MonthlyExpenseAmountSummary";
+
+    // AdminEmails
+    public const string AdminEmails = "AdminEmails";
+    
 }

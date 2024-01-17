@@ -7,8 +7,8 @@ using FinalCase.Data.Contexts;
 using FinalCase.Data.Entities;
 using FinalCase.Data.Enums;
 using FinalCase.Schema.Email;
-using FinalCase.Schema.Entity.Requests;
 using FinalCase.Schema.Entity.Responses;
+using FinalCase.Schema.ExternalApi;
 using FinalCase.Services.NotificationService;
 using LinqKit;
 using MediatR;
@@ -71,11 +71,12 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, INotifi
             // Instead of mapping a single object with AutoMapper in each iteration,
             // I prefer to map it manually to make it more efficient.
             // Mapping profile is also exists "mapper.Map<OutgoingPaymentRequest>(p)" 
-            new Email(
-                subject: string.Format(PaymentEmailConstants.CompletedBody, p.ReceiverName, p.Amount, p.Expense.Date),
-                body: PaymentEmailConstants.CompletedSubject,
-                to: p.Employee.Email
-            ),
+            new Email()
+            {
+                Subject = string.Format(PaymentEmailConstants.CompletedBody, p.ReceiverName, p.Amount, p.Expense.Date),
+                Body = PaymentEmailConstants.CompletedSubject,
+                To = new List<string>() { p.Employee.Email }
+            },
             notificationService,
             cancellationToken);
         });

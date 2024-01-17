@@ -7,9 +7,8 @@ using FinalCase.Schema.Reports;
 using MediatR;
 using Microsoft.Extensions.Configuration;
 using System.Data;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace FinalCase.Business.Features.Reports.Queries.Admin.ExpenseReportForEmployee.GetDailyExpenseReportForEmployee;
+namespace FinalCase.Business.Features.Reports.Queries.Admin.GetExpenseReportForEmployee.GetDailyExpenseReportForEmployee;
 public class GetDailyExpenseReportForEmployeeQueryHandler(IConfiguration configuration)
     : IRequestHandler<GetDailyExpenseReportForEmployeeQuery, ApiResponse<IEnumerable<EmployeeExpenseReport>>>
 {

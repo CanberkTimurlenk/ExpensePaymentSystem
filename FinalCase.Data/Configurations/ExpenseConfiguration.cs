@@ -25,7 +25,6 @@ public class ExpenseConfiguration : BaseEntityTypeConfiguration<Expense>
 
         builder.HasOne(x => x.Category).WithMany(x => x.Expenses).HasForeignKey(x => x.CategoryId);
         builder.HasOne(x => x.CreatorEmployee).WithMany(x => x.CreatedExpenses).HasForeignKey(x => x.CreatorEmployeeId);
-        builder.HasOne(x => x.ReviewerAdmin).WithMany(x => x.ReviewedExpenses).HasForeignKey(x => x.ReviewerAdminId);
         builder.HasOne(x => x.PaymentMethod).WithMany(x => x.Expenses).HasForeignKey(x => x.PaymentMethodId);
         builder.HasOne(x => x.Payment).WithOne(x => x.Expense).HasForeignKey<Payment>(x => x.ExpenseId);
     }

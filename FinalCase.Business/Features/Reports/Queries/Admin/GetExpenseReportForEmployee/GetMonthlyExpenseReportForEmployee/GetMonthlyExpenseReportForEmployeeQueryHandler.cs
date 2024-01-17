@@ -8,7 +8,7 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
-namespace FinalCase.Business.Features.Reports.Queries.Admin.ExpenseReportForEmployee.GetMonthlyExpenseReportForEmployee;
+namespace FinalCase.Business.Features.Reports.Queries.Admin.GetExpenseReportForEmployee.GetMonthlyExpenseReportForEmployee;
 public class GetMonthlyExpenseReportForEmployeeQueryHandler(IConfiguration configuration)
     : IRequestHandler<GetMonthlyExpenseReportForEmployeeQuery, ApiResponse<IEnumerable<EmployeeExpenseReport>>>
 {

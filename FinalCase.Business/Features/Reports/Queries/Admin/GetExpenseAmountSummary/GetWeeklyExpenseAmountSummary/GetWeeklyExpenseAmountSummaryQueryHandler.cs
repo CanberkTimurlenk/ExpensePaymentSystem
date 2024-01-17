@@ -6,7 +6,7 @@ using FinalCase.Data.Constants.Storage;
 using FinalCase.Data.Constants.DbObjects;
 using FinalCase.BackgroundJobs.MicroOrm.Dapper;
 
-namespace FinalCase.Business.Features.Reports.Queries.Admin.GetExpenseAmountSummary.GetDailyExpenseAmountSummary;
+namespace FinalCase.Business.Features.Reports.Queries.Admin.GetExpenseAmountSummary.GetWeeklyExpenseAmountSummary;
 public class GetWeeklyExpenseAmountSummaryQueryHandler(IConfiguration configuration)
     : IRequestHandler<GetWeeklyExpenseAmountSummaryQuery, ApiResponse<ExpenseAmountSummary>>
 {

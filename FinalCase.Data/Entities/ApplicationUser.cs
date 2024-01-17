@@ -13,7 +13,6 @@ public class ApplicationUser : BaseEntityWithId
     public string? Iban { get; set; }
     public string Role { get; set; }
 
-    public virtual ICollection<Expense> CreatedExpenses { get; set; }
-    public virtual ICollection<Expense> ReviewedExpenses { get; set; }
+    public virtual ICollection<Expense>? CreatedExpenses { get; set; }
     public virtual ICollection<Payment>? Payments { get; set; }
 }

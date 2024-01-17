@@ -1,11 +1,14 @@
 ﻿using FinalCase.Base.Response;
-using FinalCase.Business.Features.Reports.Queries.Admin.ExpenseReportForEmployee.GetDailyExpenseReportForEmployee;
-using FinalCase.Business.Features.Reports.Queries.Admin.ExpenseReportForEmployee.GetMonthlyExpenseReportForEmployee;
-using FinalCase.Business.Features.Reports.Queries.Admin.ExpenseReportForEmployee.GetWeeklyExpenseReportForEmployee;
 using FinalCase.Business.Features.Reports.Queries.Admin.GetExpenseAmountSummary.GetDailyExpenseAmountSummary;
-using FinalCase.Business.Features.Reports.Queries.Admin.GetPaymentReport.GetDailyPaymentReport;
-using FinalCase.Business.Features.Reports.Queries.Admin.GetPaymentReport.GetMonthlyPaymentReport;
-using FinalCase.Business.Features.Reports.Queries.Employee.GetEmployeeAllExpenseReport;
+using FinalCase.Business.Features.Reports.Queries.Admin.GetExpenseAmountSummary.GetMonthlyExpenseAmountSummary;
+using FinalCase.Business.Features.Reports.Queries.Admin.GetExpenseAmountSummary.GetWeeklyExpenseAmountSummary;
+using FinalCase.Business.Features.Reports.Queries.Admin.GetExpenseReportForEmployee.GetDailyExpenseReportForEmployee;
+using FinalCase.Business.Features.Reports.Queries.Admin.GetExpenseReportForEmployee.GetMonthlyExpenseReportForEmployee;
+using FinalCase.Business.Features.Reports.Queries.Admin.GetExpenseReportForEmployee.GetWeeklyExpenseReportForEmployee;
+using FinalCase.Business.Features.Reports.Queries.Admin.GetPaymentScheduledReport.GetDailyPaymentReport;
+using FinalCase.Business.Features.Reports.Queries.Admin.GetPaymentScheduledReport.GetMonthlyPaymentReport;
+using FinalCase.Business.Features.Reports.Queries.Admin.GetPaymentScheduledReport.GetWeeklyPaymentReport;
+using FinalCase.Business.Features.Reports.Queries.Employee.GetEmployeeAllExpenseReportById;
 using FinalCase.Schema.Reports;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -69,8 +72,7 @@ public class ReportsController(IMediator mediator) : ControllerBase
         return await mediator.Send(new GetMonthlyExpenseReportForEmployeeQuery(employeeId));
     }
 
-    #region The Methods actually have planned as scheduled for testing purposes it is also added as endpoint
-    ///
+    #region  As originally planned, following methods should be executed periodically then, sending emails to admin accounts. For testing purposes, the functionality(their results) added here too    
     [HttpGet("payments-report/daily")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<IEnumerable<PaymentScheduledReport>>> GetDailyPaymentReport()

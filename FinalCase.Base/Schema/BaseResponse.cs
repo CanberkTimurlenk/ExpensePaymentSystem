@@ -1,6 +1,6 @@
-﻿namespace FinalCase.Base.Schema
+﻿namespace FinalCase.Base.Schema;
+
+public abstract class BaseResponse
 {
-    public class BaseResponse
-    {
-    }
+
 }

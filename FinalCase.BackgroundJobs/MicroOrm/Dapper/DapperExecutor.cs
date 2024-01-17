@@ -39,11 +39,11 @@ public static class DapperExecutor
     /// <returns>An <see cref="IEnumerable{T}"/> filled with the results of the SQL query against the view.</returns>
     public async static Task<IEnumerable<T>> QueryViewAsync<T>(string view, string connectionString, CancellationToken cancellationToken = default)
     {
-        await using var connection = new SqlConnection(connectionString);
-        await connection.OpenAsync(cancellationToken);
-
         if (!IsViewNameValid(view)) // To prevent a possible SQL injection, since the parameter is a string
             throw new ArgumentException("Invalid view name");
+
+        await using var connection = new SqlConnection(connectionString);
+        await connection.OpenAsync(cancellationToken);
 
         return await connection.QueryAsync<T>($"SELECT * FROM {view}");
     }
@@ -55,15 +55,15 @@ public static class DapperExecutor
     /// <param name="view">The name of the view.</param>
     /// <param name="connectionString">The connection string.</param>    
     /// <returns>An <see cref="IEnumerable{T}"/> filled with the results of the SQL query against the view.</returns>
-    public async static Task<IEnumerable<T>> QueryView<T>(string view, string connectionString)
+    public static IEnumerable<T> QueryView<T>(string view, string connectionString)
     {
-        using var connection = new SqlConnection(connectionString);
-        connection.Open();
-
         if (!IsViewNameValid(view)) // To prevent a possible SQL injection, since the parameter is a string
             throw new ArgumentException("Invalid view name");
 
-        return await connection.QueryAsync<T>($"SELECT * FROM {view}");
+        using var connection = new SqlConnection(connectionString);
+        connection.Open();
+
+        return connection.Query<T>($"SELECT * FROM {view}");
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ public static class DapperExecutor
     /// </summary>
     /// <param name="view">The view name to be validated.</param>
     /// <returns>True if the view name is valid; otherwise, false.</returns>
-    private static bool IsViewNameValid(string view)
+    public static bool IsViewNameValid(string view)
     {
         var fields = typeof(Views).GetFields(BindingFlags.Public | BindingFlags.Static);
         // Gets all the values of the fields in the Views class

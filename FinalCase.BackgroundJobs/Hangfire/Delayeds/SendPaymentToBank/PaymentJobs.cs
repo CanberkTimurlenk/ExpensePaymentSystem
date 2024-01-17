@@ -1,11 +1,11 @@
 ﻿using FinalCase.Schema.Email;
-using FinalCase.Schema.Entity.Requests;
 using FinalCase.Services.NotificationService;
 using Hangfire;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using static FinalCase.BackgroundJobs.Hangfire.Delayeds.Constants.BankingApiConstants;
 using RestSharp;
 using System.Net;
+using FinalCase.Schema.ExternalApi;
 
 namespace FinalCase.BackgroundJobs.Hangfire.Delayeds.Payment;
 
@@ -37,22 +37,20 @@ public static class PaymentJobs
     [AutomaticRetry(Attempts = 3, OnAttemptsExceeded = AttemptsExceededAction.Fail, DelaysInSeconds = [20, 60])]
     public static async Task SendPaymentJobAsync(OutgoingPaymentRequest request, CancellationToken cancellationToken)
     {
-        var bankingApiConfig = configuration.GetSection("BankingApi");
-        var client = new RestClient(bankingApiConfig.GetValue<string>("BaseUrl"));
+        var bankingApiConfig = configuration.GetSection(BankingApiKey);
+        var client = new RestClient(bankingApiConfig.GetValue<string>(BaseUrlKey));
 
-        var checkResponse = await SendRequestAsync(client, bankingApiConfig.GetValue<string>("GetPaymentByDescription"), $"\"{request.Description}\"", cancellationToken);
+        var checkResponse = await SendRequestAsync(client, bankingApiConfig.GetValue<string>(GetPaymentByDescriptionKey), $"\"{request.Description}\"", cancellationToken);
 
         // We have guaranteed the payment is done only once
         if (checkResponse.StatusCode == HttpStatusCode.NotFound)
         {
             // If the payment description which is the unique key of the payment, base64(expenseId + employeeId), is not exists in the banking system,
             // create a new payment.
-            var payResponse = await SendRequestAsync(client, bankingApiConfig.GetValue<string>("CreatePayment"), request.ToString(), cancellationToken);
+            var payResponse = await SendRequestAsync(client, bankingApiConfig.GetValue<string>(CreatePaymentKey), request.ToString(), cancellationToken);
 
             if (payResponse.StatusCode == HttpStatusCode.RequestTimeout)
                 throw new TimeoutException(); // If timeout occurs, the job will be retried.
-
-
         }
     }
 

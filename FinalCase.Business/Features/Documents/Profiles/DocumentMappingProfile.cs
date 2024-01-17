@@ -11,7 +11,9 @@ public class DocumentMappingProfile : Profile
         CreateMap<DocumentRequest, Document>();
 
 
-        CreateMap<Document, DocumentResponse>();
+        CreateMap<Document, DocumentResponse>()
+            .ForMember(d => d.EmployeeDescription, opt => opt.MapFrom(src => src.Description));
+
     }
 
 }

@@ -1,9 +1,10 @@
 ﻿namespace FinalCase.Schema.Entity.Responses;
-public record DocumentResponse
+public class DocumentResponse
 {
-    public int Id { get; init; }
-    public string Name { get; init; }
-    public string Description { get; init; }
-    public string Url { get; init; }
-    public int ExpenseId { get; init; }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public string Url { get; set; }
+    public int ExpenseId { get; set; }
+    public string EmployeeDescription { get; set; }
 }

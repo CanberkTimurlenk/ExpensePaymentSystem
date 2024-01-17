@@ -1,7 +1,9 @@
-﻿namespace FinalCase.Schema.Entity.Responses;
+﻿using FinalCase.Base.Schema;
 
-public record ExpenseCategoryResponse
+namespace FinalCase.Schema.Entity.Responses;
+
+public class ExpenseCategoryResponse : BaseResponse
 {
-    public string Name { get; init; }
-    public string Description { get; init; }
+    public string Name { get; set; }
+    public string Description { get; set; }
 }

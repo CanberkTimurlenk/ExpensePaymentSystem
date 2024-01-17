@@ -26,6 +26,8 @@
     <Folder Include="Features\ApplicationUsers\Employees\Commands\" />
     <Folder Include="Features\ApplicationUsers\Employees\Queries\GetExpenseHistory\" />
     <Folder Include="Features\ApplicationUsers\Profiles\" />
+    <Folder Include="Features\Documents\Commands\" />
+    <Folder Include="Features\ExpenseCategories\Commands\" />
   </ItemGroup>
 
   <ItemGroup>

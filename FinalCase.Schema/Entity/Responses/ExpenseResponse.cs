@@ -1,18 +1,25 @@
-﻿namespace FinalCase.Schema.Entity.Responses;
+﻿using FinalCase.Base.Schema;
 
-public record ExpenseResponse
+namespace FinalCase.Schema.Entity.Responses;
+
+public class ExpenseResponse : BaseResponse
 {
-    public int Id { get; init; }
-    public string EmployeeDescription { get; init; }
-    public string AdminDescription { get; init; }
-    public decimal Amount { get; init; }
-    public DateTime Date { get; init; }
-    public string Location { get; init; }
-    public int CategoryId { get; init; }
+    public int Id { get; set; }
+    public string EmployeeDescription { get; set; }
+    public string AdminDescription { get; set; }
+    public decimal Amount { get; set; }
+    public DateTime Date { get; set; }
+    public string Location { get; set; }
+    public int CategoryId { get; set; }
     public string CategoryName { get; set; }
     public string CategoryDescription { get; set; }
-    public string ExpenseStatus { get; init; } // enum will be converted to string
-    public int CreatorEmployeeId { get; init; } // just includes the creator employee id
+    public string ExpenseStatus { get; set; } // enum will be converted to string
+    public int CreatorEmployeeId { get; set; } // just includes the creator employee id
     // for more information about the creator employee, we need to send another request with the id    
-    public ICollection<DocumentResponse> Documents { get; init; }
+    public int MethodId { get; set; }
+    public string MethodName { get; set; }
+    public string MethodDescription { get; set; }
+    public ICollection<DocumentResponse> Documents { get; set; }
+
+
 }

@@ -1,3 +1,4 @@
+
 using FinalCase.Api.Extensions;
 using FinalCase.BackgroundJobs.QueueOperations;
 using FinalCase.BackgroundJobs.QueueService;
@@ -46,7 +47,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.UseHangfireDashboard();
 
-Jobs.EnableReportingJobs();
+app.EnableReportingJobs();
 
 app.MapControllers();
 

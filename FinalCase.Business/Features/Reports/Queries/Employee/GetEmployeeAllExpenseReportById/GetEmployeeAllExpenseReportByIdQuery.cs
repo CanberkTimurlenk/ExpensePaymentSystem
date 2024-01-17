@@ -2,5 +2,5 @@
 using FinalCase.Schema.Reports;
 using MediatR;
 
-namespace FinalCase.Business.Features.Reports.Queries.Employee.GetEmployeeAllExpenseReport;
+namespace FinalCase.Business.Features.Reports.Queries.Employee.GetEmployeeAllExpenseReportById;
 public record GetEmployeeAllExpenseReportByIdQuery(int Id) : IRequest<ApiResponse<IEnumerable<EmployeeExpenseReport>>>;

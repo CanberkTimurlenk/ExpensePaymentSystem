@@ -57,7 +57,7 @@ namespace FinalCase.Data.Migrations
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(true);
 
                     b.Property<DateTime>("LastActivityDate")
                         .HasColumnType("datetime2");
@@ -93,6 +93,40 @@ namespace FinalCase.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("ApplicationUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DateOfBirth = new DateTime(1990, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "b.doe@example.com",
+                            Firstname = "John",
+                            Iban = "sampleIban",
+                            InsertDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8283),
+                            InsertUserId = 1,
+                            IsActive = true,
+                            LastActivityDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8270),
+                            Lastname = "Doe",
+                            Password = "samplePassword",
+                            Role = "employee",
+                            Username = "sampleUsername"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DateOfBirth = new DateTime(1980, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "c.doe@example.com",
+                            Firstname = "ffffffffff",
+                            Iban = "sampleIban",
+                            InsertDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8466),
+                            InsertUserId = 2,
+                            IsActive = true,
+                            LastActivityDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8465),
+                            Lastname = "eeeeeeeeeeeeee",
+                            Password = "samplePassword",
+                            Role = "employee",
+                            Username = "abbb"
+                        });
                 });
 
             modelBuilder.Entity("FinalCase.Data.Entities.Document", b =>
@@ -145,6 +179,41 @@ namespace FinalCase.Data.Migrations
                     b.HasIndex("ExpenseId");
 
                     b.ToTable("Documents");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Description",
+                            ExpenseId = 1,
+                            InsertDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8572),
+                            InsertUserId = 1,
+                            IsActive = false,
+                            Name = "Name",
+                            Url = "Url"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Description",
+                            ExpenseId = 1,
+                            InsertDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8590),
+                            InsertUserId = 2,
+                            IsActive = false,
+                            Name = "Name",
+                            Url = "Url"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Description",
+                            ExpenseId = 1,
+                            InsertDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8606),
+                            InsertUserId = 1,
+                            IsActive = false,
+                            Name = "a",
+                            Url = "Url"
+                        });
                 });
 
             modelBuilder.Entity("FinalCase.Data.Entities.Expense", b =>
@@ -221,6 +290,56 @@ namespace FinalCase.Data.Migrations
                     b.HasIndex("ReviewerAdminId");
 
                     b.ToTable("Expenses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AdminDescription = "Admin Description",
+                            Amount = 100m,
+                            CategoryId = 1,
+                            CreatorEmployeeId = 1,
+                            Date = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8498),
+                            EmployeeDescription = "Employee Description",
+                            InsertDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8503),
+                            InsertUserId = 1,
+                            IsActive = false,
+                            Location = "Location",
+                            PaymentMethodId = 1,
+                            Status = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AdminDescription = "Admin Description",
+                            Amount = 100m,
+                            CategoryId = 1,
+                            CreatorEmployeeId = 2,
+                            Date = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8527),
+                            EmployeeDescription = "Employee Description",
+                            InsertDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8528),
+                            InsertUserId = 2,
+                            IsActive = false,
+                            Location = "Location",
+                            PaymentMethodId = 1,
+                            Status = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AdminDescription = "Admin Description",
+                            Amount = 100m,
+                            CategoryId = 1,
+                            CreatorEmployeeId = 1,
+                            Date = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8547),
+                            EmployeeDescription = "Employee Description",
+                            InsertDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8549),
+                            InsertUserId = 1,
+                            IsActive = false,
+                            Location = "Location",
+                            PaymentMethodId = 1,
+                            Status = 1
+                        });
                 });
 
             modelBuilder.Entity("FinalCase.Data.Entities.ExpenseCategory", b =>
@@ -266,6 +385,35 @@ namespace FinalCase.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("ExpenseCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Description",
+                            InsertDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8630),
+                            InsertUserId = 1,
+                            IsActive = false,
+                            Name = "b"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Description",
+                            InsertDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8649),
+                            InsertUserId = 2,
+                            IsActive = false,
+                            Name = "c"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Description",
+                            InsertDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8664),
+                            InsertUserId = 1,
+                            IsActive = false,
+                            Name = "d"
+                        });
                 });
 
             modelBuilder.Entity("FinalCase.Data.Entities.Payment", b =>
@@ -309,6 +457,44 @@ namespace FinalCase.Data.Migrations
                     b.HasIndex("PaymentMethodId");
 
                     b.ToTable("Payments");
+
+                    b.HasData(
+                        new
+                        {
+                            EmployeeId = 1,
+                            ExpenseId = 1,
+                            Amount = 100m,
+                            Date = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8789),
+                            Description = "Description",
+                            PaymentMethodId = 1,
+                            PaymentMethodName = "PaymentMethodName",
+                            ReceiverIban = "ReceiverIban",
+                            ReceiverName = "ReceiverName"
+                        },
+                        new
+                        {
+                            EmployeeId = 1,
+                            ExpenseId = 2,
+                            Amount = 200m,
+                            Date = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8812),
+                            Description = "Description",
+                            PaymentMethodId = 1,
+                            PaymentMethodName = "PaymentMethodName",
+                            ReceiverIban = "ReceiverIban",
+                            ReceiverName = "ReceiverName"
+                        },
+                        new
+                        {
+                            EmployeeId = 1,
+                            ExpenseId = 3,
+                            Amount = 300m,
+                            Date = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8833),
+                            Description = "Description",
+                            PaymentMethodId = 1,
+                            PaymentMethodName = "PaymentMethodName",
+                            ReceiverIban = "ReceiverIban",
+                            ReceiverName = "ReceiverName"
+                        });
                 });
 
             modelBuilder.Entity("FinalCase.Data.Entities.PaymentMethod", b =>
@@ -354,6 +540,35 @@ namespace FinalCase.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("PaymentMethods");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Description",
+                            InsertDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8687),
+                            InsertUserId = 1,
+                            IsActive = false,
+                            Name = "b"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Description",
+                            InsertDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8707),
+                            InsertUserId = 2,
+                            IsActive = false,
+                            Name = "a"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Description",
+                            InsertDate = new DateTime(2024, 1, 17, 20, 33, 33, 537, DateTimeKind.Local).AddTicks(8724),
+                            InsertUserId = 1,
+                            IsActive = false,
+                            Name = "x   "
+                        });
                 });
 
             modelBuilder.Entity("FinalCase.Data.Entities.Document", b =>
@@ -388,7 +603,7 @@ namespace FinalCase.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("FinalCase.Data.Entities.ApplicationUser", "ReviewerAdmin")
-                        .WithMany("ReviewedExpenses")
+                        .WithMany()
                         .HasForeignKey("ReviewerAdminId");
 
                     b.Navigation("Category");
@@ -432,8 +647,6 @@ namespace FinalCase.Data.Migrations
                     b.Navigation("CreatedExpenses");
 
                     b.Navigation("Payments");
-
-                    b.Navigation("ReviewedExpenses");
                 });
 
             modelBuilder.Entity("FinalCase.Data.Entities.Expense", b =>

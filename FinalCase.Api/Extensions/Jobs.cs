@@ -1,16 +1,23 @@
-﻿using static FinalCase.BackgroundJobs.Hangfire.Recurrings.CreateReport.PeriodicalPaymentReportJob;
-using Hangfire;
+﻿using static FinalCase.BackgroundJobs.Hangfire.Recurrings.CreateReport.ScheduledPaymentReportJob;
+using FinalCase.Services.NotificationService;
+using FinalCase.BackgroundJobs.MicroOrm.Dapper;
+using FinalCase.Data.Constants.DbObjects;
 
 namespace FinalCase.Api.Extensions;
 
-public static class Jobs
+public static class ApplicationBuilderExtensions
 {
-    public static void EnableReportingJobs()
+    public static void EnableReportingJobs(this IApplicationBuilder app)
     {
-        RecurringJob.AddOrUpdate("DailyPaymentReport", () => EnableDailyPaymentReports(), "0 16 * * *"); // everyday 4pm
+        var notificationService = app.ApplicationServices.GetRequiredService<INotificationService>();
 
-        RecurringJob.AddOrUpdate("WeeklyPaymentReport", () => EnableWeeklyPaymentReports(), "0 14 * * 5"); // every friday 2pm
+        EnableDailyPaymentReports(notificationService);
 
-        RecurringJob.AddOrUpdate("MonthlyPaymentReport", () => EnableMonthlyPaymentReports(), "0 14 L * *"); // every last day of the month 2pm
+        EnableWeeklyPaymentReports(notificationService);
+
+        EnableMonthlyPaymentReports(notificationService);
+
+        DapperExecutor.QueryView<string>(Views.DailyPaymentReport, "Server=127.0.0.1,1430;Database=FinalCaseDb;User ID=SA;Password=Ab12345678;TrustServerCertificate=True");
+
     }
 }

@@ -9,4 +9,6 @@ public static class DbKeys
     /// Key for the SQL Server connection string in appsettings.json.
     /// </summary>
     public const string SqlServer = "MsSqlConnection";
+    public const string HangfireSql  = "HangfireSqlConnection";
+
 }

@@ -14,7 +14,10 @@ public class ExpenseMappingProfile : Profile
         CreateMap<Expense, ExpenseResponse>()
             .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
             .ForMember(dest => dest.CategoryDescription, opt => opt.MapFrom(src => src.Category.Description))
-            .ForMember(dest => dest.ExpenseStatus, opt => opt.MapFrom(src => src.Status.ToString()));
+            .ForMember(dest => dest.ExpenseStatus, opt => opt.MapFrom(src => src.Status.ToString()))
+            .ForMember(dest => dest.MethodId, opt => opt.MapFrom(src => src.PaymentMethod.Id))
+            .ForMember(dest => dest.MethodName, opt => opt.MapFrom(src => src.PaymentMethod.Name))
+            .ForMember(dest => dest.MethodDescription, opt => opt.MapFrom(src => src.PaymentMethod.Description));
 
         CreateMap<Expense, Payment>()
            .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))

@@ -7,7 +7,6 @@ using MediatR;
 using Microsoft.Extensions.Configuration;
 
 namespace FinalCase.Business.Features.Reports.Queries.Admin.GetExpenseAmountSummary.GetDailyExpenseAmountSummary;
-
 public class GetDailyExpenseAmountSummaryQueryHandler(IConfiguration configuration)
     : IRequestHandler<GetDailyExpenseAmountSummaryQuery, ApiResponse<ExpenseAmountSummary>>
 {

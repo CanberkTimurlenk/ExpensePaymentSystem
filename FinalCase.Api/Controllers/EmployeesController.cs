@@ -8,6 +8,11 @@ using FinalCase.Business.Features.Expenses.Queries.GetExpenseByParameter;
 
 namespace FinalCase.Api.Controllers
 {
+    /// <summary>
+    /// Since there is only one class to represent the employee entity,
+    /// we will use the EmployeesController for employee role
+    /// </summary>
+    /// <param name="mediator"></param>
     [Route("api/[controller]")]
     [ApiController]
     public class EmployeesController(IMediator mediator) : ControllerBase
@@ -19,10 +24,10 @@ namespace FinalCase.Api.Controllers
         [AuthorizeIdMatch] // check the summary for more information
         //The employee id could have been directly retrieved from the token in this case, 
         //but by adding the id to the route, we are making the semantic structure of the URI more meaningful.
-        public async Task<IActionResult> Get([FromRoute(Name = EmployeeId)] int employeeId, int? categoryId, int? minBalance, int? maxBalance,
+        public async Task<IActionResult> Get([FromRoute(Name = EmployeeId)] int employeeId, int? paymentMethodId, int? categoryId, int? minBalance, int? maxBalance,
         DateTime? initialDate, DateTime? finalDate, string? location)
         {
-            var operation = new GetExpensesByParameterQuery(employeeId, categoryId, minBalance, maxBalance, initialDate, finalDate, location);
+            var operation = new GetExpensesByParameterQuery(employeeId, paymentMethodId, categoryId, minBalance, maxBalance, initialDate, finalDate, location);
             var response = await mediator.Send(operation);
             return Ok(response);
         }

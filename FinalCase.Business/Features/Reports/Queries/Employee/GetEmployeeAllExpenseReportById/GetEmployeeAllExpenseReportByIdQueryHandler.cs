@@ -9,7 +9,7 @@ using FinalCase.Data.Constants.Storage;
 using FinalCase.Data.Constants.DbObjects;
 using FinalCase.BackgroundJobs.MicroOrm.Dapper;
 
-namespace FinalCase.Business.Features.Reports.Queries.Employee.GetEmployeeAllExpenseReport;
+namespace FinalCase.Business.Features.Reports.Queries.Employee.GetEmployeeAllExpenseReportById;
 
 public class GetEmployeeAllExpenseReportByIdQueryHandler(IConfiguration configuration) : IRequestHandler<GetEmployeeAllExpenseReportByIdQuery, ApiResponse<IEnumerable<EmployeeExpenseReport>>>
 {
