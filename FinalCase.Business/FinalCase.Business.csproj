@@ -8,9 +8,17 @@
 
   <ItemGroup>
     <Compile Remove="Features\Accounts\**" />
+    <Compile Remove="Features\ApplicationUsers\Admins\**" />
+    <Compile Remove="Features\ApplicationUsers\Queries\GetExpenseHistory\**" />
     <EmbeddedResource Remove="Features\Accounts\**" />
+    <EmbeddedResource Remove="Features\ApplicationUsers\Admins\**" />
+    <EmbeddedResource Remove="Features\ApplicationUsers\Queries\GetExpenseHistory\**" />
     <EntityDeploy Remove="Features\Accounts\**" />
+    <EntityDeploy Remove="Features\ApplicationUsers\Admins\**" />
+    <EntityDeploy Remove="Features\ApplicationUsers\Queries\GetExpenseHistory\**" />
     <None Remove="Features\Accounts\**" />
+    <None Remove="Features\ApplicationUsers\Admins\**" />
+    <None Remove="Features\ApplicationUsers\Queries\GetExpenseHistory\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,17 +30,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\ApplicationUsers\Admins\" />
-    <Folder Include="Features\ApplicationUsers\Employees\Commands\" />
-    <Folder Include="Features\ApplicationUsers\Employees\Queries\GetExpenseHistory\" />
-    <Folder Include="Features\ApplicationUsers\Profiles\" />
-    <Folder Include="Features\Documents\Commands\" />
-    <Folder Include="Features\ExpenseCategories\Commands\" />
+    <ProjectReference Include="..\FinalCase.BackgroundJobs\FinalCase.BackgroundJobs.csproj" />
+    <ProjectReference Include="..\FinalCase.Schema\FinalCase.Schema.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FinalCase.BackgroundJobs\FinalCase.BackgroundJobs.csproj" />
-    <ProjectReference Include="..\FinalCase.Schema\FinalCase.Schema.csproj" />
+    <Folder Include="Features\Payments\Commands\Delete\" />
+    <Folder Include="Features\Payments\Commands\Update\" />
   </ItemGroup>
 
 </Project>

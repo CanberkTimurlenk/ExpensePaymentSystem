@@ -10,6 +10,7 @@ public class ExpenseRequest
     public decimal Amount { get; set; }
     public DateTime Date { get; set; }
     public string Location { get; set; }
+    public int PaymentMethodId { get; set; }
     public int CategoryId { get; set; } // one to one relationship established
 
     [JsonIgnore] // will be filled from jwt, jwt den gelecek bu değer !!!

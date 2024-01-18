@@ -2,12 +2,12 @@
 
 namespace FinalCase.Schema.Entity.Requests;
 
-public record DocumentRequest
+public class DocumentRequest
 {
     [JsonIgnore]
-    public int Id { get; init; }
-    public string Name { get; init; }
-    public string Description { get; init; }
-    public string Url { get; init; }
-    public int ExpenseId { get; init; }
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
+    public string Url { get; set; }
+    public int ExpenseId { get; set; }
 }

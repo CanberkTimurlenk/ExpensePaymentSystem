@@ -14,7 +14,7 @@ public class UpdatePaymentMethodCommandHandler(FinalCaseDbContext dbContext, IMa
 
     public async Task<ApiResponse<PaymentMethodResponse>> Handle(CreatePaymentMethodCommand request, CancellationToken cancellationToken)
     {
-        var paymentMethod = mapper.Map<PaymentMethod>(request);
+        var paymentMethod = mapper.Map<PaymentMethod>(request.Model);
 
         await dbContext.PaymentMethods.AddAsync(paymentMethod, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
