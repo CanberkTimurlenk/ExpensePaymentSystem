@@ -7,7 +7,7 @@ namespace FinalCase.Schema.Entity.Responses;
 /// This class was created as a requirement of the case,
 /// Although a controller class is not planned, it is added to complete the requirements.
 /// </summary>
-public class PaymentResponse : BaseResponse
+public class PaymentRequest : BaseResponse
 {
     public decimal Amount { get; set; }
     public string PaymentDescription { get; set; } // will be the payment desc to send banking system (Base64("EmployeeId,ExpenseId"))
@@ -16,7 +16,5 @@ public class PaymentResponse : BaseResponse
     public DateTime Date { get; set; }
     public int EmployeeId { get; set; }
     public int ExpenseId { get; set; }
-    public string EmployeeExpenseDescription { get; set; }
     public int PaymentMethodId { get; set; }
-    public string PaymentMethodName { get; set; }
 }

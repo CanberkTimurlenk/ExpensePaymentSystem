@@ -44,28 +44,28 @@ public class ReportsController(IMediator mediator) : ControllerBase
     }
 
 
-    [HttpGet("expense-report/{" + EmployeeId + ":int}")]
+    [HttpGet("expenses/{" + EmployeeId + ":int}")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<IEnumerable<EmployeeExpenseReport>>> GetMonthlyExpenseAmountSummary([FromRoute(Name = EmployeeId)] int employeeId)
     {
         return await mediator.Send(new GetEmployeeAllExpenseReportByIdQuery(employeeId));
     }
 
-    [HttpGet("expense-report/{" + EmployeeId + ":int}/daily")]
+    [HttpGet("expenses/{" + EmployeeId + ":int}/daily")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<IEnumerable<EmployeeExpenseReport>>> GetDailyExpenseReportForEmployee([FromRoute(Name = EmployeeId)] int employeeId)
     {
         return await mediator.Send(new GetDailyExpenseReportForEmployeeQuery(employeeId));
     }
 
-    [HttpGet("expense-report/{" + EmployeeId + ":int}/weekly")]
+    [HttpGet("expenses/{" + EmployeeId + ":int}/weekly")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<IEnumerable<EmployeeExpenseReport>>> GetWeeklyExpenseReportForEmployee([FromRoute(Name = EmployeeId)] int employeeId)
     {
         return await mediator.Send(new GetWeeklyExpenseReportForEmployeeQuery(employeeId));
     }
 
-    [HttpGet("expense-report/{" + EmployeeId + ":int}/monthly")]
+    [HttpGet("expenses/{" + EmployeeId + ":int}/monthly")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<IEnumerable<EmployeeExpenseReport>>> GetMonthlyExpenseReportForEmployee([FromRoute(Name = EmployeeId)] int employeeId)
     {
@@ -73,21 +73,21 @@ public class ReportsController(IMediator mediator) : ControllerBase
     }
 
     #region  As originally planned, following methods should be executed periodically then, sending emails to admin accounts. For testing purposes, the functionality(their results) added here too    
-    [HttpGet("payments-report/daily")]
+    [HttpGet("payments/daily")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<IEnumerable<PaymentScheduledReport>>> GetDailyPaymentReport()
     {
         return await mediator.Send(new GetDailyPaymentReportQuery());
     }
 
-    [HttpGet("payments-report/weekly")]
+    [HttpGet("payments/weekly")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<IEnumerable<PaymentScheduledReport>>> GetWeeklyPaymentReport()
     {
         return await mediator.Send(new GetWeeklyPaymentReportQuery());
     }
 
-    [HttpGet("payments-report/monthly")]
+    [HttpGet("payments/monthly")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<IEnumerable<PaymentScheduledReport>>> GetMonthlyPaymentReport()
     {

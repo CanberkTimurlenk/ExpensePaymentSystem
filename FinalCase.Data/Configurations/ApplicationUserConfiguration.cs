@@ -21,7 +21,7 @@ public class ApplicationUserConfiguration : BaseEntityTypeConfiguration<Applicat
 
         builder.HasIndex(x => x.Email).IsUnique();
 
-        builder.Property(x => x.IsActive).IsRequired();
+        builder.Property(x => x.IsActive).IsRequired().HasDefaultValue(true);
         builder.HasQueryFilter(x => x.IsActive); // Soft delete default filter, to be applied to all queries
         // To ignore the filter, IgnoreQueryFilters() method must be used in the query                
     }

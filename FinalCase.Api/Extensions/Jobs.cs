@@ -16,8 +16,5 @@ public static class ApplicationBuilderExtensions
         EnableWeeklyPaymentReports(notificationService);
 
         EnableMonthlyPaymentReports(notificationService);
-
-        DapperExecutor.QueryView<string>(Views.DailyPaymentReport, "Server=127.0.0.1,1430;Database=FinalCaseDb;User ID=SA;Password=Ab12345678;TrustServerCertificate=True");
-
     }
 }

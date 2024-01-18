@@ -22,7 +22,7 @@ public class CreateAdminCommandHandler(FinalCaseDbContext dbContext, IMapper map
         // more logic for creating an admin could be added here
 
         var user = mapper.Map<ApplicationUser>(request.Model);
-        request.Model.Password = Md5Extension.Create(request.Model.Password);
+        user.Password = Md5Extension.GetHash(request.Model.Password);
         user.Role = Roles.Admin;
 
         await dbContext.ApplicationUsers.AddAsync(user, cancellationToken);

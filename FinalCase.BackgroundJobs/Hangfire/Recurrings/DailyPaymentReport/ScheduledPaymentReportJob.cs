@@ -38,6 +38,12 @@ public static class ScheduledPaymentReportJob
            () => CreatePaymentReports(Views.MonthlyPaymentReport, MonthlyReportSubject, notificationService), "0 14 L * *"); // every last day of the month 2pm
     }
 
+    /// <summary>
+    /// Creates payment reports based on the specified view, 
+    /// </summary>
+    /// <param name="viewName">Name of the database view for generating the report.</param>
+    /// <param name="mailSubject">Subject of the email.</param>
+    /// <param name="notificationService">Notification service for sending emails.</param>
     public static void CreatePaymentReports(string viewName, string mailSubject, INotificationService notificationService)
     {
         if (!IsViewNameValid(viewName))

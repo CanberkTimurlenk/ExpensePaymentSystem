@@ -27,13 +27,12 @@ public static class TokenHelper
 
     private static Claim[] GetClaims(ApplicationUser user)
     {
-        var claims = new[]
-        {
+        return
+        [
             new Claim(JwtPayloadFields.Id, user.Id.ToString()),
             new Claim(JwtPayloadFields.Email, user.Email),
             new Claim(JwtPayloadFields.Username, user.Username),
             new Claim(ClaimTypes.Role, user.Role)
-        };
-        return claims;
+        ];
     }
 }

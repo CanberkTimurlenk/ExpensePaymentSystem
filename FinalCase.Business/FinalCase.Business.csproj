@@ -34,9 +34,4 @@
     <ProjectReference Include="..\FinalCase.Schema\FinalCase.Schema.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Payments\Commands\Delete\" />
-    <Folder Include="Features\Payments\Commands\Update\" />
-  </ItemGroup>
-
 </Project>

@@ -14,5 +14,5 @@ public class ApplicationUserRequest : BaseRequest
     public string Password { get; set; }
     public DateTime DateOfBirth { get; set; }
     [JsonIgnore]
-    public string Role { get; set; }
+    public string? Role { get; set; }
 }

@@ -3,6 +3,7 @@ using FinalCase.Base.Response;
 using FinalCase.Business.Features.Documents.Constants;
 using FinalCase.Data.Contexts;
 using FinalCase.Data.Entities;
+using FinalCase.Schema.Entity.Responses;
 using MediatR;
 
 namespace FinalCase.Business.Features.Documents.Commands.UpdateDocument;
@@ -19,6 +20,9 @@ public class UpdateDocumentCommandHandler(FinalCaseDbContext dbContext, IMapper 
 
         if (document is null)
             return new ApiResponse(DocumentMessages.DocumentNotFound);
+
+        if (!dbContext.Expenses.Any(x => x.Id == request.Model.ExpenseId))
+            return new ApiResponse(string.Format(DocumentMessages.ExpenseNotFound, request.Model.ExpenseId));
 
         request.Model.Id = document.Id;
         mapper.Map(request.Model, document);

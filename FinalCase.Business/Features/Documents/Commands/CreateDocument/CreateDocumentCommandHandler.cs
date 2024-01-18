@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FinalCase.Base.Response;
+using FinalCase.Business.Features.Documents.Constants;
 using FinalCase.Data.Contexts;
 using FinalCase.Data.Entities;
 using FinalCase.Schema.Entity.Responses;
@@ -13,6 +14,9 @@ public class CreateDocumentCommandHandler(FinalCaseDbContext dbContext, IMapper 
     private readonly IMapper mapper = mapper;
     public async Task<ApiResponse<DocumentResponse>> Handle(CreateDocumentCommand request, CancellationToken cancellationToken)
     {
+        if (!dbContext.Expenses.Any(x => x.Id == request.Model.ExpenseId))
+            return new ApiResponse<DocumentResponse>(string.Format(DocumentMessages.ExpenseNotFound, request.Model.ExpenseId));
+
         var document = mapper.Map<Document>(request.Model);
 
         await dbContext.Documents.AddAsync(document, cancellationToken);

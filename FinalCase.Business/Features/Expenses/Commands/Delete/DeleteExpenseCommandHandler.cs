@@ -2,6 +2,7 @@
 using FinalCase.Business.Features.Expenses.Constants;
 using FinalCase.Data.Contexts;
 using FinalCase.Data.Entities;
+using FinalCase.Data.Enums;
 using MediatR;
 
 namespace FinalCase.Business.Features.Expenses.Commands.Delete;
@@ -17,6 +18,9 @@ public class DeleteExpenseCommandHandler(FinalCaseDbContext dbContext)
 
         if (expense == null)
             return new ApiResponse(ExpenseMessages.ExpenseNotFound);
+
+        if (expense.Status != ExpenseStatus.Pending)
+            return new ApiResponse(ExpenseMessages.OnlyPendingUpdateError);
 
         expense.IsActive = false;
         await dbContext.SaveChangesAsync(cancellationToken);

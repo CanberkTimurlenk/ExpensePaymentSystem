@@ -19,12 +19,6 @@ public class GetWeeklyExpenseReportForEmployeeQueryHandler(IConfiguration config
         return new ApiResponse<IEnumerable<EmployeeExpenseReport>>(await GetWeeklyExpenses(request.Id, cancellationToken));
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="id"></param>
-    /// <param name="cancellationToken">cancellationToken</param>
-    /// <returns></returns>
     private async Task<IEnumerable<EmployeeExpenseReport>> GetWeeklyExpenses(int id, CancellationToken cancellationToken)
     {
         var parameters = new DynamicParameters();

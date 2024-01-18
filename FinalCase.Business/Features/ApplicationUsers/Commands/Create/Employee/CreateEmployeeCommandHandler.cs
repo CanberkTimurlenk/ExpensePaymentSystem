@@ -21,7 +21,7 @@ public class CreateEmployeeCommandHandler(FinalCaseDbContext dbContext, IMapper 
         // more logic for creating an employee could be added here
 
         var user = mapper.Map<ApplicationUser>(request.Model);
-        request.Model.Password = Md5Extension.Create(request.Model.Password);
+        user.Password = Md5Extension.GetHash(request.Model.Password);
         user.Role = Roles.Employee;
 
         await dbContext.ApplicationUsers.AddAsync(user, cancellationToken);

@@ -25,6 +25,5 @@ public class UpdateExpenseCategoryCommandHandler(FinalCaseDbContext dbContext, I
 
         await dbContext.SaveChangesAsync(cancellationToken);
         return new ApiResponse();
-
     }
 }

@@ -1,9 +1,12 @@
-﻿using FinalCase.Api.Filters;
+﻿using Azure;
 using FinalCase.Base.Response;
 using FinalCase.Business.Features.Authentication.Constants.Jwt;
 using FinalCase.Business.Features.Authentication.Constants.Roles;
+using FinalCase.Business.Features.Expenses.Commands.Approve;
 using FinalCase.Business.Features.Expenses.Commands.Create;
-using FinalCase.Business.Features.Expenses.Commands.CreateExpense;
+using FinalCase.Business.Features.Expenses.Commands.Delete;
+using FinalCase.Business.Features.Expenses.Commands.Reject;
+using FinalCase.Business.Features.Expenses.Commands.Update;
 using FinalCase.Business.Features.Expenses.Queries.GetAllExpenses;
 using FinalCase.Business.Features.Expenses.Queries.GetExpenseByParameter;
 using FinalCase.Schema.Entity.Requests;
@@ -21,7 +24,6 @@ public class ExpensesController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator mediator = mediator;
 
-
     /*[HttpGet]  
     // Commented since there is another method with the same signature and also have parameters.
     // To follow the project requirements, this method have still added but commented.
@@ -31,7 +33,6 @@ public class ExpensesController(IMediator mediator) : ControllerBase
         var operation = new GetAllExpensesQuery();
         return await mediator.Send(operation);
     }*/
-
 
     [HttpGet]
     [Authorize(Roles = Roles.Admin)]
@@ -44,7 +45,7 @@ public class ExpensesController(IMediator mediator) : ControllerBase
 
     [HttpGet("{id:int}")]
     //[Authorize(Roles = Roles.Employee)]   
-    public async Task<ApiResponse<ExpenseResponse>> GetByParameter(int id)
+    public async Task<ApiResponse<ExpenseResponse>> GetById(int id)
     {
         var operation = new GetExpenseByIdQuery(id);
         return await mediator.Send(operation);
@@ -62,35 +63,39 @@ public class ExpensesController(IMediator mediator) : ControllerBase
         return await mediator.Send(operation);
     }
 
-
-
     [HttpPost("approve")]
     [Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> ApprovePendingExpenses()
+    public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> ApprovePendingExpenses(ICollection<ApproveExpenseRequest> request)
     {
-        // var operation = new ApprovePendingExpensesCommand();
+        int adminId = int.Parse(
+            (User.Identity as ClaimsIdentity).FindFirst(JwtPayloadFields.Id)?.Value);
 
-
-
-
-
-        return null;
+        return await mediator.Send(new ApproveExpensesCommand(adminId, request));
     }
 
     [HttpPost("reject")]
     [Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> GetPendingExpenses()
+    public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> RejectPendingExpenses(ICollection<RejectExpensesRequest> request)
     {
-        //var operation = new GetPendingExpensesQuery();
-        //return await mediator.Send(operation);
+        int adminId = int.Parse(
+            (User.Identity as ClaimsIdentity).FindFirst(JwtPayloadFields.Id)?.Value);
 
-        return null;
+        return await mediator.Send(new RejectExpensesCommand(adminId, request));
     }
 
+    // Only for pending expenses
+    [HttpPut("{id:int}")]
+    [Authorize(Roles = $"{Roles.Admin},{Roles.Employee}")]
+    public async Task<ApiResponse> UpdateExpense(int id, ExpenseRequest request)
+    {
+        return await mediator.Send(new UpdateExpenseCommand(id, request));
+    }
 
-
-
-
-
-
+    // Only for pending expenses
+    [HttpDelete("{id:int}")]
+    [Authorize(Roles = $"{Roles.Admin},{Roles.Employee}")]
+    public async Task<ApiResponse> DeleteExpense(int id)
+    {
+        return await mediator.Send(new DeleteExpenseCommand(id));
+    }
 }

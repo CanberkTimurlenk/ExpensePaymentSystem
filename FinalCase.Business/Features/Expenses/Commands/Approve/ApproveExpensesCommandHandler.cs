@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using FinalCase.BackgroundJobs.Hangfire.Delayeds.Payment;
 using FinalCase.Base.Response;
-using FinalCase.Business.Features.Expenses.Commands.ApprovePendingExpenses;
-using FinalCase.Business.Features.Payments.Constants.Email;
+using FinalCase.Business.Features.Payments.Constants;
 using FinalCase.Data.Contexts;
 using FinalCase.Data.Entities;
 using FinalCase.Data.Enums;
@@ -32,16 +31,15 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, INotifi
         expenses.ForEach(e => e.Status = ExpenseStatus.Approved); // Change the status of the expenses to Approved.
 
         var payments = mapper.Map<IEnumerable<Payment>>(expenses);
-        // The job sends a request to the banking system to check the status of the payment.
-        // If the payment is completed, the payments status will be marked as completed, and the employee will be notified.
-        // If the payment is not completed, the job will send the payment request to the banking system again.
-        // If the payments is completed, the employee will be notified.                
+
 
         await dbContext.Payments.AddRangeAsync(payments, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
 
         // Payment creation to finalize approved expenses. 
         SendPayments(payments, cancellationToken);
+        // The job sends a request to the banking system to check the status of the payment.
+        // If the response is completed, the payment status in the db will be marked as completed        
 
         var response = mapper.Map<IEnumerable<ExpenseResponse>>(expenses);
         return new ApiResponse<IEnumerable<ExpenseResponse>>(response);
@@ -57,6 +55,12 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, INotifi
             .Where(e => expenseIds.Contains(e.Id)) // If the current value of the e.Id exists in the expenseIds list, select the expense.
             .ToListAsync(cancellationToken);
     }
+
+    /// <summary>
+    /// Sends payment requests and corresponding emails for a collection of payments.
+    /// </summary>
+    /// <param name="payments">The collection of payments to be processed.</param>
+    /// <param name="cancellationToken">Cancellation token to cancel the operation.</param>
     private void SendPayments(IEnumerable<Payment> payments, CancellationToken cancellationToken)
     {
         payments.ForEach(p =>

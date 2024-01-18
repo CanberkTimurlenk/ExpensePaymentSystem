@@ -2,6 +2,7 @@
 using FinalCase.Data.Entities;
 using FinalCase.Schema.AppRoles.Requests;
 using FinalCase.Schema.AppRoles.Responses;
+using FinalCase.Schema.Entity.Responses;
 
 namespace FinalCase.Business.Features.ApplicationUsers.Profiles;
 
@@ -16,6 +17,9 @@ public class ApplicationUserMappingProfile : Profile
         CreateMap<ApplicationUser, EmployeeResponse>();
 
         CreateMap<EmployeeRequest, ApplicationUser>();
+
+        CreateMap<ApplicationUser, ApplicationUserResponse>();
+
     }
 
 }

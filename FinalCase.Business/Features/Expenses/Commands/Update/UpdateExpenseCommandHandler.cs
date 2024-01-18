@@ -21,7 +21,7 @@ public class UpdateExpenseCommandHandler(FinalCaseDbContext dbContext)
 
         if (expense.Status != ExpenseStatus.Pending)
             return new ApiResponse(ExpenseMessages.OnlyPendingUpdateError);
-
+        
         expense.EmployeeDescription = request.Model.EmployeeDescription;
         expense.Amount = request.Model.Amount;
         expense.Date = request.Model.Date;

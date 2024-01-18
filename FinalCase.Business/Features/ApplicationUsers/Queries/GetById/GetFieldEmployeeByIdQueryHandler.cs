@@ -1,36 +1,31 @@
 ﻿using AutoMapper;
 using FinalCase.Base.Response;
-using FinalCase.Business.Features.ApplicationUsers.FieldEmployee.Constans;
+using FinalCase.Business.Features.ApplicationUsers.Constants;
 using FinalCase.Data.Contexts;
+using FinalCase.Data.Entities;
+using FinalCase.Schema.Entity.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinalCase.Business.Features.ApplicationUsers.Queries.GetById;
-
-/*
-public class GetFieldEmployeeByIdQueryHandler(FinalCaseDbContext dbContext, IMapper mapper)
-    : IRequestHandler<GetFieldEmployeeByIdQuery, ApiResponse<FieldEmployeeResponse>>
+public class GetUserByIdQueryHandler(FinalCaseDbContext dbContext, IMapper mapper)
+    : IRequestHandler<GetApplicationUserByIdQuery, ApiResponse<ApplicationUserResponse>>
 {
     private readonly FinalCaseDbContext dbContext = dbContext;
     private readonly IMapper mapper = mapper;
     // C# 12 Introduces primary constructor which also could used for dependency injection
 
-    public async Task<ApiResponse<FieldEmployeeResponse>> Handle(GetFieldEmployeeByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ApiResponse<ApplicationUserResponse>> Handle(GetApplicationUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var fieldEmployee = await dbContext.ApplicationUsers
+        var user = await dbContext.ApplicationUsers
+                .AsNoTracking()
+                .FirstOrDefaultAsync(fe => fe.Id.Equals(request.Id), cancellationToken);
 
-            .Include(x => x.Expenses)
-            .Include(x => x.Payments)
-            .AsNoTrackingWithIdentityResolution() // since the operation is readonly,
-                                                  // tracking was disabled to increase performance            
-            .FirstOrDefaultAsync(fe => fe.Id.Equals(request.Id), cancellationToken);
+        if (user is null)
+            return new ApiResponse<ApplicationUserResponse>(ApplicationUserMessages.UserNotFound);
 
-        if (fieldEmployee is null)
-            return new ApiResponse<FieldEmployeeResponse>(FieldEmployeeMessages.RecordNotExists);
+        var response = mapper.Map<ApplicationUserResponse>(user);
 
-        var response = mapper.Map<FieldEmployeeResponse>(fieldEmployee);
-
-        return new ApiResponse<FieldEmployeeResponse>(response);
+        return new ApiResponse<ApplicationUserResponse>(response);
     }
 }
-*/

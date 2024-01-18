@@ -9,8 +9,7 @@ namespace FinalCase.Business.Features.Documents.Commands.DeleteDocument;
 public class DeleteDocumentCommandHandler(FinalCaseDbContext dbContext, IMapper mapper)
     : IRequestHandler<DeleteDocumentCommand, ApiResponse>
 {
-    private readonly FinalCaseDbContext dbContext = dbContext;
-    private readonly IMapper mapper = mapper;
+    private readonly FinalCaseDbContext dbContext = dbContext;    
 
     public async Task<ApiResponse> Handle(DeleteDocumentCommand request, CancellationToken cancellationToken)
     {

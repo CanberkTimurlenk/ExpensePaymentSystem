@@ -12,14 +12,14 @@ namespace FinalCase.BackgroundJobs.MicroOrm.Dapper;
 public static class DapperExecutor
 {
     /// <summary>
-    /// Executes a stored procedure asynchronously
+    /// Executes a stored procedure asynchronously.
     /// </summary>
     /// <typeparam name="T">The type to be filled with the stored procedure result</typeparam>
     /// <param name="storedProcedure">The stored procedure const</param>
     /// <param name="parameters">The query parameters</param>
     /// <param name="connectionString">The connection string</param>
     /// <param name="cancellationToken">Cancellation Token</param>
-    /// <returns>An <see cref="IEnumerable{T}"/> filled with the results of the stored procedure</returns>
+    /// <returns>An <see cref="IEnumerable{T}"/> Filled with the results of the stored procedure</returns>
     public async static Task<IEnumerable<T>> ExecuteStoredProcedureAsync<T>(string storedProcedure, DynamicParameters parameters,
         string connectionString, CancellationToken cancellationToken = default)
     {
@@ -30,9 +30,9 @@ public static class DapperExecutor
     }
 
     /// <summary>
-    /// Asynchronously executes a SQL query against a view.
+    /// Executes SQL query against a view asynchronously.
     /// </summary>
-    /// <typeparam name="T">The type to be filled with the results.</typeparam>
+    /// <typeparam name="T">The type to be filled with the view results.</typeparam>
     /// <param name="view">The name of the view.</param>
     /// <param name="connectionString">The connection string.</param>
     /// <param name="cancellationToken">Cancellation Token.</param>
@@ -53,7 +53,7 @@ public static class DapperExecutor
     /// </summary>
     /// <typeparam name="T">The type to be filled with the results.</typeparam>
     /// <param name="view">The name of the view.</param>
-    /// <param name="connectionString">The connection string.</param>    
+    /// <param name="connectionString">The connection string.</param>
     /// <returns>An <see cref="IEnumerable{T}"/> filled with the results of the SQL query against the view.</returns>
     public static IEnumerable<T> QueryView<T>(string view, string connectionString)
     {

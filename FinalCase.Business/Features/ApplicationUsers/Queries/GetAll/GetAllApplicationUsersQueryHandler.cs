@@ -4,6 +4,7 @@ using FinalCase.Data.Contexts;
 using FinalCase.Schema.Entity.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using static FinalCase.Base.Helpers.Linq.ExpressionStarterExtensions;
 
 namespace FinalCase.Business.Features.ApplicationUsers.Queries.GetAll;
 
@@ -17,12 +18,17 @@ public class GetAllApplicationUsersHandler(FinalCaseDbContext dbContext, IMapper
 
     public async Task<ApiResponse<IEnumerable<ApplicationUserResponse>>> Handle(GetAllApplicationUsersQuery request, CancellationToken cancellationToken)
     {
-        var applicationUsers = await dbContext.ApplicationUsers
+
+        var applicationUsersQuery = dbContext.ApplicationUsers
             .Include(x => x.CreatedExpenses)
-            .ToListAsync(cancellationToken);
+            .AsNoTracking();
+
+        if (request.IncludeDeleted == true) // since it is nullable, we need to check if it is true
+            applicationUsersQuery = applicationUsersQuery.IgnoreQueryFilters();
+
+        var applicationUsers = await applicationUsersQuery.ToListAsync(cancellationToken);
 
         var response = mapper.Map<IEnumerable<ApplicationUserResponse>>(applicationUsers);
         return new ApiResponse<IEnumerable<ApplicationUserResponse>>(response);
-
     }
 }
