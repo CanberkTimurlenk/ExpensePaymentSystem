@@ -24,7 +24,7 @@ public class PaymentsController(IMediator mediator) : ControllerBase
     }
 
     // Composite PK
-    [HttpGet("{employee-id:int}/{expense-id:int}")]
+    [HttpGet("{employee-id:min(1)}/{expense-id:min(1)}")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<PaymentResponse>> GetPaymentById([FromRoute(Name = "employee-id")] int employeeId,
         [FromRoute(Name = "expense-id")] int expenseId)
@@ -34,13 +34,13 @@ public class PaymentsController(IMediator mediator) : ControllerBase
 
     [HttpPost]
     //[Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse<PaymentResponse>> CreatePayment([FromBody] CreatePaymentCommand command)
+    public async Task<ApiResponse<PaymentResponse>> CreatePayment([FromBody] PaymentRequest model)
     {
-        return await mediator.Send(command);
+        return await mediator.Send(new CreatePaymentCommand(model));
     }
 
     // Composite PK
-    [HttpPut("{employee-id:int}/{expense-id:int}")]
+    [HttpPut("{employee-id:min(1)}/{expense-id:min(1)}")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> UpdatePayment([FromRoute(Name = "employee-id")] int employeeId,
         [FromRoute(Name = "expense-id")] int expenseId, [FromBody] PaymentRequest request)
@@ -49,7 +49,7 @@ public class PaymentsController(IMediator mediator) : ControllerBase
     }
 
     // Composite PK
-    [HttpDelete("{employee-id:int}/{expense-id:int}")]
+    [HttpDelete("{employee-id:min(1)}/{expense-id:min(1)}")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> DeletePayment([FromRoute(Name = "employee-id")] int employeeId,
         [FromRoute(Name = "expense-id")] int expenseId)

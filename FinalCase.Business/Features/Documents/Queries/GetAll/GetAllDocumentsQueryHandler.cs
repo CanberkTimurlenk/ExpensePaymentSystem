@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using FinalCase.Base.Response;
 using FinalCase.Data.Contexts;
 using FinalCase.Schema.Entity.Responses;
@@ -16,6 +17,7 @@ public class GetAllDocumentsQueryHandler(FinalCaseDbContext dbContext, IMapper m
     {
         var document = await dbContext.Documents
                                 .Include(d => d.Expense)
+                                .ProjectTo<DocumentResponse>(mapper.ConfigurationProvider)
                                 .AsNoTrackingWithIdentityResolution() // disable tracking
                                 .ToListAsync(cancellationToken);
 

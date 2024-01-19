@@ -25,7 +25,7 @@ public class DocumentsController(IMediator mediator) : ControllerBase
         return await mediator.Send(new GetAllDocumentsQuery());
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:min(1)}")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<DocumentResponse>> GetDocumentById(int id)
     {
@@ -39,14 +39,14 @@ public class DocumentsController(IMediator mediator) : ControllerBase
         return await mediator.Send(new CreateDocumentCommand(request));
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:min(1)}")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> UpdateDocument(int id, DocumentRequest request)
     {
         return await mediator.Send(new UpdateDocumentCommand(id, request));
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:min(1)}")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> DeleteDocument(int id)
     {

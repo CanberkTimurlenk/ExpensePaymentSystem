@@ -20,13 +20,13 @@ public class ExpenseCategoriesController(IMediator mediator) : ControllerBase
     private readonly IMediator mediator = mediator;
 
     [HttpGet]
-    [Authorize(Roles = $"{Roles.Admin},{Roles.Employee}")]
+    //[Authorize(Roles = $"{Roles.Admin},{Roles.Employee}")]
     public async Task<ApiResponse<IEnumerable<ExpenseCategoryResponse>>> GetExpenseCategories()
     {
         return await mediator.Send(new GetAllExpenseCategoriesQuery());
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:min(1)}")]
     [Authorize(Roles = $"{Roles.Admin},{Roles.Employee}")]
     public async Task<ApiResponse<ExpenseCategoryResponse>> GetExpenseCategoryById(int id)
     {
@@ -40,14 +40,14 @@ public class ExpenseCategoriesController(IMediator mediator) : ControllerBase
         return await mediator.Send(new CreateExpenseCategoryCommand(request));
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:min(1)}")]
     [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> UpdateExpenseCategory(int id, ExpenseCategoryRequest request)
     {
         return await mediator.Send(new UpdateExpenseCategoryCommand(id, request));
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:min(1)}")]
     [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> DeleteExpenseCategory(int id)
     {

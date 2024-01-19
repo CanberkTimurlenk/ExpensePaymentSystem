@@ -32,26 +32,15 @@ namespace FinalCase.Api.Controllers
             return await mediator.Send(new GetAllEmployeesQuery(includeDeleted));
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:min(1)}")]
         [Authorize(Roles = Roles.Admin)]
         public async Task<ApiResponse<EmployeeResponse>> GetById(int id, bool includeDeleted = false)
         {
             return await mediator.Send(new GetEmployeeByIdQuery(id, includeDeleted));
         }
 
-        /// <summary>
-        /// Retrieves a list of expenses based on specified parameters
-        /// </summary>
-        /// <param name="employeeId">Employee Id</param>
-        /// <param name="paymentMethodId">Optional: Filter by Payment Method ID.</param>
-        /// <param name="categoryId">Optional: Filter by Expense Category ID.</param>
-        /// <param name="minAmount">Optional:Filter by Minimum amount.</param>
-        /// <param name="maxAmout">Optional:Filter by Maximum amount.</param>
-        /// <param name="initialDate">Optional: Filter by Initial date.</param>
-        /// <param name="finalDate">Optional: Filter by Final date.</param>
-        /// <param name="location">Optional: Filter by Expense location.</param>
-        /// <returns>A list of expenses based on the specified parameters.</returns>
-        [HttpGet("{id:int}/expenses")] // EmployeeId is a constant defined in ControllerConstants.cs, 
+        
+        [HttpGet("{id:min(1)}/expenses")] // EmployeeId is a constant defined in ControllerConstants.cs, 
         [Authorize(Roles = Roles.Employee)]
         [AuthorizeIdMatch]
         //is extracted from the JWT token,
@@ -70,14 +59,14 @@ namespace FinalCase.Api.Controllers
             return await mediator.Send(new CreateEmployeeCommand(request));
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{id:min(1)}")]
         [Authorize(Roles = Roles.Admin)]
         public async Task<ApiResponse> Update(int id, EmployeeRequest request)
         {
             return await mediator.Send(new UpdateEmployeeCommand(id, request));
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:min(1)}")]
         [Authorize(Roles = Roles.Admin)]
         public async Task<ApiResponse> Delete(int id)
         {

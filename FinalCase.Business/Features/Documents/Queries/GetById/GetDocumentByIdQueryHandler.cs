@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using FinalCase.Base.Response;
 using FinalCase.Data.Contexts;
 using FinalCase.Schema.Entity.Responses;
@@ -16,8 +17,9 @@ public class GetDocumentByIdQueryHandler(FinalCaseDbContext dbContext, IMapper m
     {
         var document = await dbContext.Documents
                                 .Include(d => d.Expense)
+                                .ProjectTo<DocumentResponse>(mapper.ConfigurationProvider)
                                 .AsNoTracking() // Since the operation is readonly (query)
-                                            // we can use AsNoTracking to improve performance.
+                                                // we can use AsNoTracking to improve performance.
                                 .FirstOrDefaultAsync(d => d.Id.Equals(request.Id), cancellationToken);
 
         var response = mapper.Map<DocumentResponse>(document);

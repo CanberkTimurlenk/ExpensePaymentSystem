@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using FinalCase.Base.Response;
 using FinalCase.Business.Features.Expenses.Constants;
 using FinalCase.Data.Contexts;
@@ -14,7 +15,7 @@ public class GetExpenseByIdQueryQueryHandler(FinalCaseDbContext dbContext, IMapp
     private readonly IMapper mapper = mapper;
 
     public async Task<ApiResponse<ExpenseResponse>> Handle(GetExpenseByIdQuery request, CancellationToken cancellationToken)
-    {        
+    {
         var expense = await dbContext.Expenses
                                 .Include(e => e.Category)
                                 .Include(e => e.CreatorEmployee)
@@ -22,6 +23,7 @@ public class GetExpenseByIdQueryQueryHandler(FinalCaseDbContext dbContext, IMapp
                                 .Include(e => e.ReviewerAdmin)
                                 .Include(e => e.Payment)
                                 .Include(e => e.Documents)
+                                .ProjectTo<ExpenseResponse>(mapper.ConfigurationProvider)
                                 .AsNoTracking() // Since the operation is read-only, this method can be used to improve performance
                                 .FirstOrDefaultAsync(e => e.Id.Equals(request.Id), cancellationToken);
 

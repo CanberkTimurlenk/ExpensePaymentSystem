@@ -32,7 +32,6 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, INotifi
 
         var payments = mapper.Map<IEnumerable<Payment>>(expenses);
 
-
         await dbContext.Payments.AddRangeAsync(payments, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
 
@@ -63,26 +62,26 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, INotifi
     /// <param name="cancellationToken">Cancellation token to cancel the operation.</param>
     private void SendPayments(IEnumerable<Payment> payments, CancellationToken cancellationToken)
     {
-        payments.ForEach(p =>
+        foreach (var payment in payments)
         {
-            PaymentJobs.SendPaymentRequest(new OutgoingPaymentRequest
+            var outgoingPaymentRequest = new OutgoingPaymentRequest
             {
-                Amount = p.Amount,
-                Description = p.Description,
-                ReceiverIban = p.ReceiverIban,
-                ReceiverName = p.ReceiverName,
-            },
-            // Instead of mapping a single object with AutoMapper in each iteration,
-            // I prefer to map it manually to make it more efficient.
-            // Mapping profile is also exists, "mapper.Map<OutgoingPaymentRequest>(p)" can be used instead.
-            new Email()
+                Amount = payment.Amount,
+                Description = payment.Description,
+                ReceiverIban = payment.ReceiverIban,
+                ReceiverName = payment.ReceiverName
+            };// Instead of mapping a single object with AutoMapper in each iteration,
+              // I prefer to map it manually to make it more efficient.
+              // Mapping profile is also exists, "mapper.Map<OutgoingPaymentRequest>(p)" can be used instead.
+
+            var email = new Email
             {
-                Subject = string.Format(PaymentEmailConstants.CompletedBody, p.ReceiverName, p.Amount, p.Expense.Date),
+                Subject = string.Format(PaymentEmailConstants.CompletedBody, payment.ReceiverName, payment.Amount, payment.Expense.Date),
                 Body = PaymentEmailConstants.CompletedSubject,
-                To = new List<string>() { p.Employee.Email }
-            },
-            notificationService,
-            cancellationToken);
-        });
+                To = new List<string> { payment.Employee.Email }
+            };
+
+            PaymentJobs.SendPaymentRequest(outgoingPaymentRequest, email, notificationService, cancellationToken);
+        }
     }
 }

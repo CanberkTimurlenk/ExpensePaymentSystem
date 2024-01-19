@@ -19,7 +19,7 @@ public class PaymentMappingProfile : Profile
             .ForMember(dest => dest.PaymentDescription, opt => opt.MapFrom(src => src.Description));
 
         CreateMap<PaymentRequest, Payment>()
-            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => Base64UrlEncoder.Encode($"{src.EmployeeId},{src.ExpenseId}")));
+            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"{src.EmployeeId},{src.ExpenseId}"));
 
 
 

@@ -2,6 +2,7 @@
 using FinalCase.Business.Features.ApplicationUsers.Commands.Create.Admin;
 using FinalCase.Business.Features.ApplicationUsers.Commands.Delete;
 using FinalCase.Business.Features.ApplicationUsers.Queries.GetAll;
+using FinalCase.Business.Features.ApplicationUsers.Queries.GetById;
 using FinalCase.Business.Features.Authentication.Constants.Roles;
 using FinalCase.Schema.AppRoles.Requests;
 using FinalCase.Schema.AppRoles.Responses;
@@ -25,11 +26,11 @@ namespace FinalCase.Api.Controllers
             return await mediator.Send(new GetAllAdminsQuery(includeDeleted));
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:min(1)}")]
         [Authorize(Roles = Roles.Admin)]
-        public async Task<ApiResponse<IEnumerable<AdminResponse>>> GetById(bool includeDeleted = false)
+        public async Task<ApiResponse<AdminResponse>> GetById(int id, bool includeDeleted = false)
         {
-            return await mediator.Send(new GetAllAdminsQuery(includeDeleted));
+            return await mediator.Send(new GetAdminByIdQuery(id, includeDeleted));
         }
 
         [HttpPost]
@@ -39,17 +40,20 @@ namespace FinalCase.Api.Controllers
             return await mediator.Send(new CreateAdminCommand(request));
         }
 
-        [HttpPut("{id:int}")]
+        [HttpPut("{id:min(1)}")]
         [Authorize(Roles = Roles.Admin)]
         public async Task<ApiResponse> Update(int id, AdminRequest admin)
         {
             return await mediator.Send(new UpdateAdminCommand(id, admin));
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpDelete("{id:min(1)}")]
         [Authorize(Roles = Roles.Admin)]
         public async Task<ApiResponse> Delete(int id)
         {
+            if (id < 0)
+                return new ApiResponse("Invalid Id");
+
             return await mediator.Send(new DeleteApplicationUserCommand(id));
         }
     }

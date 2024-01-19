@@ -1,7 +1,16 @@
-﻿using FinalCase.Base.Token;
+﻿using FinalCase.BackgroundJobs.QueueOperations;
+using FinalCase.BackgroundJobs.QueueService;
+using FinalCase.Base.Token;
+using FinalCase.Business.Assembly;
+using FinalCase.Data.Constants.Storage;
+using FinalCase.Data.Contexts;
+using FinalCase.Services.NotificationService;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -10,6 +19,11 @@ namespace FinalCase.Api.Extensions;
 
 public static class ServicesExtensions
 {
+
+
+    public static void ConfigureSqlContext(this IServiceCollection services,
+            IConfiguration configuration) => services.AddDbContext<FinalCaseDbContext>(
+                options => options.UseSqlServer(configuration.GetConnectionString(DbKeys.SqlServer)));
     public static void AddJwtConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         JwtConfig jwtConfig = configuration.GetSection("JwtConfig").Get<JwtConfig>();
@@ -38,9 +52,16 @@ public static class ServicesExtensions
 
     public static void AddSwagger(this IServiceCollection services)
     {
+        
+
+
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Final Case Api Management", Version = "v1.0" });
+
+            //c.SelectSchemasForMediaType("application/json", _ => true);
+            //c.PostProcess = document => { };
+
 
             var securityScheme = new OpenApiSecurityScheme
             {
@@ -55,12 +76,13 @@ public static class ServicesExtensions
                     Id = JwtBearerDefaults.AuthenticationScheme,
                     Type = ReferenceType.SecurityScheme
                 }
+                
             };
             c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
-            c.UseInlineDefinitionsForEnums();
+
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
-                { securityScheme, new string[] { } }
+                { securityScheme, Array.Empty<string>() }
             });
         });
     }
@@ -79,5 +101,23 @@ public static class ServicesExtensions
                 QueuePollInterval = TimeSpan.FromMinutes(5),
             }));
         services.AddHangfireServer();
+    }
+
+    public static void AddFluentValidation(this IServiceCollection services)
+    {
+        services.AddValidatorsFromAssembly(typeof(AssemblyReference).Assembly);
+        services.AddFluentValidationAutoValidation().AddFluentValidationClientsideAdapters();
+    }
+
+    public static void RegisterServices(this IServiceCollection services)
+    {
+        services.AddSingleton<INotificationService, QueueNotificationService>();
+        services.AddSingleton<IQueueService, QueueService>();
+    }
+
+    public static void AddMediatR(this IServiceCollection services)
+    {
+        services.AddMediatR(cfg =>
+            cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly));
     }
 }

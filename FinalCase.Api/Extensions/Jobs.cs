@@ -1,10 +1,8 @@
 ﻿using static FinalCase.BackgroundJobs.Hangfire.Recurrings.CreateReport.ScheduledPaymentReportJob;
 using FinalCase.Services.NotificationService;
-using FinalCase.BackgroundJobs.MicroOrm.Dapper;
-using FinalCase.Data.Constants.DbObjects;
+
 
 namespace FinalCase.Api.Extensions;
-
 public static class ApplicationBuilderExtensions
 {
     public static void EnableReportingJobs(this IApplicationBuilder app)

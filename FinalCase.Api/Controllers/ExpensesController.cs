@@ -36,17 +36,13 @@ public class ExpensesController(IMediator mediator) : ControllerBase
 
     [HttpGet]
     //[Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> GetByParameter(int? employeeId, int? paymentMethodId, int? categoryId,
-        int? minAmount, int? maxAmount, DateTime? initialDate, DateTime? finalDate, string? location)
+    public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> GetByParameter(int? employeeId, [FromQuery] GetExpensesQueryParameters parameters)
     {
-        /*
-        var operation = new GetExpensesByParameterQuery(employeeId, categoryId, paymentMethodId, minAmount, maxAmount, initialDate, finalDate, location);
+        var operation = new GetExpensesByParameterQuery(employeeId, parameters);
         return await mediator.Send(operation);
-        */
-        return null;
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:min(1)}")]
     ////[Authorize(Roles = Roles.Employee)]   
     public async Task<ApiResponse<ExpenseResponse>> GetById(int id)
     {
@@ -57,7 +53,7 @@ public class ExpensesController(IMediator mediator) : ControllerBase
 
 
     [HttpPost]
-    [Authorize(Roles = Roles.Employee)]
+    //[Authorize(Roles = Roles.Employee)]
     public async Task<ApiResponse<ExpenseResponse>> CreateExpense([FromBody] ExpenseRequest request)
     {
         if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int employeeId))
@@ -88,7 +84,7 @@ public class ExpensesController(IMediator mediator) : ControllerBase
     }
 
     // Only for pending expenses
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:min(1)}")]
     //[Authorize(Roles = $"{Roles.Admin},{Roles.Employee}")]
     public async Task<ApiResponse> UpdateExpense(int id, ExpenseRequest request)
     {
@@ -96,7 +92,7 @@ public class ExpensesController(IMediator mediator) : ControllerBase
     }
 
     // Only for pending expenses
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:min(1)}")]
     //[Authorize(Roles = $"{Roles.Admin},{Roles.Employee}")]
     public async Task<ApiResponse> DeleteExpense(int id)
     {

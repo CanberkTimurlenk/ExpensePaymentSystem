@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using FinalCase.Base.Response;
 using FinalCase.Data.Contexts;
 using FinalCase.Schema.Entity.Responses;
@@ -23,6 +24,7 @@ public class GetAllExpensesQueryHandler(FinalCaseDbContext dbContext, IMapper ma
                 .Include(e => e.ReviewerAdmin)
                 .Include(e => e.Payment)
                 .Include(e => e.Documents)
+                .ProjectTo<ExpenseResponse>(mapper.ConfigurationProvider)
                 .AsNoTrackingWithIdentityResolution() // Since the operation is read-only, this method can be used to improve performance
                 .ToListAsync(cancellationToken);
 

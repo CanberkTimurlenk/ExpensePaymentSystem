@@ -24,7 +24,7 @@ public class PaymentMethodsController(IMediator mediator) : ControllerBase
         return await mediator.Send(new GetAllPaymentMethodsQuery());
     }
 
-    [HttpGet("{id:int}")]
+    [HttpGet("{id:min(1)}")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<PaymentMethodResponse>> GetPaymentMethodById(int id)
     {
@@ -38,14 +38,14 @@ public class PaymentMethodsController(IMediator mediator) : ControllerBase
         return await mediator.Send(new CreatePaymentMethodCommand(command));
     }
 
-    [HttpPut("{id:int}")]
+    [HttpPut("{id:min(1)}")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> UpdatePaymentMethod(int id, PaymentMethodRequest command)
     {
         return await mediator.Send(new UpdatePaymentMethodCommand(id, command));
     }
 
-    [HttpDelete("{id:int}")]
+    [HttpDelete("{id:min(1)}")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> DeletePaymentMethod(int id)
     {
