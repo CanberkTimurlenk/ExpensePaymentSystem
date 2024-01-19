@@ -3,4 +3,4 @@ using MediatR;
 
 namespace FinalCase.Business.Features.Payments.Commands.Delete;
 
-public record DeletePaymentCommand(int Id) : IRequest<ApiResponse>;
+public record DeletePaymentCommand(int EmployeeId, int ExpenseId) : IRequest<ApiResponse>;

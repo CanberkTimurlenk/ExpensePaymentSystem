@@ -4,9 +4,9 @@ using FinalCase.Data.Contexts;
 using FinalCase.Data.Entities;
 using FinalCase.Schema.Entity.Responses;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinalCase.Business.Features.Payments.Commands.Create;
-
 public class CreatePaymentCommandHandler(FinalCaseDbContext dbContext, IMapper mapper)
     : IRequestHandler<CreatePaymentCommand, ApiResponse<PaymentResponse>>
 {
@@ -15,7 +15,12 @@ public class CreatePaymentCommandHandler(FinalCaseDbContext dbContext, IMapper m
 
     public async Task<ApiResponse<PaymentResponse>> Handle(CreatePaymentCommand request, CancellationToken cancellationToken)
     {
-        var payment = mapper.Map<Payment>(request);
+        var payment = mapper.Map<Payment>(request.Model);
+
+        payment.PaymentMethodName = payment.PaymentMethodName = await dbContext.PaymentMethods
+            .Where(x => x.Id == payment.PaymentMethodId)
+            .Select(x => x.Name)
+            .FirstOrDefaultAsync(cancellationToken);
 
         await dbContext.AddAsync(payment, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);

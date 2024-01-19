@@ -12,7 +12,7 @@ using FinalCase.Services.NotificationService;
 namespace FinalCase.BackgroundJobs.Hangfire.Recurrings.CreateReport;
 
 /// <summary>
-/// A class containing methods for generating daily, weekly, and monthly payment reports using views in the database.
+/// A class containing methods for generating daily, weekly, and monthly payment reports using views in the db.
 /// </summary>
 public static class ScheduledPaymentReportJob
 {
@@ -20,31 +20,40 @@ public static class ScheduledPaymentReportJob
         .SetBasePath(Directory.GetCurrentDirectory())
         .AddJsonFile("appsettings.json").Build().GetConnectionString(DbKeys.HangfireSql);   // Get the configuration settings.
 
+    /// <summary>
+    /// Enables the generation and email sending of daily payment reports using Hangfire.
+    /// </summary>
     public static void EnableDailyPaymentReports(INotificationService notificationService)
     {
         RecurringJob.AddOrUpdate("DailyPaymentReport",
-            () => CreatePaymentReports(Views.DailyPaymentReport, DailyReportSubject, notificationService), "0 16 * * *"); // everyday 4pm);
-    }
-
-    public static void EnableWeeklyPaymentReports(INotificationService notificationService)
-    {
-        RecurringJob.AddOrUpdate("WeeklyPaymentReport",
-            () => CreatePaymentReports(Views.WeeklyPaymentReport, WeeklyReportSubject, notificationService), "0 14 * * 7"); // every friday 2pm
-    }
-
-    public static void EnableMonthlyPaymentReports(INotificationService notificationService)
-    {
-        RecurringJob.AddOrUpdate("MonthlyPaymentReport",
-           () => CreatePaymentReports(Views.MonthlyPaymentReport, MonthlyReportSubject, notificationService), "0 14 L * *"); // every last day of the month 2pm
+            () => SendScheduledPaymentReports(Views.DailyPaymentReport, DailyReportSubject, notificationService), "0 16 * * *"); // everyday 4pm);
     }
 
     /// <summary>
-    /// Creates payment reports based on the specified view, 
+    /// Enables the generation and email sending of weekly payment reports using Hangfire.
     /// </summary>
-    /// <param name="viewName">Name of the database view for generating the report.</param>
-    /// <param name="mailSubject">Subject of the email.</param>
-    /// <param name="notificationService">Notification service for sending emails.</param>
-    public static void CreatePaymentReports(string viewName, string mailSubject, INotificationService notificationService)
+    public static void EnableWeeklyPaymentReports(INotificationService notificationService)
+    {
+        RecurringJob.AddOrUpdate("WeeklyPaymentReport",
+            () => SendScheduledPaymentReports(Views.WeeklyPaymentReport, WeeklyReportSubject, notificationService), "0 14 * * 7"); // every friday 2pm
+    }
+
+    /// <summary>
+    /// Enables the generation and email sending of weekly payment reports using Hangfire.
+    /// </summary>
+    public static void EnableMonthlyPaymentReports(INotificationService notificationService)
+    {
+        RecurringJob.AddOrUpdate("MonthlyPaymentReport",
+           () => SendScheduledPaymentReports(Views.MonthlyPaymentReport, MonthlyReportSubject, notificationService), "0 14 L * *"); // every last day of the month 2pm
+    }
+
+    /// <summary>
+    /// Generates a scheduled payment report based on the provided view name, and sends it as an email to all admins.
+    /// </summary>
+    /// <param name="viewName">The name of the database view to generate the report from.</param>
+    /// <param name="mailSubject">The subject of the email to be sent.</param>
+    /// <param name="notificationService">The notification service used to send the email.</param>
+    public static void SendScheduledPaymentReports(string viewName, string mailSubject, INotificationService notificationService)
     {
         if (!IsViewNameValid(viewName))
             throw new ArgumentException("Invalid view name");

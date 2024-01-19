@@ -17,7 +17,7 @@ public class GetExpenseByParameterQueryHandler(FinalCaseDbContext dbContext, IMa
     private readonly IMapper mapper = mapper;
 
     public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> Handle(GetExpensesByParameterQuery request, CancellationToken cancellationToken)
-    {
+    {/*
         var predicate = PredicateBuilder.New<Expense>(true)
             // An extension method was implemented to add a condition to the predicate based on the given boolean condition.                        
             .AddIf(request.CreatorEmployeeId != default, e => e.CreatorEmployeeId == request.CreatorEmployeeId)
@@ -28,7 +28,7 @@ public class GetExpenseByParameterQueryHandler(FinalCaseDbContext dbContext, IMa
             .AddIf(request.InitialDate != default, e => e.Date >= request.InitialDate)
             .AddIf(request.FinalDate != default, e => e.Date <= request.FinalDate)
             .AddIf(!string.IsNullOrEmpty(request.Location), e => e.Location == request.Location);
-
+       
         var expenses = await dbContext.Expenses
             .Where(predicate)
             .Include(e => e.Category)
@@ -37,5 +37,7 @@ public class GetExpenseByParameterQueryHandler(FinalCaseDbContext dbContext, IMa
 
         var response = mapper.Map<List<ExpenseResponse>>(expenses);
         return new ApiResponse<IEnumerable<ExpenseResponse>>(response);
+         */
+        return null;
     }
 }

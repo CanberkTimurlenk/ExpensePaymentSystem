@@ -12,7 +12,6 @@ using FinalCase.Business.Features.Reports.Queries.Employee.GetEmployeeAllExpense
 using FinalCase.Schema.Reports;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static FinalCase.Api.Constants.Controller.ControllerConstants;
 
 namespace FinalCase.Api.Controllers;
 
@@ -22,21 +21,21 @@ public class ReportsController(IMediator mediator) : ControllerBase
 {
     private readonly IMediator mediator = mediator;
 
-    [HttpGet("expense-amount-summary/daily")]
+    [HttpGet("expense-summary/daily")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<ExpenseAmountSummary>> GetDailyExpenseAmountSummary()
     {
         return await mediator.Send(new GetDailyExpenseAmountSummaryQuery());
     }
 
-    [HttpGet("expense-amount-summary/weekly")]
+    [HttpGet("expense-summary/weekly")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<ExpenseAmountSummary>> GetWeeklyExpenseAmountSummary()
     {
         return await mediator.Send(new GetWeeklyExpenseAmountSummaryQuery());
     }
 
-    [HttpGet("expense-amount-summary/monthly")]
+    [HttpGet("expense-summary/monthly")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<ExpenseAmountSummary>> GetMonthlyExpenseAmountSummary()
     {
@@ -44,30 +43,30 @@ public class ReportsController(IMediator mediator) : ControllerBase
     }
 
 
-    [HttpGet("expenses/{" + EmployeeId + ":int}")]
+    [HttpGet("expenses/{employee-id:int}")]
     //[Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse<IEnumerable<EmployeeExpenseReport>>> GetMonthlyExpenseAmountSummary([FromRoute(Name = EmployeeId)] int employeeId)
+    public async Task<ApiResponse<IEnumerable<EmployeeExpenseReport>>> GetMonthlyExpenseAmountSummary([FromRoute(Name = "employee-id")] int employeeId)
     {
         return await mediator.Send(new GetEmployeeAllExpenseReportByIdQuery(employeeId));
     }
 
-    [HttpGet("expenses/{" + EmployeeId + ":int}/daily")]
+    [HttpGet("expenses/{employee-id:int}/daily")]
     //[Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse<IEnumerable<EmployeeExpenseReport>>> GetDailyExpenseReportForEmployee([FromRoute(Name = EmployeeId)] int employeeId)
+    public async Task<ApiResponse<IEnumerable<EmployeeExpenseReport>>> GetDailyExpenseReportForEmployee([FromRoute(Name = "employee-id")] int employeeId)
     {
         return await mediator.Send(new GetDailyExpenseReportForEmployeeQuery(employeeId));
     }
 
-    [HttpGet("expenses/{" + EmployeeId + ":int}/weekly")]
+    [HttpGet("expenses/{employee-id:int}/weekly")]
     //[Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse<IEnumerable<EmployeeExpenseReport>>> GetWeeklyExpenseReportForEmployee([FromRoute(Name = EmployeeId)] int employeeId)
+    public async Task<ApiResponse<IEnumerable<EmployeeExpenseReport>>> GetWeeklyExpenseReportForEmployee([FromRoute(Name = "employee-id")] int employeeId)
     {
         return await mediator.Send(new GetWeeklyExpenseReportForEmployeeQuery(employeeId));
     }
 
-    [HttpGet("expenses/{" + EmployeeId + ":int}/monthly")]
+    [HttpGet("expenses/{employee-id:int}/monthly")]
     //[Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse<IEnumerable<EmployeeExpenseReport>>> GetMonthlyExpenseReportForEmployee([FromRoute(Name = EmployeeId)] int employeeId)
+    public async Task<ApiResponse<IEnumerable<EmployeeExpenseReport>>> GetMonthlyExpenseReportForEmployee([FromRoute(Name = "employee-id")] int employeeId)
     {
         return await mediator.Send(new GetMonthlyExpenseReportForEmployeeQuery(employeeId));
     }
@@ -92,6 +91,6 @@ public class ReportsController(IMediator mediator) : ControllerBase
     public async Task<ApiResponse<IEnumerable<PaymentScheduledReport>>> GetMonthlyPaymentReport()
     {
         return await mediator.Send(new GetMonthlyPaymentReportQuery());
-    } 
+    }
     #endregion
 }

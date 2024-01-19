@@ -12,7 +12,8 @@ public class DeletePaymentCommandHandler(FinalCaseDbContext dbContext)
 
     public async Task<ApiResponse> Handle(DeletePaymentCommand request, CancellationToken cancellationToken)
     {
-        var payment = await dbContext.FindAsync<Payment>(request.Id);
+        var payment = await dbContext
+            .FindAsync<Payment>(new object[] { request.EmployeeId, request.ExpenseId }, cancellationToken);
 
         if (payment == null)
             return new ApiResponse(PaymentMessages.PaymentNotFound);

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using FinalCase.Base.Response;
+using FinalCase.Business.Features.Payments.Constants;
 using FinalCase.Data.Contexts;
 using FinalCase.Schema.Entity.Responses;
 using MediatR;
@@ -23,6 +24,9 @@ public class GetPaymentByIdQueryHandler(FinalCaseDbContext dbContext, IMapper ma
                                                                        // Unnecessary properties are not loaded.
             .FirstOrDefaultAsync(p => p.EmployeeId.Equals(request.EmployeeId)
                     && p.ExpenseId.Equals(request.ExpenseId), cancellationToken);
+
+        if (paymentResponse == null)
+            return new ApiResponse<PaymentResponse>(PaymentMessages.PaymentNotFound);
 
         return new ApiResponse<PaymentResponse>(paymentResponse);
     }

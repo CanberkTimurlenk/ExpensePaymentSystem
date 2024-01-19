@@ -57,6 +57,7 @@ public static class ServicesExtensions
                 }
             };
             c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
+            c.UseInlineDefinitionsForEnums();
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
                 { securityScheme, new string[] { } }

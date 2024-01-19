@@ -3,6 +3,7 @@ using FinalCase.Business.Features.Payments.Constants;
 using FinalCase.Data.Contexts;
 using FinalCase.Data.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace FinalCase.Business.Features.Payments.Commands.Update;
 public class UpdatePaymentCommandHandler(FinalCaseDbContext dbContext)
@@ -11,13 +12,13 @@ public class UpdatePaymentCommandHandler(FinalCaseDbContext dbContext)
     private readonly FinalCaseDbContext dbContext = dbContext;
     public async Task<ApiResponse> Handle(UpdatePaymentCommand request, CancellationToken cancellationToken)
     {
-        var payment = await dbContext.FindAsync<Payment>(request.Id, cancellationToken);
+        var payment = await dbContext
+            .FindAsync<Payment>(new object[] { request.EmployeeId, request.ExpenseId }, cancellationToken);
 
         if (payment == null)
             return new ApiResponse(PaymentMessages.PaymentNotFound);
 
         payment.Amount = request.Model.Amount;
-        payment.Description = request.Model.PaymentDescription;
         payment.Date = request.Model.Date;
         payment.ReceiverIban = request.Model.ReceiverIban;
         payment.ReceiverName = request.Model.ReceiverName;
@@ -25,6 +26,12 @@ public class UpdatePaymentCommandHandler(FinalCaseDbContext dbContext)
         payment.EmployeeId = request.Model.EmployeeId;
         payment.ExpenseId = request.Model.ExpenseId;
         payment.PaymentMethodId = request.Model.PaymentMethodId;
+
+        payment.PaymentMethodName = await dbContext.PaymentMethods
+            .Where(x => x.Id == payment.PaymentMethodId)
+            .Select(x => x.Name)
+            .FirstOrDefaultAsync(cancellationToken);
+            
 
         await dbContext.SaveChangesAsync(cancellationToken);
         return new ApiResponse();

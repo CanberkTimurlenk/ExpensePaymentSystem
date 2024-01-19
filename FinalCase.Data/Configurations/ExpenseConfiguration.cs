@@ -17,11 +17,11 @@ public class ExpenseConfiguration : BaseEntityTypeConfiguration<Expense>
         builder.Property(x => x.AdminDescription).HasMaxLength(150);
         builder.Property(x => x.Amount).IsRequired().HasColumnType("decimal(18,2)");
         builder.Property(x => x.Date).IsRequired();
-        builder.Property(x => x.Location).IsRequired().HasMaxLength(200);
+        builder.Property(x => x.Location).IsRequired().HasMaxLength(150);
         builder.Property(x => x.Status).IsRequired().HasDefaultValue(ExpenseStatus.Pending);
         builder.Property(x => x.PaymentMethodId).IsRequired();
         builder.Property(x => x.CreatorEmployeeId).IsRequired();
-        builder.Property(x => x.CategoryId).IsRequired();
+        builder.Property(x => x.CategoryId).IsRequired();        
 
         builder.HasOne(x => x.Category).WithMany(x => x.Expenses).HasForeignKey(x => x.CategoryId);
         builder.HasOne(x => x.CreatorEmployee).WithMany(x => x.CreatedExpenses).HasForeignKey(x => x.CreatorEmployeeId);

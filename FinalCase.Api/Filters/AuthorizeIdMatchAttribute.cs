@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc;
-using FinalCase.Api.Constants.Controller;
 
 namespace FinalCase.Api.Filters;
 
@@ -20,7 +19,7 @@ public class AuthorizeIdMatchAttribute : Attribute, IAuthorizationFilter
         if (string.IsNullOrEmpty(userIdClaim))
             context.Result = new UnauthorizedResult();
 
-        var idFromRoute = context.RouteData.Values[ControllerConstants.EmployeeId] as string;
+        var idFromRoute = context.RouteData.Values["id"] as string;
 
         if (userIdClaim != idFromRoute)
             context.Result = new ForbidResult();
