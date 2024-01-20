@@ -23,6 +23,7 @@ builder.Services.AddAutoMapper(typeof(AssemblyReference).Assembly);
 builder.Services.AddHangfire(builder.Configuration);
 builder.Services.AddFluentValidation();
 builder.Services.RegisterServices();
+builder.Services.ConfigureRedis(builder.Configuration);
 
 var app = builder.Build();
 

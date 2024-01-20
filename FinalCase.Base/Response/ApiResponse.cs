@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace FinalCase.Base.Response;
 
@@ -35,12 +36,18 @@ public class ApiResponse<T>
     public string Message { get; set; }
     public T Response { get; set; }
 
+    public ApiResponse()
+    {
+        // for serialization 
+    }
+
     public ApiResponse(bool isSuccess)
     {
         Success = isSuccess;
         Response = default;
         Message = isSuccess ? "Success" : "Error";
     }
+
     public ApiResponse(T data)
     {
         Success = true;

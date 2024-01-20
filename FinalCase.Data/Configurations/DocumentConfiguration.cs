@@ -1,5 +1,6 @@
 ﻿using FinalCase.Data.Configurations.Common;
 using FinalCase.Data.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FinalCase.Data.Configurations;
@@ -17,6 +18,7 @@ public class DocumentConfiguration : BaseEntityWithIdTypeConfiguration<Document>
         builder.HasOne(x => x.Expense)
                .WithMany(x => x.Documents)
                .HasForeignKey(x => x.ExpenseId)
+               .OnDelete(DeleteBehavior.Restrict)
                .IsRequired();
     }
 }

@@ -10,9 +10,20 @@ public class PaymentConfiguration : IEntityTypeConfiguration<Payment>
         builder.HasKey(x => new { x.EmployeeId, x.ExpenseId });
 
         builder.Property(x => x.Amount).IsRequired().HasColumnType("decimal(18,2)");
-        builder.HasOne(x => x.Employee).WithMany(x => x.Payments).HasForeignKey(x => x.EmployeeId).OnDelete(DeleteBehavior.Restrict);
-        builder.HasOne(x => x.Expense).WithOne(x => x.Payment).HasForeignKey<Payment>(x => x.ExpenseId);
-        builder.HasOne(x => x.PaymentMethod).WithMany(x => x.Payments).HasForeignKey(x => x.PaymentMethodId).OnDelete(DeleteBehavior.Restrict);
+        
+        builder.HasOne(x => x.Employee)
+               .WithMany(x => x.Payments)
+               .HasForeignKey(x => x.EmployeeId)
+               .OnDelete(DeleteBehavior.Restrict);
+        
+        builder.HasOne(x => x.Expense).WithOne(x => x.Payment)
+               .HasForeignKey<Payment>(x => x.ExpenseId)
+               .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasOne(x => x.PaymentMethod)
+               .WithMany(x => x.Payments)
+               .HasForeignKey(x => x.PaymentMethodId)
+               .OnDelete(DeleteBehavior.Restrict);
 
 
     }

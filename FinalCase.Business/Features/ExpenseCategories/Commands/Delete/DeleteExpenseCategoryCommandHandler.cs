@@ -6,11 +6,10 @@ using FinalCase.Data.Entities;
 using MediatR;
 
 namespace FinalCase.Business.Features.ExpenseCategories.Commands.Delete;
-public class DeleteExpenseCategoryCommandHandler(FinalCaseDbContext dbContext, IMapper mapper)
+public class DeleteExpenseCategoryCommandHandler(FinalCaseDbContext dbContext)
     : IRequestHandler<DeleteExpenseCategoryCommand, ApiResponse>
 {
-    private readonly FinalCaseDbContext dbContext = dbContext;
-    private readonly IMapper mapper = mapper;
+    private readonly FinalCaseDbContext dbContext = dbContext;    
 
     public async Task<ApiResponse> Handle(DeleteExpenseCategoryCommand request, CancellationToken cancellationToken)
     {

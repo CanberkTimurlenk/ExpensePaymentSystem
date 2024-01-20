@@ -53,7 +53,6 @@ public class ExpensesController(IMediator mediator) : ControllerBase
 
 
     [HttpPost]
-    //[Authorize(Roles = Roles.Employee)]
     public async Task<ApiResponse<ExpenseResponse>> CreateExpense([FromBody] ExpenseRequest request)
     {
         if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int employeeId))

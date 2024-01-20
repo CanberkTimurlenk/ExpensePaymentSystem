@@ -16,9 +16,9 @@ namespace FinalCase.BackgroundJobs.Hangfire.Recurrings.CreateReport;
 /// </summary>
 public static class ScheduledPaymentReportJob
 {
-    private readonly static string connString = new ConfigurationBuilder()
+    private readonly static string sqlServerConnStr = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
-        .AddJsonFile("appsettings.json").Build().GetConnectionString(DbKeys.HangfireSql);   // Get the configuration settings.
+        .AddJsonFile("appsettings.json").Build().GetConnectionString(DbKeys.SqlServer);   // Get the configuration settings.
 
     /// <summary>
     /// Enables the generation and email sending of daily payment reports using Hangfire.
@@ -58,8 +58,8 @@ public static class ScheduledPaymentReportJob
         if (!IsViewNameValid(viewName))
             throw new ArgumentException("Invalid view name");
 
-        var report = QueryView<PaymentScheduledReport>(viewName, connString); // The report to be sent.
-        var adminEmails = QueryView<string>(Views.AdminEmails, connString); // The collection of admin emails.
+        var report = QueryView<PaymentScheduledReport>(viewName, sqlServerConnStr); // The report to be sent.
+        var adminEmails = QueryView<string>(Views.AdminEmails, sqlServerConnStr); // The collection of admin emails.
 
         notificationService.SendEmail(new Email
         {

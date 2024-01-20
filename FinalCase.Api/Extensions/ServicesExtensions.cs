@@ -2,6 +2,7 @@
 using FinalCase.BackgroundJobs.QueueService;
 using FinalCase.Base.Token;
 using FinalCase.Business.Assembly;
+using FinalCase.Business.Features.Pipelines.Cache;
 using FinalCase.Data.Constants.Storage;
 using FinalCase.Data.Contexts;
 using FinalCase.Services.NotificationService;
@@ -13,6 +14,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StackExchange.Redis;
+using System.Configuration;
 using System.Text;
 
 namespace FinalCase.Api.Extensions;
@@ -52,7 +55,7 @@ public static class ServicesExtensions
 
     public static void AddSwagger(this IServiceCollection services)
     {
-        
+
 
 
         services.AddSwaggerGen(c =>
@@ -76,7 +79,7 @@ public static class ServicesExtensions
                     Id = JwtBearerDefaults.AuthenticationScheme,
                     Type = ReferenceType.SecurityScheme
                 }
-                
+
             };
             c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
 
@@ -118,6 +121,22 @@ public static class ServicesExtensions
     public static void AddMediatR(this IServiceCollection services)
     {
         services.AddMediatR(cfg =>
-            cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly));
+             {
+                 cfg.RegisterServicesFromAssembly(typeof(AssemblyReference).Assembly);
+                 cfg.AddOpenBehavior(typeof(CachingBehavior<,>));
+                 cfg.AddOpenBehavior(typeof(CacheRemovingBehavior<,>));
+             });
+    }
+
+    public static void ConfigureRedis(this IServiceCollection services, IConfiguration configuration)
+    {
+        var redisConfig = new ConfigurationOptions();
+        redisConfig.EndPoints.Add(configuration["Redis:Host"], Convert.ToInt32(configuration["Redis:Port"]));
+        redisConfig.DefaultDatabase = 0;
+        services.AddStackExchangeRedisCache(opt =>
+        {
+            opt.ConfigurationOptions = redisConfig;
+            //opt.InstanceName = configuration["Redis:InstanceName"];
+        });
     }
 }
