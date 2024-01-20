@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using StackExchange.Redis;
 using System.Configuration;
 using System.Text;
@@ -133,10 +134,7 @@ public static class ServicesExtensions
         var redisConfig = new ConfigurationOptions();
         redisConfig.EndPoints.Add(configuration["Redis:Host"], Convert.ToInt32(configuration["Redis:Port"]));
         redisConfig.DefaultDatabase = 0;
-        services.AddStackExchangeRedisCache(opt =>
-        {
-            opt.ConfigurationOptions = redisConfig;
-            //opt.InstanceName = configuration["Redis:InstanceName"];
-        });
+        services.AddStackExchangeRedisCache(opt => opt.ConfigurationOptions = redisConfig);
+
     }
 }

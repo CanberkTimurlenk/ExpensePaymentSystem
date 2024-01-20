@@ -1,10 +1,15 @@
 using FinalCase.Api.Extensions;
+using FinalCase.Api.Middlewares;
 using FinalCase.Business.Assembly;
 using FluentValidation.AspNetCore;
 using Hangfire;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.Extensions.Options;
+using Serilog;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 
@@ -13,6 +18,10 @@ builder.Services.AddControllers()
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+builder.Host.UseSerilog();
+
+// Serilog
+Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
 
 // Extensions
 builder.Services.ConfigureSqlContext(builder.Configuration);
@@ -34,6 +43,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<ErrorHandlerMiddleware>();
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
@@ -43,5 +54,6 @@ app.UseHangfireDashboard();
 app.EnableReportingJobs();
 
 app.MapControllers();
+
 
 app.Run();
