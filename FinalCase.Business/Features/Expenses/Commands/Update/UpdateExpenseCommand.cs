@@ -3,4 +3,4 @@ using FinalCase.Schema.Entity.Requests;
 using MediatR;
 
 namespace FinalCase.Business.Features.Expenses.Commands.Update;
-public record UpdateExpenseCommand(int Id, ExpenseRequest Model) : IRequest<ApiResponse>;
+public record UpdateExpenseCommand(int UpdaterId, int Id, ExpenseRequest Model) : IRequest<ApiResponse>;

@@ -6,7 +6,7 @@ using FinalCase.Schema.Entity.Responses;
 using MediatR;
 
 namespace FinalCase.Business.Features.ExpenseCategories.Commands.Create;
-public record CreateExpenseCategoryCommand(ExpenseCategoryRequest Model) : IRequest<ApiResponse<ExpenseCategoryResponse>>,
+public record CreateExpenseCategoryCommand(int InsertUserId, ExpenseCategoryRequest Model) : IRequest<ApiResponse<ExpenseCategoryResponse>>,
     ICacheRemoverRequest
 {
     public string? CacheKey => ExpenseCategoryCacheKeys.AllExpenseCategories;

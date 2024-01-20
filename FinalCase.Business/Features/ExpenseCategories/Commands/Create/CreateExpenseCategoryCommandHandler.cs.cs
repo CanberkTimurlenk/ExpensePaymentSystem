@@ -17,6 +17,8 @@ public class CreateExpenseCategoryCommandHandler(FinalCaseDbContext dbContext, I
     {
         var expenseCategory = mapper.Map<ExpenseCategory>(request.Model);
 
+        expenseCategory.InsertDate = DateTime.Now;
+
         await dbContext.ExpenseCategories.AddAsync(expenseCategory);
         await dbContext.SaveChangesAsync(cancellationToken);
 

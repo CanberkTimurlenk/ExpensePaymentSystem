@@ -1,4 +1,5 @@
-﻿using FinalCase.Base.Response;
+﻿using FinalCase.Api.Helpers;
+using FinalCase.Base.Response;
 using FinalCase.Business.Features.ApplicationUsers.Commands.Create.Admin;
 using FinalCase.Business.Features.ApplicationUsers.Commands.Delete;
 using FinalCase.Business.Features.ApplicationUsers.Queries.GetAll;
@@ -6,10 +7,12 @@ using FinalCase.Business.Features.ApplicationUsers.Queries.GetById;
 using FinalCase.Business.Features.Authentication.Constants.Roles;
 using FinalCase.Schema.AppRoles.Requests;
 using FinalCase.Schema.AppRoles.Responses;
+using FinalCase.Schema.Entity.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FinalCase.Api.Controllers
 {
@@ -37,14 +40,20 @@ namespace FinalCase.Api.Controllers
         [Authorize(Roles = Roles.Admin)]
         public async Task<ApiResponse<AdminResponse>> Create(AdminRequest request)
         {
-            return await mediator.Send(new CreateAdminCommand(request));
+            if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int adminId))
+                return new ApiResponse<AdminResponse>(false);
+
+            return await mediator.Send(new CreateAdminCommand(adminId, request));
         }
 
         [HttpPut("{id:min(1)}")]
         [Authorize(Roles = Roles.Admin)]
         public async Task<ApiResponse> Update(int id, AdminRequest admin)
         {
-            return await mediator.Send(new UpdateAdminCommand(id, admin));
+            if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int adminId))
+                return new ApiResponse(false);
+
+            return await mediator.Send(new UpdateAdminCommand(adminId, id, admin));
         }
 
         [HttpDelete("{id:min(1)}")]

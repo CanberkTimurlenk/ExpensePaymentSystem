@@ -24,6 +24,8 @@ public class CreateAdminCommandHandler(FinalCaseDbContext dbContext, IMapper map
         var user = mapper.Map<ApplicationUser>(request.Model);
         user.Password = Md5Extension.GetHash(request.Model.Password);
         user.Role = Roles.Admin;
+        user.InsertDate = DateTime.Now;
+        user.InsertUserId = request.InsertUserId;
 
         await dbContext.ApplicationUsers.AddAsync(user, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);

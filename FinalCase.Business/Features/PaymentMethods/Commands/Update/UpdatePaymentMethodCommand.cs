@@ -5,7 +5,7 @@ using FinalCase.Schema.Entity.Requests;
 using MediatR;
 
 namespace FinalCase.Business.Features.PaymentMethods.Commands.Update;
-public record UpdatePaymentMethodCommand(int Id, PaymentMethodRequest Model) : IRequest<ApiResponse>,
+public record UpdatePaymentMethodCommand(int UpdaterId, int Id, PaymentMethodRequest Model) : IRequest<ApiResponse>,
     ICacheRemoverRequest
 {
     public string? CacheKey => PaymentMethodCacheKeys.AllPaymentMethods;

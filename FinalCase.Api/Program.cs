@@ -43,7 +43,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseMiddleware<ErrorHandlerMiddleware>();
+//app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
@@ -54,6 +54,5 @@ app.UseHangfireDashboard();
 app.EnableReportingJobs();
 
 app.MapControllers();
-
 
 app.Run();

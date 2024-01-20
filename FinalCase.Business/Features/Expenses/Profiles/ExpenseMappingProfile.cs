@@ -21,7 +21,6 @@ public class ExpenseMappingProfile : Profile
 
         CreateMap<Expense, Payment>()
            .ForMember(dest => dest.Amount, opt => opt.MapFrom(src => src.Amount))
-           .ForMember(dest => dest.Date, opt => opt.MapFrom(src => src.Date))
            .ForMember(dest => dest.EmployeeId, opt => opt.MapFrom(src => src.CreatorEmployeeId))
            .ForMember(dest => dest.ExpenseId, opt => opt.MapFrom(src => src.Id))
            .ForMember(dest => dest.ReceiverIban, opt => opt.MapFrom(src => src.CreatorEmployee.Iban))

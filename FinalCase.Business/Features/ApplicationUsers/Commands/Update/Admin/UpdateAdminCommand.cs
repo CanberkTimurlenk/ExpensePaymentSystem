@@ -3,4 +3,4 @@ using FinalCase.Schema.Entity.Requests;
 using MediatR;
 
 namespace FinalCase.Business.Features.ApplicationUsers.Commands.Create.Admin;
-public record UpdateAdminCommand(int Id, ApplicationUserRequest Model) : IRequest<ApiResponse>;
+public record UpdateAdminCommand(int UpdaterId,int Id, ApplicationUserRequest Model) : IRequest<ApiResponse>;

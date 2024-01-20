@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FinalCase.BackgroundJobs.Hangfire.Delayeds.Payment;
 using FinalCase.Base.Response;
+using FinalCase.Business.Features.Expenses.Constants;
 using FinalCase.Business.Features.Payments.Constants;
 using FinalCase.Data.Contexts;
 using FinalCase.Data.Entities;
@@ -30,6 +31,17 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, INotifi
         var expenses = await GetExpenses(request, cancellationToken);
         expenses.ForEach(e => e.Status = ExpenseStatus.Approved); // Change the status of the expenses to Approved.
 
+
+        if (expenses.Any(e => e.Status == ExpenseStatus.Approved)) // approved expense can not be approved again.
+            return new ApiResponse<IEnumerable<ExpenseResponse>>(ExpenseMessages.ExpenseAlreadyApprovedError);
+
+
+        foreach (var item in expenses)
+        {
+            item.Status = ExpenseStatus.Approved;
+            item.ReviewerAdminId = request.ReviewerAdminId;
+        }
+
         var payments = mapper.Map<IEnumerable<Payment>>(expenses);
 
         await dbContext.Payments.AddRangeAsync(payments, cancellationToken);
@@ -51,8 +63,10 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, INotifi
             .Include(e => e.CreatorEmployee)
             .Include(e => e.Category)
             .Include(e => e.PaymentMethod)
+            .Include(e => e.Documents)
             .Where(e => expenseIds.Contains(e.Id)) // If the current value of the e.Id exists in the expenseIds list, select the expense.
             .ToListAsync(cancellationToken);
+
     }
 
     /// <summary>

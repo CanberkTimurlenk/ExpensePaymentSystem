@@ -21,13 +21,15 @@ public class UpdateExpenseCommandHandler(FinalCaseDbContext dbContext)
 
         if (expense.Status != ExpenseStatus.Pending)
             return new ApiResponse(ExpenseMessages.OnlyPendingUpdateError);
-        
+
         expense.EmployeeDescription = request.Model.EmployeeDescription;
         expense.Amount = request.Model.Amount;
         expense.Date = request.Model.Date;
         expense.Location = request.Model.Location;
         expense.CategoryId = request.Model.CategoryId;
         expense.PaymentMethodId = request.Model.PaymentMethodId;
+        expense.UpdateDate = DateTime.Now;
+        expense.UpdateUserId = request.UpdaterId;
 
         await dbContext.SaveChangesAsync(cancellationToken);
         return new ApiResponse();

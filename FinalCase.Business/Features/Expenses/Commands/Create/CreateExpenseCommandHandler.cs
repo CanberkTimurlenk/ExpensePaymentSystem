@@ -27,6 +27,9 @@ public class CreateExpenseCommandHandler(FinalCaseDbContext dbContext, IMapper m
         var expense = mapper.Map<Expense>(request.Model);
         expense.CreatorEmployeeId = request.CreatorEmployeeId;
 
+        expense.InsertDate = DateTime.Now;
+        expense.InsertUserId = request.CreatorEmployeeId;
+
         await dbContext.Expenses.AddAsync(expense, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
 

@@ -17,7 +17,7 @@ public class CreatePaymentCommandHandler(FinalCaseDbContext dbContext, IMapper m
     {
         var payment = mapper.Map<Payment>(request.Model);
 
-        payment.PaymentMethodName = payment.PaymentMethodName = await dbContext.PaymentMethods
+        payment.PaymentMethodName = await dbContext.PaymentMethods
             .Where(x => x.Id == payment.PaymentMethodId)
             .Select(x => x.Name)
             .FirstOrDefaultAsync(cancellationToken);

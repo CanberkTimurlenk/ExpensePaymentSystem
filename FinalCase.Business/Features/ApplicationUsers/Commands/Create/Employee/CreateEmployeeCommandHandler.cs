@@ -23,6 +23,8 @@ public class CreateEmployeeCommandHandler(FinalCaseDbContext dbContext, IMapper 
         var user = mapper.Map<ApplicationUser>(request.Model);
         user.Password = Md5Extension.GetHash(request.Model.Password);
         user.Role = Roles.Employee;
+        user.InsertDate = DateTime.Now;
+        user.InsertUserId = request.InsertUserId;
 
         await dbContext.ApplicationUsers.AddAsync(user, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);

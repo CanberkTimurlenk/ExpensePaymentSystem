@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinalCase.Data.Migrations
 {
     [DbContext(typeof(FinalCaseDbContext))]
-    [Migration("20240117014831_Create_View_MonthlyPaymentReport")]
-    partial class Create_View_MonthlyPaymentReport
+    [Migration("20240120083735_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -60,7 +60,7 @@ namespace FinalCase.Data.Migrations
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(true);
 
                     b.Property<DateTime>("LastActivityDate")
                         .HasColumnType("datetime2");
@@ -96,6 +96,55 @@ namespace FinalCase.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("ApplicationUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DateOfBirth = new DateTime(1985, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "john.doe@example.com",
+                            Firstname = "John",
+                            Iban = "TR777777777777777777777777",
+                            InsertDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 3,
+                            IsActive = true,
+                            LastActivityDate = new DateTime(2024, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Lastname = "Doe",
+                            Password = "ba394499b56b89fe5bda1338fcca6a04",
+                            Role = "employee",
+                            Username = "johndoe"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DateOfBirth = new DateTime(1990, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "alice.brown@example.com",
+                            Firstname = "Alice",
+                            Iban = "TR666666666666666666666666",
+                            InsertDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 3,
+                            IsActive = true,
+                            LastActivityDate = new DateTime(2024, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Lastname = "Brown",
+                            Password = "14e1b600b1fd579f47433b88e8d85291",
+                            Role = "employee",
+                            Username = "alicebrown"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DateOfBirth = new DateTime(1990, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "example@mail.com",
+                            Firstname = "admin",
+                            InsertDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 3,
+                            IsActive = true,
+                            LastActivityDate = new DateTime(2024, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Lastname = "user",
+                            Password = "71b6551474932fda956136e87886017c",
+                            Role = "admin",
+                            Username = "adminnn"
+                        });
                 });
 
             modelBuilder.Entity("FinalCase.Data.Entities.Document", b =>
@@ -148,6 +197,41 @@ namespace FinalCase.Data.Migrations
                     b.HasIndex("ExpenseId");
 
                     b.ToTable("Documents");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Receipt for business trip expenses",
+                            ExpenseId = 1,
+                            InsertDate = new DateTime(2024, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 1,
+                            IsActive = false,
+                            Name = "Business Trip Receipt",
+                            Url = "/documents/business_trip_receipt.pdf"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Invoice for office supplies",
+                            ExpenseId = 2,
+                            InsertDate = new DateTime(2024, 1, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 2,
+                            IsActive = false,
+                            Name = "Office Supplies Invoice",
+                            Url = "/documents/office_supplies_invoice.pdf"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Photos from the team dinner",
+                            ExpenseId = 3,
+                            InsertDate = new DateTime(2024, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 1,
+                            IsActive = false,
+                            Name = "Team Dinner Photos",
+                            Url = "/documents/team_dinner_photos.zip"
+                        });
                 });
 
             modelBuilder.Entity("FinalCase.Data.Entities.Expense", b =>
@@ -193,8 +277,8 @@ namespace FinalCase.Data.Migrations
 
                     b.Property<string>("Location")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<int>("PaymentMethodId")
                         .HasColumnType("int");
@@ -224,6 +308,55 @@ namespace FinalCase.Data.Migrations
                     b.HasIndex("ReviewerAdminId");
 
                     b.ToTable("Expenses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Amount = 120.50m,
+                            CategoryId = 1,
+                            CreatorEmployeeId = 1,
+                            Date = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeDescription = "Business trip to Germany",
+                            InsertDate = new DateTime(2024, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 1,
+                            IsActive = false,
+                            Location = "Frankfurt",
+                            PaymentMethodId = 1,
+                            Status = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AdminDescription = "Approved by the manager",
+                            Amount = 75.30m,
+                            CategoryId = 2,
+                            CreatorEmployeeId = 2,
+                            Date = new DateTime(2024, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeDescription = "Purchase of office supplies",
+                            InsertDate = new DateTime(2024, 1, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 2,
+                            IsActive = false,
+                            Location = "Office",
+                            PaymentMethodId = 2,
+                            Status = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AdminDescription = "Rejected due to policy violation",
+                            Amount = 200.75m,
+                            CategoryId = 3,
+                            CreatorEmployeeId = 1,
+                            Date = new DateTime(2024, 1, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EmployeeDescription = "Team dinner celebration",
+                            InsertDate = new DateTime(2024, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 1,
+                            IsActive = false,
+                            Location = "Local Restaurant",
+                            PaymentMethodId = 3,
+                            Status = 3
+                        });
                 });
 
             modelBuilder.Entity("FinalCase.Data.Entities.ExpenseCategory", b =>
@@ -269,6 +402,35 @@ namespace FinalCase.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("ExpenseCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Expenses related to business trips",
+                            InsertDate = new DateTime(2024, 1, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 3,
+                            IsActive = false,
+                            Name = "Business Trip"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Expenses for office supplies",
+                            InsertDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 3,
+                            IsActive = false,
+                            Name = "Office Supplies"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Expenses for team events",
+                            InsertDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 3,
+                            IsActive = false,
+                            Name = "Team Events"
+                        });
                 });
 
             modelBuilder.Entity("FinalCase.Data.Entities.Payment", b =>
@@ -312,6 +474,44 @@ namespace FinalCase.Data.Migrations
                     b.HasIndex("PaymentMethodId");
 
                     b.ToTable("Payments");
+
+                    b.HasData(
+                        new
+                        {
+                            EmployeeId = 1,
+                            ExpenseId = 1,
+                            Amount = 100m,
+                            Date = new DateTime(2024, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Business trip expenses payment",
+                            PaymentMethodId = 1,
+                            PaymentMethodName = "Credit Card",
+                            ReceiverIban = "TR777777777777777777777777",
+                            ReceiverName = "John Doe"
+                        },
+                        new
+                        {
+                            EmployeeId = 2,
+                            ExpenseId = 2,
+                            Amount = 75.30m,
+                            Date = new DateTime(2024, 1, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Office supplies payment",
+                            PaymentMethodId = 2,
+                            PaymentMethodName = "Bank Transfer",
+                            ReceiverIban = "TR666666666666666666666666",
+                            ReceiverName = "Alice Brown"
+                        },
+                        new
+                        {
+                            EmployeeId = 1,
+                            ExpenseId = 3,
+                            Amount = 200.75m,
+                            Date = new DateTime(2024, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Description = "Team dinner payment",
+                            PaymentMethodId = 3,
+                            PaymentMethodName = "Cash",
+                            ReceiverIban = "TR777777777777777777777777",
+                            ReceiverName = "John Doe"
+                        });
                 });
 
             modelBuilder.Entity("FinalCase.Data.Entities.PaymentMethod", b =>
@@ -357,6 +557,35 @@ namespace FinalCase.Data.Migrations
                         .IsUnique();
 
                     b.ToTable("PaymentMethods");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Payment via credit card",
+                            InsertDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 3,
+                            IsActive = false,
+                            Name = "Credit Card"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Payment via bank transfer",
+                            InsertDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 3,
+                            IsActive = false,
+                            Name = "Bank Transfer"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Payment in cash",
+                            InsertDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            InsertUserId = 3,
+                            IsActive = false,
+                            Name = "Cash"
+                        });
                 });
 
             modelBuilder.Entity("FinalCase.Data.Entities.Document", b =>
@@ -364,7 +593,7 @@ namespace FinalCase.Data.Migrations
                     b.HasOne("FinalCase.Data.Entities.Expense", "Expense")
                         .WithMany("Documents")
                         .HasForeignKey("ExpenseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Expense");
@@ -391,7 +620,7 @@ namespace FinalCase.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("FinalCase.Data.Entities.ApplicationUser", "ReviewerAdmin")
-                        .WithMany("ReviewedExpenses")
+                        .WithMany()
                         .HasForeignKey("ReviewerAdminId");
 
                     b.Navigation("Category");
@@ -414,7 +643,7 @@ namespace FinalCase.Data.Migrations
                     b.HasOne("FinalCase.Data.Entities.Expense", "Expense")
                         .WithOne("Payment")
                         .HasForeignKey("FinalCase.Data.Entities.Payment", "ExpenseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("FinalCase.Data.Entities.PaymentMethod", "PaymentMethod")
@@ -435,8 +664,6 @@ namespace FinalCase.Data.Migrations
                     b.Navigation("CreatedExpenses");
 
                     b.Navigation("Payments");
-
-                    b.Navigation("ReviewedExpenses");
                 });
 
             modelBuilder.Entity("FinalCase.Data.Entities.Expense", b =>

@@ -10,6 +10,12 @@ public class ApiResponse
         return JsonSerializer.Serialize(this);
     }
 
+    public ApiResponse(bool isSuccess)
+    {
+        Success = isSuccess;
+        Message = isSuccess ? "Success" : "Error";
+    }
+
     public ApiResponse(string message = null)
     {
         if (string.IsNullOrWhiteSpace(message))

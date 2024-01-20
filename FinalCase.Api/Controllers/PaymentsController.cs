@@ -20,7 +20,6 @@ public class PaymentsController(IMediator mediator) : ControllerBase
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<IEnumerable<PaymentResponse>>> GetPayments()
     {
-        throw new ArgumentException();
         return await mediator.Send(new GetAllPaymentsQuery());
     }
 

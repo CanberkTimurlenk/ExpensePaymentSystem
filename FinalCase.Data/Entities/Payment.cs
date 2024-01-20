@@ -2,6 +2,7 @@
 namespace FinalCase.Data.Entities;
 public class Payment
 {
+    public int Id { get; set; }
     // this class used to be created a outgoing payment request to the banking system
     // and also repoting purposes
     public decimal Amount { get; set; }

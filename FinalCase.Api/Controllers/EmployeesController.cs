@@ -13,6 +13,8 @@ using FinalCase.Schema.AppRoles.Responses;
 using FinalCase.Business.Features.ApplicationUsers.Queries.GetAll;
 using FinalCase.Business.Features.ApplicationUsers.Queries.GetById;
 using FinalCase.Data.Enums;
+using FinalCase.Api.Helpers;
+using System.Security.Claims;
 
 namespace FinalCase.Api.Controllers
 {
@@ -39,7 +41,7 @@ namespace FinalCase.Api.Controllers
             return await mediator.Send(new GetEmployeeByIdQuery(id, includeDeleted));
         }
 
-        
+
         [HttpGet("{id:min(1)}/expenses")] // EmployeeId is a constant defined in ControllerConstants.cs, 
         [Authorize(Roles = Roles.Employee)]
         [AuthorizeIdMatch]
@@ -56,14 +58,20 @@ namespace FinalCase.Api.Controllers
         [Authorize(Roles = Roles.Admin)]
         public async Task<ApiResponse<EmployeeResponse>> Create(EmployeeRequest request)
         {
-            return await mediator.Send(new CreateEmployeeCommand(request));
+            if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int userId))
+                return new ApiResponse<EmployeeResponse>(false);
+
+            return await mediator.Send(new CreateEmployeeCommand(userId, request));
         }
 
         [HttpPut("{id:min(1)}")]
         [Authorize(Roles = Roles.Admin)]
         public async Task<ApiResponse> Update(int id, EmployeeRequest request)
         {
-            return await mediator.Send(new UpdateEmployeeCommand(id, request));
+            if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int userId))
+                return new ApiResponse(false);
+
+            return await mediator.Send(new UpdateEmployeeCommand(userId, id, request));
         }
 
         [HttpDelete("{id:min(1)}")]

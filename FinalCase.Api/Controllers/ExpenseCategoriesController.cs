@@ -1,15 +1,18 @@
-﻿using FinalCase.Base.Response;
+﻿using FinalCase.Api.Helpers;
+using FinalCase.Base.Response;
 using FinalCase.Business.Features.Authentication.Constants.Roles;
 using FinalCase.Business.Features.ExpenseCategories.Commands.Create;
 using FinalCase.Business.Features.ExpenseCategories.Commands.Delete;
 using FinalCase.Business.Features.ExpenseCategories.Commands.Update;
 using FinalCase.Business.Features.ExpenseCategories.Queries.GetAll;
 using FinalCase.Business.Features.ExpenseCategories.Queries.GetById;
+using FinalCase.Schema.AppRoles.Responses;
 using FinalCase.Schema.Entity.Requests;
 using FinalCase.Schema.Entity.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FinalCase.Api.Controllers;
 
@@ -37,14 +40,20 @@ public class ExpenseCategoriesController(IMediator mediator) : ControllerBase
     [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<ExpenseCategoryResponse>> CreateExpenseCategory(ExpenseCategoryRequest request)
     {
-        return await mediator.Send(new CreateExpenseCategoryCommand(request));
+        if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int userId))
+            return new ApiResponse<ExpenseCategoryResponse>(false);
+
+        return await mediator.Send(new CreateExpenseCategoryCommand(userId, request));
     }
 
     [HttpPut("{id:min(1)}")]
     [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> UpdateExpenseCategory(int id, ExpenseCategoryRequest request)
     {
-        return await mediator.Send(new UpdateExpenseCategoryCommand(id, request));
+        if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int userId))
+            return new ApiResponse(false);
+
+        return await mediator.Send(new UpdateExpenseCategoryCommand(userId,id, request));
     }
 
     [HttpDelete("{id:min(1)}")]

@@ -26,6 +26,8 @@ public class UpdateDocumentCommandHandler(FinalCaseDbContext dbContext, IMapper 
 
         request.Model.Id = document.Id;
         mapper.Map(request.Model, document);
+        document.UpdateDate = DateTime.Now;
+        document.UpdateUserId = request.UpdaterId;
 
         await dbContext.SaveChangesAsync(cancellationToken);
         return new ApiResponse();

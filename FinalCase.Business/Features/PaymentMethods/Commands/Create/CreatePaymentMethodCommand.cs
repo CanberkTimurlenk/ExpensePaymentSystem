@@ -7,7 +7,7 @@ using MediatR;
 
 namespace FinalCase.Business.Features.PaymentMethods.Commands.Create;
 
-public record CreatePaymentMethodCommand(PaymentMethodRequest Model) : IRequest<ApiResponse<PaymentMethodResponse>>,
+public record CreatePaymentMethodCommand(int InsertUserId, PaymentMethodRequest Model) : IRequest<ApiResponse<PaymentMethodResponse>>,
     ICacheRemoverRequest
 {
     public string? CacheKey => PaymentMethodCacheKeys.AllPaymentMethods;

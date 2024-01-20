@@ -15,7 +15,7 @@ public class ExpenseRequestValidator : AbstractValidator<ExpenseRequest>
 
         RuleFor(x => x.Date)
             .NotEmpty().WithMessage("Date is required.")
-            .LessThanOrEqualTo(DateTime.Now).WithMessage("Date should no be in the future.");
+            .LessThanOrEqualTo(DateTime.Now).WithMessage("Date should not be in the future.");
 
         RuleFor(x => x.Location)
             .NotEmpty().WithMessage("Location is required.")
@@ -23,15 +23,27 @@ public class ExpenseRequestValidator : AbstractValidator<ExpenseRequest>
 
         RuleFor(x => x.PaymentMethodId)
             .NotEmpty().WithMessage("Payment method is required.");
-
-        RuleFor(x => x.CreatorEmployeeId)
-            .NotEmpty().WithMessage("Creator employee is required.");
-
+       
         RuleFor(x => x.CategoryId)
             .NotEmpty().WithMessage("Category is required.");
-        
-        RuleForEach(x => x.Documents)
-            .SetValidator(new DocumentRequestValidator());
+
+        RuleFor(x => x.Documents)
+             .NotEmpty().WithMessage("Category is required.");
+
+        RuleForEach(x => x.Documents).ChildRules(d =>
+        {
+            d.RuleFor(x => x.Name)
+            .NotEmpty().WithMessage("Name is required.")
+            .Length(1, 100).WithMessage("Name should be between 1 and 100 characters.");
+
+            d.RuleFor(x => x.Description)
+                .NotEmpty().WithMessage("Description is required.")
+                .MaximumLength(250).WithMessage("Description should be maximum 250 characters.");
+
+            d.RuleFor(x => x.Url)
+                .NotEmpty().WithMessage("Url is required.")
+                .Length(10, 150).WithMessage("Url should be between 10 and 150 characters.");
+        });
 
     }
 }

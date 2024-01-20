@@ -5,4 +5,4 @@ using MediatR;
 
 namespace FinalCase.Business.Features.Documents.Commands.CreateDocument;
 
-public record CreateDocumentCommand(DocumentRequest Model) : IRequest<ApiResponse<DocumentResponse>>;
+public record CreateDocumentCommand(int InsertUserId, DocumentRequest Model) : IRequest<ApiResponse<DocumentResponse>>;

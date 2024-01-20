@@ -1,4 +1,5 @@
-﻿using FinalCase.Base.Response;
+﻿using FinalCase.Api.Helpers;
+using FinalCase.Base.Response;
 using FinalCase.Business.Features.PaymentMethods.Commands.Create;
 using FinalCase.Business.Features.PaymentMethods.Commands.Delete;
 using FinalCase.Business.Features.PaymentMethods.Commands.Update;
@@ -8,6 +9,7 @@ using FinalCase.Schema.Entity.Requests;
 using FinalCase.Schema.Entity.Responses;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace FinalCase.Api.Controllers;
 
@@ -35,14 +37,20 @@ public class PaymentMethodsController(IMediator mediator) : ControllerBase
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<PaymentMethodResponse>> CreatePaymentMethod(PaymentMethodRequest command)
     {
-        return await mediator.Send(new CreatePaymentMethodCommand(command));
+        if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int userId))
+            return new ApiResponse<PaymentMethodResponse>(false);
+
+        return await mediator.Send(new CreatePaymentMethodCommand(userId, command));
     }
 
     [HttpPut("{id:min(1)}")]
     //[Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> UpdatePaymentMethod(int id, PaymentMethodRequest command)
     {
-        return await mediator.Send(new UpdatePaymentMethodCommand(id, command));
+        if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int userId))
+            return new ApiResponse(false);
+
+        return await mediator.Send(new UpdatePaymentMethodCommand(userId, id, command));
     }
 
     [HttpDelete("{id:min(1)}")]

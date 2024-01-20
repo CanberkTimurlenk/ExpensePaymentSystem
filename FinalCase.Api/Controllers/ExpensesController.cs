@@ -53,6 +53,7 @@ public class ExpensesController(IMediator mediator) : ControllerBase
 
 
     [HttpPost]
+    [Authorize(Roles = Roles.Employee)]
     public async Task<ApiResponse<ExpenseResponse>> CreateExpense([FromBody] ExpenseRequest request)
     {
         if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int employeeId))
@@ -87,7 +88,10 @@ public class ExpensesController(IMediator mediator) : ControllerBase
     //[Authorize(Roles = $"{Roles.Admin},{Roles.Employee}")]
     public async Task<ApiResponse> UpdateExpense(int id, ExpenseRequest request)
     {
-        return await mediator.Send(new UpdateExpenseCommand(id, request));
+        if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int userId))
+            return new ApiResponse(false);
+
+        return await mediator.Send(new UpdateExpenseCommand(userId, id, request));
     }
 
     // Only for pending expenses

@@ -28,6 +28,8 @@ public class UpdateAdminCommandHandler(FinalCaseDbContext dbContext)
         employee.Firstname = request.Model.Firstname;
         employee.Lastname = request.Model.Lastname;
         employee.Email = request.Model.Email;
+        employee.UpdateDate = DateTime.Now;
+        employee.UpdateUserId = request.UpdaterId;
 
         employee.Password = Md5Extension.Create(request.Model.Password);
 

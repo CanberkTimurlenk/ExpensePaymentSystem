@@ -23,6 +23,9 @@ public class UpdateExpenseCategoryCommandHandler(FinalCaseDbContext dbContext, I
         // since the request is only includes the part of the model that needs to be updated (name,desc)
         // directly map the request to the entity
 
+        expenseCategory.UpdateDate = DateTime.Now;
+        expenseCategory.UpdateUserId = request.UpdaterId;
+
         await dbContext.SaveChangesAsync(cancellationToken);
         return new ApiResponse();
     }

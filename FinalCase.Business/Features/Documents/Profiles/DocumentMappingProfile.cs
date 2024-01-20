@@ -8,11 +8,12 @@ public class DocumentMappingProfile : Profile
 {
     public DocumentMappingProfile()
     {
-        CreateMap<DocumentRequest, Document>();
 
+        CreateMap<DocumentRequest, Document>();            
 
         CreateMap<Document, DocumentResponse>()
             .ForMember(d => d.EmployeeDescription, opt => opt.MapFrom(src => src.Description));
+
 
     }
 

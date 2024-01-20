@@ -19,6 +19,9 @@ public class CreateDocumentCommandHandler(FinalCaseDbContext dbContext, IMapper 
 
         var document = mapper.Map<Document>(request.Model);
 
+        document.InsertDate = DateTime.Now;
+        document.InsertUserId = request.InsertUserId;
+
         await dbContext.Documents.AddAsync(document, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
 

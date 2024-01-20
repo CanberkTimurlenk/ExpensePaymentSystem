@@ -23,6 +23,9 @@ public class UpdatePaymentMethodCommandHandler(FinalCaseDbContext dbContext, IMa
         mapper.Map(request.Model, paymentMethod);
         // Model includes two properties, mapper maps all of them (name,desc)
 
+        paymentMethod.UpdateDate = DateTime.Now;
+        paymentMethod.UpdateUserId = request.UpdaterId;
+
         await dbContext.SaveChangesAsync(cancellationToken);
         return new ApiResponse();
     }
