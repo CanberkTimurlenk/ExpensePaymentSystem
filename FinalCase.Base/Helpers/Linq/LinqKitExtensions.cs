@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 
 namespace FinalCase.Base.Helpers.Linq;
 
-public static class ExpressionStarterExtensions
+public static class LinqKitExtensions
 {
     /// <summary>
     /// Adds a condition to the specified predicate based on the given boolean condition.

@@ -29,12 +29,21 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, INotifi
     public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> Handle(ApproveExpensesCommand request, CancellationToken cancellationToken)
     {
         var expenses = await GetExpenses(request, cancellationToken);
+
+        List<string> errors =
+            [
+                CheckIfNotFound(request, expenses), // checks if the expense not found
+                CheckIfAlreadyApprovedOrRejected(expenses), // check if the expense is already done (approved or rejected)
+            ];
+
+        var errorMessage = string.Join("-", errors.Where(s => !string.IsNullOrEmpty(s)));
+        // if the error message is not null or empty then join it with '-'
+        // in the front end, the message could be splitted with '-' character and used.
+
+        if (!string.IsNullOrEmpty(errorMessage))
+            return new ApiResponse<IEnumerable<ExpenseResponse>>(errorMessage); // returns the error message if exists
+
         expenses.ForEach(e => e.Status = ExpenseStatus.Approved); // Change the status of the expenses to Approved.
-
-
-        if (expenses.Any(e => e.Status == ExpenseStatus.Approved)) // approved expense can not be approved again.
-            return new ApiResponse<IEnumerable<ExpenseResponse>>(ExpenseMessages.ExpenseAlreadyApprovedError);
-
 
         foreach (var item in expenses)
         {
@@ -66,7 +75,6 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, INotifi
             .Include(e => e.Documents)
             .Where(e => expenseIds.Contains(e.Id)) // If the current value of the e.Id exists in the expenseIds list, select the expense.
             .ToListAsync(cancellationToken);
-
     }
 
     /// <summary>
@@ -81,7 +89,7 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, INotifi
             var outgoingPaymentRequest = new OutgoingPaymentRequest
             {
                 Amount = payment.Amount,
-                Description = payment.Description,
+                Description = payment.Id.ToString(),
                 ReceiverIban = payment.ReceiverIban,
                 ReceiverName = payment.ReceiverName
             };// Instead of mapping a single object with AutoMapper in each iteration,
@@ -97,5 +105,46 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, INotifi
 
             PaymentJobs.SendPaymentRequest(outgoingPaymentRequest, email, notificationService, cancellationToken);
         }
+    }
+
+    /// <summary>
+    /// Checks if the expenses are not found in the db.
+    /// </summary>
+    /// <param name="request">The request</param>
+    /// <param name="expenses">The expenses to check (retrieved from the db)</param>
+    /// <returns>A set of ids with ExpenseToApprovedNotFoundError Message</returns>
+    public static string CheckIfNotFound(ApproveExpensesCommand request, IEnumerable<Expense> expenses)
+    {
+        var expenseIdsInRequest = request.ExpenseIdsToApprove.Select(r => r.Id); // ids from the request.
+        var expenseIdsInDb = expenses.Select(e => e.Id); // ids from the db.
+
+        var notFoundIds = expenseIdsInRequest.Except(expenseIdsInDb); // the ids that are not found in the db, but exist in the request.
+
+        if (notFoundIds.Any())
+        {
+            var ids = string.Join(", ", notFoundIds);
+            return string.Format(ExpenseMessages.ExpenseToApprovedNotFoundError, ids);
+        }
+        return null;
+    }
+
+
+    /// <summary>
+    /// Checks if the expenses are already approved.
+    /// </summary>
+    /// <param name="expenses">The expenses to check (retrieved from the db)</param>
+    /// <returns>A set of ids with ExpenseAlreadyApprovedError Message</returns>
+    public static string CheckIfAlreadyApprovedOrRejected(IEnumerable<Expense> expenses)
+    {
+        var alreadyApproveds = expenses.Where(e => e.Status == ExpenseStatus.Approved || e.Status == ExpenseStatus.Rejected);
+
+        if (alreadyApproveds.Any()) // approved expense can not be approved again.
+        {
+            var idList = alreadyApproveds.Select(e => e.Id);
+            var ids = string.Join(", ", idList);
+
+            return string.Format(ExpenseMessages.ExpenseAlreadyApprovedError, ids);
+        }
+        return null;
     }
 }

@@ -15,9 +15,12 @@ public static class EmailSender
             Credentials = new NetworkCredential(config["EmailAddress"], config["Password"])
         };
 
-        using var mail = new MailMessage(config["EmailAddress"], email.To, email.Subject, email.Body) { IsBodyHtml = true };
 
-        mail.To.Add(new MailAddress(email.To));
+
+        using var mail = new MailMessage { From = new MailAddress(config["EmailAddress"]), Subject = email.Subject, Body = email.Body, IsBodyHtml = true };
+
+        foreach (var item in email.To)
+            mail.To.Add(new MailAddress(item));
 
         smtp.Send(mail);
     }

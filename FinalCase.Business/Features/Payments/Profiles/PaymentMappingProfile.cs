@@ -15,13 +15,8 @@ public class PaymentMappingProfile : Profile
         CreateMap<Payment, PaymentResponse>()
             .ForMember(dest => dest.EmployeeExpenseDescription, opt => opt.MapFrom(src => src.Expense.EmployeeDescription))
             .ForMember(dest => dest.PaymentMethodId, opt => opt.MapFrom(src => src.PaymentMethodId))
-            .ForMember(dest => dest.PaymentMethodName, opt => opt.MapFrom(src => src.PaymentMethod.Name))
-            .ForMember(dest => dest.PaymentDescription, opt => opt.MapFrom(src => src.Description));
+            .ForMember(dest => dest.PaymentMethodName, opt => opt.MapFrom(src => src.PaymentMethod.Name));
 
-        CreateMap<PaymentRequest, Payment>()
-            .ForMember(dest => dest.Description, opt => opt.MapFrom(src => $"{src.EmployeeId},{src.ExpenseId}"));
-
-
-
+        CreateMap<PaymentRequest, Payment>();
     }
 }

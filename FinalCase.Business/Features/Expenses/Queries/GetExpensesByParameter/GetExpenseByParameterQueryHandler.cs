@@ -5,7 +5,7 @@ using MediatR;
 using LinqKit;
 using FinalCase.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-using static FinalCase.Base.Helpers.Linq.ExpressionStarterExtensions;
+using static FinalCase.Base.Helpers.Linq.LinqKitExtensions;
 using FinalCase.Schema.Entity.Responses;
 using AutoMapper.QueryableExtensions;
 

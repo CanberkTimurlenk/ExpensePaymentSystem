@@ -30,6 +30,21 @@ public static class DapperExecutor
     }
 
     /// <summary>
+    /// Executes a stored procedure asynchronously.
+    /// </summary>    
+    /// <param name="storedProcedure">The stored procedure const</param>
+    /// <param name="parameters">The query parameters</param>
+    /// <param name="connectionString">The connection string</param>
+    /// <param name="cancellationToken">Cancellation Token</param>    
+    public async static Task ExecuteStoredProcedureAsync(string storedProcedure, DynamicParameters parameters, string connectionString, CancellationToken cancellationToken = default)
+    {
+        await using var connection = new SqlConnection(connectionString);
+        await connection.OpenAsync(cancellationToken);
+
+        await connection.ExecuteAsync(storedProcedure, parameters, commandType: CommandType.StoredProcedure);
+    }
+
+    /// <summary>
     /// Executes SQL query against a view asynchronously.
     /// </summary>
     /// <typeparam name="T">The type to be filled with the view results.</typeparam>

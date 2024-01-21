@@ -3,9 +3,7 @@ using FinalCase.Data.Enums;
 
 namespace FinalCase.Data.Entities;
 public class Expense : BaseEntityWithId
-{
-    // Red olan talepler için bir açıklama alanı girişi sağlanmalı
-    // ve talep sahibi masraf talebinin neden red olduğunu görebilmeli.    
+{    
     public string? EmployeeDescription { get; set; } // employee could be add description
     public string? AdminDescription { get; set; } // admin could be add description such as the rejection reason
     public decimal Amount { get; set; }

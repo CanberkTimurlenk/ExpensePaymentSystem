@@ -14,8 +14,7 @@ public class ExpenseResponse : BaseResponse
     public string CategoryName { get; set; }
     public string CategoryDescription { get; set; }
     public string ExpenseStatus { get; set; } // enum will be converted to string
-    public int CreatorEmployeeId { get; set; } // just includes the creator employee id
-    // for more information about the creator employee, we need to send another request with the id    
+    public int CreatorEmployeeId { get; set; } 
     public int MethodId { get; set; }
     public string MethodName { get; set; }
     public string MethodDescription { get; set; }

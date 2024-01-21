@@ -4,7 +4,6 @@ using FluentValidation;
 namespace FinalCase.Business.Features.Validations.SchemaValidators;
 public class ApplicationUserRequestValidator : AbstractValidator<ApplicationUserRequest>
 {
-    const string passwordRegex = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$";
 
     public ApplicationUserRequestValidator()
     {
@@ -23,8 +22,8 @@ public class ApplicationUserRequestValidator : AbstractValidator<ApplicationUser
 
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Password is required.")
-            .Matches(passwordRegex).WithMessage(" Minimum eight characters, at least one upper case English letter, " +
-            "one lower case English letter, one number and one special character ");
+            .Matches(Regex.PasswordRegex).WithMessage(" Minimum: eight characters, one upper case letter, " +
+            "one lower case letter, one number and one special character ");
 
         RuleFor(x => x.DateOfBirth)
             .NotEmpty().WithMessage("Date of birth is required.")

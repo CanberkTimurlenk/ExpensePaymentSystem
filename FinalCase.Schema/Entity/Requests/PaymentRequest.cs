@@ -1,4 +1,5 @@
 ﻿using FinalCase.Base.Schema;
+using System.Text.Json.Serialization;
 
 namespace FinalCase.Schema.Entity.Responses;
 
@@ -9,6 +10,8 @@ namespace FinalCase.Schema.Entity.Responses;
 /// </summary>
 public class PaymentRequest : BaseResponse
 {
+    [JsonIgnore]
+    public int Id { get; set; }
     public decimal Amount { get; set; }
     public string ReceiverIban { get; set; }
     public string ReceiverName { get; set; }

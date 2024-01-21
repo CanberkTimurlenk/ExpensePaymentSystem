@@ -24,6 +24,7 @@ builder.Host.UseSerilog();
 Log.Logger = new LoggerConfiguration().ReadFrom.Configuration(builder.Configuration).CreateLogger();
 
 // Extensions
+builder.Services.RegisterServices();
 builder.Services.ConfigureSqlContext(builder.Configuration);
 builder.Services.AddJwtConfiguration(builder.Configuration);
 builder.Services.AddSwagger();
@@ -31,7 +32,6 @@ builder.Services.AddMediatR();
 builder.Services.AddAutoMapper(typeof(AssemblyReference).Assembly);
 builder.Services.AddHangfire(builder.Configuration);
 builder.Services.AddFluentValidation();
-builder.Services.RegisterServices();
 builder.Services.ConfigureRedis(builder.Configuration);
 
 var app = builder.Build();

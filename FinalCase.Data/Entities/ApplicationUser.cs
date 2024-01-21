@@ -12,8 +12,6 @@ public class ApplicationUser : BaseEntityWithId
     public DateTime LastActivityDate { get; set; }
     public string? Iban { get; set; }
     public string Role { get; set; }
-    //public string PhoneNumber { get; set; } TODO
-
     public virtual ICollection<Expense>? CreatedExpenses { get; set; }
     public virtual ICollection<Payment>? Payments { get; set; } // ExpenseStatus = Approved and bank transfer is done
 }

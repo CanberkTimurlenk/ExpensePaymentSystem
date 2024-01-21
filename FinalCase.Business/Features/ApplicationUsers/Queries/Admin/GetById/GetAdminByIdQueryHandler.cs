@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using FinalCase.Base.Helpers.Linq;
 using FinalCase.Base.Response;
 using FinalCase.Business.Features.ApplicationUsers.Constants;
 using FinalCase.Business.Features.Authentication.Constants.Roles;
@@ -19,16 +20,14 @@ public class GetAdminByIdQueryHandler(FinalCaseDbContext dbContext, IMapper mapp
 
     public async Task<ApiResponse<AdminResponse>> Handle(GetAdminByIdQuery request, CancellationToken cancellationToken)
     {
-        var predicate = PredicateBuilder.New<ApplicationUser>();
+        var predicate = PredicateBuilder.New<ApplicationUser>(true)
+            .AddIf(!request.IncludeDeleted, a => a.IsActive);
 
-        predicate = predicate.And(u => u.Id.Equals(request.Id));
-        predicate = predicate.And(u => u.Role.Equals(Roles.Admin));
+        predicate.And(a => a.Role.Equals(Roles.Admin));
+        predicate.And(u => u.Id.Equals(request.Id));
 
         var query = dbContext.ApplicationUsers
             .AsNoTracking();
-
-        if (request.IncludeDeleted)
-            query = query.IgnoreQueryFilters();
 
         var user = await query.SingleOrDefaultAsync(predicate, cancellationToken);
 

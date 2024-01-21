@@ -16,7 +16,7 @@ public class UpdatePaymentMethodCommandHandler(FinalCaseDbContext dbContext, IMa
     {
         var paymentMethod = await dbContext.FindAsync<PaymentMethod>(request.Id, cancellationToken);
 
-        if (paymentMethod == null)
+        if (paymentMethod is null || !paymentMethod.IsActive)
             return new ApiResponse(PaymentMethodMessages.PaymentMethodNotFound);
 
         request.Model.Id = paymentMethod.Id;

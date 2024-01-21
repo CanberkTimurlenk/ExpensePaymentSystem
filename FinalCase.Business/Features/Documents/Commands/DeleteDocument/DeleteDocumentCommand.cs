@@ -2,4 +2,4 @@
 using MediatR;
 
 namespace FinalCase.Business.Features.Documents.Commands.DeleteDocument;
-public record DeleteDocumentCommand(int Id) : IRequest<ApiResponse>;
+public record DeleteDocumentCommand(int UserId, string Role, int Id) : IRequest<ApiResponse>;

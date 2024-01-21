@@ -13,7 +13,7 @@ public class UpdatePaymentCommandHandler(FinalCaseDbContext dbContext)
     public async Task<ApiResponse> Handle(UpdatePaymentCommand request, CancellationToken cancellationToken)
     {
         var payment = await dbContext
-            .FindAsync<Payment>(new object[] { request.EmployeeId, request.ExpenseId }, cancellationToken);
+            .FindAsync<Payment>(request.Id, cancellationToken);
 
         if (payment == null)
             return new ApiResponse(PaymentMessages.PaymentNotFound);
@@ -30,8 +30,8 @@ public class UpdatePaymentCommandHandler(FinalCaseDbContext dbContext)
         payment.PaymentMethodName = await dbContext.PaymentMethods
             .Where(x => x.Id == payment.PaymentMethodId)
             .Select(x => x.Name)
-            .FirstOrDefaultAsync(cancellationToken);
-            
+            .FirstOrDefaultAsync(cancellationToken) ?? string.Empty; // payment method id checks in the validation
+
 
         await dbContext.SaveChangesAsync(cancellationToken);
         return new ApiResponse();

@@ -4,4 +4,4 @@ using MediatR;
 
 namespace FinalCase.Business.Features.Payments.Queries.GetById;
 
-public record GetPaymentByIdQuery(int EmployeeId, int ExpenseId) : IRequest<ApiResponse<PaymentResponse>>;
+public record GetPaymentByIdQuery(int Id) : IRequest<ApiResponse<PaymentResponse>>;

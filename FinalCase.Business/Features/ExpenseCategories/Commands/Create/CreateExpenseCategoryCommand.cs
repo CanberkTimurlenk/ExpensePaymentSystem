@@ -11,5 +11,5 @@ public record CreateExpenseCategoryCommand(int InsertUserId, ExpenseCategoryRequ
 {
     public string? CacheKey => ExpenseCategoryCacheKeys.AllExpenseCategories;
 
-    public bool BypassCache => throw new NotImplementedException();
+    public bool BypassCache { get; }
 }

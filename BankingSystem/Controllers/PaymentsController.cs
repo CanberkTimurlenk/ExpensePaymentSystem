@@ -10,6 +10,7 @@ namespace BankingSystem.Controllers;
 public class PaymentsController(IConfiguration configuration) : ControllerBase
 {
     private readonly IConfiguration configuration = configuration;
+    private static int _id = 1;
 
     // Assumes the banking system has already authenticate our company
     // Our company's IBAN, name, etc. is already known by the banking system
@@ -22,9 +23,15 @@ public class PaymentsController(IConfiguration configuration) : ControllerBase
         if (string.IsNullOrWhiteSpace(json))
             json = "[]";
 
-        ICollection<OutgoingPaymentRequest> data = JsonSerializer.Deserialize<List<OutgoingPaymentRequest>>(json)!;
+        ICollection<OutgoingPaymentRequest> payments = JsonSerializer.Deserialize<List<OutgoingPaymentRequest>>(json)!;
 
-        JsonFile.Add(data, payment);
+        foreach (var item in payments)
+        {
+            item.Id = _id++;
+            item.Date = DateTime.Now;
+        }
+
+        JsonFile.Add(payments, payment);
 
         return Ok();
     }
@@ -32,7 +39,8 @@ public class PaymentsController(IConfiguration configuration) : ControllerBase
     [HttpPost("by-description")]
     public IActionResult GetByDescription([FromBody] string description)  // for security reasons the description added to body
     {
-        string json = System.IO.File.ReadAllText(configuration.GetValue<string>("paymentFile"));
+        using var streamReader = new StreamReader(configuration.GetValue<string>("paymentFile"));
+        string json = streamReader.ReadToEnd();
 
         if (string.IsNullOrWhiteSpace(json) || json == "[]")
             return NotFound();

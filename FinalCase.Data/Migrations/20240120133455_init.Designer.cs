@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinalCase.Data.Migrations
 {
     [DbContext(typeof(FinalCaseDbContext))]
-    [Migration("20240120083735_init")]
+    [Migration("20240120133455_init")]
     partial class init
     {
         /// <inheritdoc />
@@ -102,48 +102,48 @@ namespace FinalCase.Data.Migrations
                         {
                             Id = 1,
                             DateOfBirth = new DateTime(1985, 5, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "john.doe@example.com",
-                            Firstname = "John",
+                            Email = "tukenmez.kalem@company.com",
+                            Firstname = "tukenmez",
                             Iban = "TR777777777777777777777777",
                             InsertDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             InsertUserId = 3,
                             IsActive = true,
                             LastActivityDate = new DateTime(2024, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Lastname = "Doe",
+                            Lastname = "kalem",
                             Password = "ba394499b56b89fe5bda1338fcca6a04",
                             Role = "employee",
-                            Username = "johndoe"
+                            Username = "kalem"
                         },
                         new
                         {
                             Id = 2,
                             DateOfBirth = new DateTime(1990, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "alice.brown@example.com",
-                            Firstname = "Alice",
+                            Email = "masa@company.com",
+                            Firstname = "kırmızı",
                             Iban = "TR666666666666666666666666",
                             InsertDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             InsertUserId = 3,
                             IsActive = true,
                             LastActivityDate = new DateTime(2024, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Lastname = "Brown",
+                            Lastname = "masa",
                             Password = "14e1b600b1fd579f47433b88e8d85291",
                             Role = "employee",
-                            Username = "alicebrown"
+                            Username = "kirmizimasa"
                         },
                         new
                         {
                             Id = 3,
                             DateOfBirth = new DateTime(1990, 3, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Email = "example@mail.com",
-                            Firstname = "admin",
+                            Email = "yonetici@admin.com",
+                            Firstname = "sirket",
                             InsertDate = new DateTime(2023, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             InsertUserId = 3,
                             IsActive = true,
                             LastActivityDate = new DateTime(2024, 1, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Lastname = "user",
+                            Lastname = "yoneticisi",
                             Password = "71b6551474932fda956136e87886017c",
                             Role = "admin",
-                            Username = "adminnn"
+                            Username = "yonetici"
                         });
                 });
 
@@ -202,35 +202,35 @@ namespace FinalCase.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Receipt for business trip expenses",
+                            Description = "fatura",
                             ExpenseId = 1,
                             InsertDate = new DateTime(2024, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             InsertUserId = 1,
                             IsActive = false,
-                            Name = "Business Trip Receipt",
-                            Url = "/documents/business_trip_receipt.pdf"
+                            Name = "Is seyahati faturasi",
+                            Url = "ornekurl"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "Invoice for office supplies",
+                            Description = "fatura ektedir",
                             ExpenseId = 2,
                             InsertDate = new DateTime(2024, 1, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            InsertUserId = 2,
+                            InsertUserId = 1,
                             IsActive = false,
-                            Name = "Office Supplies Invoice",
-                            Url = "/documents/office_supplies_invoice.pdf"
+                            Name = "fatura",
+                            Url = "pdf.com"
                         },
                         new
                         {
                             Id = 3,
-                            Description = "Photos from the team dinner",
+                            Description = "fisi ekte bulabilirsiniz",
                             ExpenseId = 3,
                             InsertDate = new DateTime(2024, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            InsertUserId = 1,
+                            InsertUserId = 2,
                             IsActive = false,
-                            Name = "Team Dinner Photos",
-                            Url = "/documents/team_dinner_photos.zip"
+                            Name = "Yemek ücretine ait fis",
+                            Url = "fis.com"
                         });
                 });
 
@@ -317,45 +317,47 @@ namespace FinalCase.Data.Migrations
                             CategoryId = 1,
                             CreatorEmployeeId = 1,
                             Date = new DateTime(2024, 1, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmployeeDescription = "Business trip to Germany",
+                            EmployeeDescription = "Bursaya is gezisi icin gitmistim",
                             InsertDate = new DateTime(2024, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             InsertUserId = 1,
                             IsActive = false,
-                            Location = "Frankfurt",
+                            Location = "Bursa",
                             PaymentMethodId = 1,
                             Status = 1
                         },
                         new
                         {
                             Id = 2,
-                            AdminDescription = "Approved by the manager",
+                            AdminDescription = "",
                             Amount = 75.30m,
                             CategoryId = 2,
                             CreatorEmployeeId = 2,
                             Date = new DateTime(2024, 1, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmployeeDescription = "Purchase of office supplies",
+                            EmployeeDescription = "Fotokopi cektirmem gerekti",
                             InsertDate = new DateTime(2024, 1, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             InsertUserId = 2,
                             IsActive = false,
-                            Location = "Office",
+                            Location = "ofis",
                             PaymentMethodId = 2,
                             Status = 2
                         },
                         new
                         {
                             Id = 3,
-                            AdminDescription = "Rejected due to policy violation",
+                            AdminDescription = "planlama yapilmadigindan reddedildi",
                             Amount = 200.75m,
                             CategoryId = 3,
-                            CreatorEmployeeId = 1,
+                            CreatorEmployeeId = 2,
                             Date = new DateTime(2024, 1, 3, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            EmployeeDescription = "Team dinner celebration",
+                            EmployeeDescription = "Ekip olarak yemege gittik",
                             InsertDate = new DateTime(2024, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             InsertUserId = 1,
                             IsActive = false,
-                            Location = "Local Restaurant",
+                            Location = "pizzaci",
                             PaymentMethodId = 3,
-                            Status = 3
+                            Status = 3,
+                            UpdateDate = new DateTime(2024, 1, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            UpdateUserId = 3
                         });
                 });
 
@@ -407,39 +409,39 @@ namespace FinalCase.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Expenses related to business trips",
+                            Description = "Is gezisindeki masraflar",
                             InsertDate = new DateTime(2024, 1, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             InsertUserId = 3,
                             IsActive = false,
-                            Name = "Business Trip"
+                            Name = "Is Gezisi"
                         },
                         new
                         {
                             Id = 2,
-                            Description = "Expenses for office supplies",
+                            Description = "Kirtasiye ihtiyaclarimiz",
                             InsertDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             InsertUserId = 3,
                             IsActive = false,
-                            Name = "Office Supplies"
+                            Name = "Kirtasiye Malzemeleri"
                         },
                         new
                         {
                             Id = 3,
-                            Description = "Expenses for team events",
+                            Description = "Yemege gidilmesi",
                             InsertDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             InsertUserId = 3,
                             IsActive = false,
-                            Name = "Team Events"
+                            Name = "Yemek"
                         });
                 });
 
             modelBuilder.Entity("FinalCase.Data.Entities.Payment", b =>
                 {
-                    b.Property<int>("EmployeeId")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("ExpenseId")
-                        .HasColumnType("int");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
@@ -447,9 +449,14 @@ namespace FinalCase.Data.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ExpenseId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("PaymentMethodId")
                         .HasColumnType("int");
@@ -466,51 +473,31 @@ namespace FinalCase.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("EmployeeId", "ExpenseId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ExpenseId")
                         .IsUnique();
 
                     b.HasIndex("PaymentMethodId");
 
+                    b.HasIndex("EmployeeId", "ExpenseId")
+                        .IsUnique();
+
                     b.ToTable("Payments");
 
                     b.HasData(
                         new
                         {
-                            EmployeeId = 1,
-                            ExpenseId = 1,
+                            Id = 1,
                             Amount = 100m,
                             Date = new DateTime(2024, 1, 16, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Business trip expenses payment",
+                            EmployeeId = 1,
+                            ExpenseId = 1,
+                            IsCompleted = true,
                             PaymentMethodId = 1,
                             PaymentMethodName = "Credit Card",
                             ReceiverIban = "TR777777777777777777777777",
-                            ReceiverName = "John Doe"
-                        },
-                        new
-                        {
-                            EmployeeId = 2,
-                            ExpenseId = 2,
-                            Amount = 75.30m,
-                            Date = new DateTime(2024, 1, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Office supplies payment",
-                            PaymentMethodId = 2,
-                            PaymentMethodName = "Bank Transfer",
-                            ReceiverIban = "TR666666666666666666666666",
-                            ReceiverName = "Alice Brown"
-                        },
-                        new
-                        {
-                            EmployeeId = 1,
-                            ExpenseId = 3,
-                            Amount = 200.75m,
-                            Date = new DateTime(2024, 1, 4, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Team dinner payment",
-                            PaymentMethodId = 3,
-                            PaymentMethodName = "Cash",
-                            ReceiverIban = "TR777777777777777777777777",
-                            ReceiverName = "John Doe"
+                            ReceiverName = "Tukenmez Kalem"
                         });
                 });
 
@@ -562,7 +549,7 @@ namespace FinalCase.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "Payment via credit card",
+                            Description = "kredi karti ile yapilan odeme",
                             InsertDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             InsertUserId = 3,
                             IsActive = false,
@@ -571,7 +558,7 @@ namespace FinalCase.Data.Migrations
                         new
                         {
                             Id = 2,
-                            Description = "Payment via bank transfer",
+                            Description = "Banka transferi",
                             InsertDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             InsertUserId = 3,
                             IsActive = false,
@@ -580,7 +567,7 @@ namespace FinalCase.Data.Migrations
                         new
                         {
                             Id = 3,
-                            Description = "Payment in cash",
+                            Description = "Nakit",
                             InsertDate = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             InsertUserId = 3,
                             IsActive = false,

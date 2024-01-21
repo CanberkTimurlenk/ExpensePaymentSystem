@@ -25,6 +25,7 @@ public class CreateEmployeeCommandHandler(FinalCaseDbContext dbContext, IMapper 
         user.Role = Roles.Employee;
         user.InsertDate = DateTime.Now;
         user.InsertUserId = request.InsertUserId;
+        user.IsActive = true;
 
         await dbContext.ApplicationUsers.AddAsync(user, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);

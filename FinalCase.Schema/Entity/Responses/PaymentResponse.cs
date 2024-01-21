@@ -9,8 +9,9 @@ namespace FinalCase.Schema.Entity.Responses;
 /// </summary>
 public class PaymentResponse : BaseResponse
 {
+    public int Id { get; set; }
     public decimal Amount { get; set; }
-    public string PaymentDescription { get; set; } // will be the payment desc to send banking system "EmployeeId,ExpenseId"
+    public string PaymentDescription { get; set; } // will be the payment desc to send banking system "PaymentId"
     public string ReceiverIban { get; set; }
     public string ReceiverName { get; set; }
     public DateTime Date { get; set; }

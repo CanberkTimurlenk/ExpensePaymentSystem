@@ -27,10 +27,8 @@ public class GetMonthlyExpenseReportForEmployeeQueryHandler(IConfiguration confi
         parameters.Add("@EndDate", new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(1).AddDays(-1).AddMinutes(1439).AddSeconds(59),
             DbType.DateTime); // Last day of the month 23:59:59
 
-        return await DapperExecutor.ExecuteStoredProcedureAsync<EmployeeExpenseReport>(
-                        StoredProcedures.GetEmployeeExpensesByDateRange,
-                        parameters,
-                        configuration.GetConnectionString(DbKeys.SqlServer),
-                        cancellationToken);
+        var connStr = configuration.GetConnectionString(DbKeys.SqlServer);
+
+        return await DapperReportHelper.GetEmployeeExpenseReports(connStr, StoredProcedures.GetEmployeeExpensesByDateRange, parameters, cancellationToken);
     }
 }

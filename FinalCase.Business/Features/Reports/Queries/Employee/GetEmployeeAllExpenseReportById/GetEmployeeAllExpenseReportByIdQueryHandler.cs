@@ -8,6 +8,8 @@ using FinalCase.Base.Response;
 using FinalCase.Data.Constants.Storage;
 using FinalCase.Data.Constants.DbObjects;
 using FinalCase.BackgroundJobs.MicroOrm.Dapper;
+using System.Data.SqlClient;
+using FinalCase.Data.Entities;
 
 namespace FinalCase.Business.Features.Reports.Queries.Employee.GetEmployeeAllExpenseReportById;
 
@@ -23,20 +25,13 @@ public class GetEmployeeAllExpenseReportByIdQueryHandler(IConfiguration configur
     }
 
     private async Task<IEnumerable<EmployeeExpenseReport>> GetEmployeeAllExpensesByUserId(int id, CancellationToken cancellationToken)
-    {
+    {        
+        var connStr = configuration.GetConnectionString(DbKeys.SqlServer);
+
         var parameters = new DynamicParameters();
         parameters.Add("@UserId", id, DbType.Int32);
 
-        var expenseReports = await DapperExecutor.ExecuteStoredProcedureAsync<EmployeeExpenseReport>(
-                StoredProcedures.GetEmployeeAllExpenses,
-                parameters,
-                configuration.GetConnectionString(DbKeys.SqlServer),
-                cancellationToken);
+        return await DapperReportHelper.GetEmployeeExpenseReports(connStr, StoredProcedures.GetEmployeeAllExpenses, parameters, cancellationToken);
 
-        foreach (var report in expenseReports)
-            report.ExpenseStatus = Enum.GetName(typeof(ExpenseStatus), int.Parse(report.ExpenseStatus))!;
-        // expense status is not not nullable
-
-        return expenseReports;
     }
 }

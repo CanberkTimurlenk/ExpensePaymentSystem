@@ -2,14 +2,10 @@
 namespace FinalCase.Data.Entities;
 public class Payment
 {
-    public int Id { get; set; }
     // this class used to be created a outgoing payment request to the banking system
     // and also repoting purposes
+    public int Id { get; set; }
     public decimal Amount { get; set; }
-    public string Description { get; set; } // will be the payment desc to send banking system "EmployeeId,ExpenseId"
-                                            // for later retrieval from the banking system through its API.  
-                                            // assumed that the banking system provides us with an API for obtaining specific limited information about our payments,
-                                            // such as description and amount.
     public string ReceiverIban { get; set; }
     public string ReceiverName { get; set; }
     public string PaymentMethodName { get; set; }
@@ -20,4 +16,5 @@ public class Payment
     public Expense Expense { get; set; }
     public int PaymentMethodId { get; set; }
     public PaymentMethod PaymentMethod { get; set; }
+    public bool IsCompleted { get; set; }
 }

@@ -16,7 +16,7 @@ public class UpdateExpenseCategoryCommandHandler(FinalCaseDbContext dbContext, I
     {
         var expenseCategory = await dbContext.FindAsync<ExpenseCategory>(request.Id, cancellationToken);
 
-        if (expenseCategory == null)
+        if (expenseCategory == null || !expenseCategory.IsActive)
             return new ApiResponse(ExpenseCategoryMessages.ExpenseCategoryNotFound);
 
         mapper.Map(request.Request, expenseCategory);

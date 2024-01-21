@@ -1,4 +1,5 @@
 ﻿using FinalCase.Base.Response;
+using FinalCase.Business.Features.Authentication.Constants.Roles;
 using FinalCase.Business.Features.Payments.Commands.Create;
 using FinalCase.Business.Features.Payments.Commands.Delete;
 using FinalCase.Business.Features.Payments.Commands.Update;
@@ -6,6 +7,7 @@ using FinalCase.Business.Features.Payments.Queries.GetAll;
 using FinalCase.Business.Features.Payments.Queries.GetById;
 using FinalCase.Schema.Entity.Responses;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinalCase.Api.Controllers;
@@ -23,37 +25,35 @@ public class PaymentsController(IMediator mediator) : ControllerBase
         return await mediator.Send(new GetAllPaymentsQuery());
     }
 
-    // Composite PK
-    [HttpGet("{employee-id:min(1)}/{expense-id:min(1)}")]
+
+    [HttpGet("{id:min(1)}")]
     //[Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse<PaymentResponse>> GetPaymentById([FromRoute(Name = "employee-id")] int employeeId,
-        [FromRoute(Name = "expense-id")] int expenseId)
+    public async Task<ApiResponse<PaymentResponse>> GetPaymentById(int id)
     {
-        return await mediator.Send(new GetPaymentByIdQuery(employeeId, expenseId));
+        return await mediator.Send(new GetPaymentByIdQuery(id));
     }
 
     [HttpPost]
-    //[Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<PaymentResponse>> CreatePayment([FromBody] PaymentRequest model)
     {
         return await mediator.Send(new CreatePaymentCommand(model));
     }
 
-    // Composite PK
-    [HttpPut("{employee-id:min(1)}/{expense-id:min(1)}")]
-    //[Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse> UpdatePayment([FromRoute(Name = "employee-id")] int employeeId,
-        [FromRoute(Name = "expense-id")] int expenseId, [FromBody] PaymentRequest request)
+
+    [HttpPut("{id:min(1)}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<ApiResponse> UpdatePayment(int id, [FromBody] PaymentRequest request)
     {
-        return await mediator.Send(new UpdatePaymentCommand(employeeId, expenseId, request));
+        return await mediator.Send(new UpdatePaymentCommand(id, request));
     }
 
-    // Composite PK
-    [HttpDelete("{employee-id:min(1)}/{expense-id:min(1)}")]
-    //[Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse> DeletePayment([FromRoute(Name = "employee-id")] int employeeId,
-        [FromRoute(Name = "expense-id")] int expenseId)
+
+    [HttpDelete("{id:min(1)}")]
+    // Since deleting payments violates the business rules, 'IsActive = false' in the handler is commented out.
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<ApiResponse> DeletePayment(int id)
     {
-        return await mediator.Send(new DeletePaymentCommand(employeeId, expenseId));
+        return await mediator.Send(new DeletePaymentCommand(id));
     }
 }

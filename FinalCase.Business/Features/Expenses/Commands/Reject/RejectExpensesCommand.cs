@@ -9,7 +9,7 @@ namespace FinalCase.Business.Features.Expenses.Commands.Reject;
 /// </summary>
 /// <param name="ReviewerAdminId">The identifier of the admin who is rejecting the expenses.</param>
 /// <param name="Model">The collection of expense requests to be rejected.</param>
-public record RejectExpensesCommand(int ReviewerAdminId, ICollection<RejectExpensesRequest> Model) : IRequest<ApiResponse<IEnumerable<ExpenseResponse>>>;
+public record RejectExpensesCommand(int ReviewerAdminId, ICollection<RejectExpensesRequest> Model) : IRequest<ApiResponse>;
 
 /// <summary>
 /// Represents a request to reject a single expense.

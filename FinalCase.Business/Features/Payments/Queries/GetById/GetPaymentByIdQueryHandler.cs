@@ -19,11 +19,11 @@ public class GetPaymentByIdQueryHandler(FinalCaseDbContext dbContext, IMapper ma
     {
         var paymentResponse = await dbContext.Payments
             .AsNoTracking()
+            .Where(p => p.Id == request.Id)
             .ProjectTo<PaymentResponse>(mapper.ConfigurationProvider)  // ProjectTo is an extension method from AutoMapper.QueryableExtensions
                                                                        // that allows to project the query results directly to the desired type.
                                                                        // Unnecessary properties are not loaded.
-            .FirstOrDefaultAsync(p => p.EmployeeId.Equals(request.EmployeeId)
-                    && p.ExpenseId.Equals(request.ExpenseId), cancellationToken);
+            .FirstOrDefaultAsync(cancellationToken);
 
         if (paymentResponse == null)
             return new ApiResponse<PaymentResponse>(PaymentMessages.PaymentNotFound);

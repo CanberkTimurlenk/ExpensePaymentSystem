@@ -23,6 +23,11 @@ public class PaymentRequestValidator : AbstractValidator<PaymentRequest>
             .LessThanOrEqualTo(DateTime.Now).WithMessage("Date should not be in the future.")
             .NotEmpty().WithMessage("Date is required.");
 
+        RuleFor(x => x.ReceiverIban)
+            .NotEmpty().WithMessage("IBAN is required.")
+            .Length(26).WithMessage("IBAN must be 26 characters.")
+            .Matches("^TR").WithMessage("Iban must be starts with 'TR' ");
+
         RuleFor(x => x.EmployeeId)
             .NotEmpty().WithMessage("Employee ID is required.");
 
@@ -32,5 +37,4 @@ public class PaymentRequestValidator : AbstractValidator<PaymentRequest>
         RuleFor(x => x.PaymentMethodId)
             .NotEmpty().WithMessage("Payment method ID is required.");
     }
-
 }

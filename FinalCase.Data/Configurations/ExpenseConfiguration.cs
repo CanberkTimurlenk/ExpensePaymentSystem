@@ -22,6 +22,7 @@ public class ExpenseConfiguration : BaseEntityTypeConfiguration<Expense>
         builder.Property(x => x.PaymentMethodId).IsRequired();
         builder.Property(x => x.CreatorEmployeeId).IsRequired();
         builder.Property(x => x.CategoryId).IsRequired();
+        builder.Property(x => x.IsActive).IsRequired().HasDefaultValue(true);
 
         builder.HasOne(x => x.Category).WithMany(x => x.Expenses).HasForeignKey(x => x.CategoryId);
         builder.HasOne(x => x.CreatorEmployee).WithMany(x => x.CreatedExpenses).HasForeignKey(x => x.CreatorEmployeeId);

@@ -19,13 +19,11 @@ public class GetDailyExpenseReportForEmployeeQueryHandler(IConfiguration configu
         parameters.Add("@StartDate", DateTime.Now.Date.Date, DbType.DateTime); // Today's date with time set to 00:00:00
         parameters.Add("@EndDate", DateTime.Now.Date.AddMinutes(1439).AddSeconds(59), DbType.DateTime); // Today's date with time set to 23:59:59
 
-        
-        var dailyExpenses = await DapperExecutor.ExecuteStoredProcedureAsync<EmployeeExpenseReport>(
-                StoredProcedures.GetEmployeeExpensesByDateRange,
-                parameters,
-                configuration.GetConnectionString(DbKeys.SqlServer),
-                cancellationToken);
+        var connStr = configuration.GetConnectionString(DbKeys.SqlServer);
 
-        return new ApiResponse<IEnumerable<EmployeeExpenseReport>>(dailyExpenses);
+
+        var result = await DapperReportHelper.GetEmployeeExpenseReports(connStr, StoredProcedures.GetEmployeeExpensesByDateRange, parameters, cancellationToken);
+
+        return new ApiResponse<IEnumerable<EmployeeExpenseReport>>(result);
     }
 }

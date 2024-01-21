@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace FinalCase.Data.Configurations.Common;
 
-public abstract class BaseEntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseEntity
+public class BaseEntityTypeConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseEntity
 {
     // The base configuration for all entities, which will be overridden by the child classes
     public virtual void Configure(EntityTypeBuilder<TEntity> builder)
@@ -15,5 +15,6 @@ public abstract class BaseEntityTypeConfiguration<TEntity> : IEntityTypeConfigur
         builder.Property(x => x.UpdateDate).IsRequired(false);
         builder.Property(x => x.UpdateUserId).IsRequired(false);
         builder.Property(x => x.IsActive).IsRequired(true).HasDefaultValue(true);
+               
     }
 }

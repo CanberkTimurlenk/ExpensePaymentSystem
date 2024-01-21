@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using FinalCase.Base.Response;
+using FinalCase.Business.Features.Documents.Constants;
 using FinalCase.Data.Contexts;
 using FinalCase.Schema.Entity.Responses;
 using MediatR;
@@ -17,10 +18,14 @@ public class GetDocumentByIdQueryHandler(FinalCaseDbContext dbContext, IMapper m
     {
         var document = await dbContext.Documents
                                 .Include(d => d.Expense)
+                                .Where(d => d.Id.Equals(request.Id))
                                 .ProjectTo<DocumentResponse>(mapper.ConfigurationProvider)
                                 .AsNoTracking() // Since the operation is readonly (query)
                                                 // we can use AsNoTracking to improve performance.
-                                .FirstOrDefaultAsync(d => d.Id.Equals(request.Id), cancellationToken);
+                                .FirstOrDefaultAsync(cancellationToken);
+
+        if (document == null)
+            return new ApiResponse<DocumentResponse>(DocumentMessages.DocumentNotFound);
 
         var response = mapper.Map<DocumentResponse>(document);
 

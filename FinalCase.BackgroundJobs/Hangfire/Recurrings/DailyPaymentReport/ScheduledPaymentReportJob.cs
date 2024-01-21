@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 using static FinalCase.BackgroundJobs.MicroOrm.Dapper.DapperExecutor;
 using FinalCase.Services.NotificationService;
+using FinalCase.Services.Queue;
 
 namespace FinalCase.BackgroundJobs.Hangfire.Recurrings.CreateReport;
 

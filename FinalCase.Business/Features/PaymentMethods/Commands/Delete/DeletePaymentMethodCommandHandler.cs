@@ -17,8 +17,11 @@ public class DeletePaymentMethodCommandHandler(FinalCaseDbContext dbContext)
     {
         var paymentMethod = await dbContext.FindAsync<PaymentMethod>(request.Id, cancellationToken);
 
-        if (paymentMethod is null)
+        if (paymentMethod?.IsActive != true)
             return new ApiResponse(PaymentMethodMessages.PaymentMethodNotFound);
+
+        if (dbContext.Expenses.Any(e => e.PaymentMethodId == paymentMethod.Id))
+            return new ApiResponse(PaymentMethodMessages.PaymentMethodExpenseDeleteRestricted);
 
         paymentMethod.IsActive = false;
         await dbContext.SaveChangesAsync(cancellationToken);

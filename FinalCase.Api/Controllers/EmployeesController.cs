@@ -12,73 +12,69 @@ using FinalCase.Schema.AppRoles.Requests;
 using FinalCase.Schema.AppRoles.Responses;
 using FinalCase.Business.Features.ApplicationUsers.Queries.GetAll;
 using FinalCase.Business.Features.ApplicationUsers.Queries.GetById;
-using FinalCase.Data.Enums;
-using FinalCase.Api.Helpers;
+using static FinalCase.Api.Helpers.ClaimsHelper;
 using System.Security.Claims;
 
-namespace FinalCase.Api.Controllers
+namespace FinalCase.Api.Controllers;
+
+/// <summary>
+/// The controller class for the role 'employee'.
+/// </summary>
+[Route("api/[controller]")]
+[ApiController]
+public class EmployeesController(IMediator mediator) : ControllerBase
 {
-    /// <summary>
-    /// The controller class for the role 'employee'.
-    /// </summary>
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EmployeesController(IMediator mediator) : ControllerBase
+    private readonly IMediator mediator = mediator;
+
+    [HttpGet]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<ApiResponse<IEnumerable<EmployeeResponse>>> GetAll(bool includeDeleted = false)
     {
-        private readonly IMediator mediator = mediator;
+        return await mediator.Send(new GetAllEmployeesQuery(includeDeleted));
+    }
 
-        [HttpGet]
-        [Authorize(Roles = Roles.Admin)]
-        public async Task<ApiResponse<IEnumerable<EmployeeResponse>>> GetAll(bool includeDeleted = false)
-        {
-            return await mediator.Send(new GetAllEmployeesQuery(includeDeleted));
-        }
-
-        [HttpGet("{id:min(1)}")]
-        [Authorize(Roles = Roles.Admin)]
-        public async Task<ApiResponse<EmployeeResponse>> GetById(int id, bool includeDeleted = false)
-        {
-            return await mediator.Send(new GetEmployeeByIdQuery(id, includeDeleted));
-        }
+    [HttpGet("{id:min(1)}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<ApiResponse<EmployeeResponse>> GetById(int id, bool includeDeleted = false)
+    {
+        return await mediator.Send(new GetEmployeeByIdQuery(id, includeDeleted));
+    }
 
 
-        [HttpGet("{id:min(1)}/expenses")] // EmployeeId is a constant defined in ControllerConstants.cs, 
-        [Authorize(Roles = Roles.Employee)]
-        [AuthorizeIdMatch]
-        //is extracted from the JWT token,
-        //but by adding it to the route, we are making the semantic structure of the URI more meaningful.        
-        public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> Get([FromRoute] int id, [FromQuery] GetExpensesQueryParameters parameters)
-        {
-            var operation = new GetExpensesByParameterQuery(id, parameters);
-            return await mediator.Send(operation);
+    [HttpGet("{id:min(1)}/expenses")] // EmployeeId is a constant defined in ControllerConstants.cs, 
+    [Authorize(Roles = Roles.Employee)]
+    [EmployeeRouteIdAuthorize]
+    //is extracted from the JWT token,
+    //but by adding it to the route, we are making the semantic structure of the URI more meaningful.        
+    public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> Get([FromRoute] int id, [FromQuery] GetExpensesQueryParameters parameters)
+    {
+        var operation = new GetExpensesByParameterQuery(id, parameters);
+        return await mediator.Send(operation);
 
-        }
+    }
 
-        [HttpPost]
-        [Authorize(Roles = Roles.Admin)]
-        public async Task<ApiResponse<EmployeeResponse>> Create(EmployeeRequest request)
-        {
-            if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int userId))
-                return new ApiResponse<EmployeeResponse>(false);
+    [HttpPost]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<ApiResponse<EmployeeResponse>> Create(EmployeeRequest request)
+    {
+        var (userId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
 
-            return await mediator.Send(new CreateEmployeeCommand(userId, request));
-        }
+        return await mediator.Send(new CreateEmployeeCommand(userId, request));
+    }
 
-        [HttpPut("{id:min(1)}")]
-        [Authorize(Roles = Roles.Admin)]
-        public async Task<ApiResponse> Update(int id, EmployeeRequest request)
-        {
-            if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int userId))
-                return new ApiResponse(false);
+    [HttpPut("{id:min(1)}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<ApiResponse> Update(int id, EmployeeRequest request)
+    {
+        var (userId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
 
-            return await mediator.Send(new UpdateEmployeeCommand(userId, id, request));
-        }
+        return await mediator.Send(new UpdateEmployeeCommand(userId, id, request));
+    }
 
-        [HttpDelete("{id:min(1)}")]
-        [Authorize(Roles = Roles.Admin)]
-        public async Task<ApiResponse> Delete(int id)
-        {
-            return await mediator.Send(new DeleteApplicationUserCommand(id));
-        }
+    [HttpDelete("{id:min(1)}")]
+    [Authorize(Roles = Roles.Admin)]
+    public async Task<ApiResponse> Delete(int id)
+    {
+        return await mediator.Send(new DeleteApplicationUserCommand(id));
     }
 }

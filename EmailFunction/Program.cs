@@ -52,10 +52,13 @@ static class Program
         {
             try
             {
-                var email = JsonSerializer.Deserialize<Email>(Encoding.UTF8.GetString(e.Body.Span)); // Deserialize the email
+                var body = Encoding.UTF8.GetString(e.Body.Span);
+                var email = JsonSerializer.Deserialize<Email>(body); // Deserialize the email
 
-                if (email is not null)
-                    EmailSender.Send(email, config); // Sends the email
+                Console.WriteLine(email.ToString());
+
+                //if (email is not null)
+                //    EmailSender.Send(email, config); // Sends the email
             }
             catch (Exception ex)
             {

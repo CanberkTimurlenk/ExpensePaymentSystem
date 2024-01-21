@@ -1,11 +1,10 @@
-﻿using FinalCase.BackgroundJobs.QueueOperations;
-using FinalCase.BackgroundJobs.QueueService;
-using FinalCase.Base.Token;
+﻿using FinalCase.Base.Token;
 using FinalCase.Business.Assembly;
 using FinalCase.Business.Features.Pipelines.Cache;
 using FinalCase.Data.Constants.Storage;
 using FinalCase.Data.Contexts;
 using FinalCase.Services.NotificationService;
+using FinalCase.Services.Queue;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Hangfire;
@@ -116,7 +115,6 @@ public static class ServicesExtensions
     public static void RegisterServices(this IServiceCollection services)
     {
         services.AddSingleton<INotificationService, QueueNotificationService>();
-        services.AddSingleton<IQueueService, QueueService>();
     }
 
     public static void AddMediatR(this IServiceCollection services)

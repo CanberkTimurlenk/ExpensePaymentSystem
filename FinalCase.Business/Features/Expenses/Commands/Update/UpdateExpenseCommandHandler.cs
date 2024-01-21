@@ -1,4 +1,5 @@
 ﻿using FinalCase.Base.Response;
+using FinalCase.Business.Features.Authentication.Constants.Roles;
 using FinalCase.Business.Features.Expenses.Constants;
 using FinalCase.Data.Contexts;
 using FinalCase.Data.Entities;
@@ -16,7 +17,10 @@ public class UpdateExpenseCommandHandler(FinalCaseDbContext dbContext)
     {
         var expense = await dbContext.FindAsync<Expense>(request.Id);
 
-        if (expense == null)
+        if (request.Role.Equals(Roles.Employee) && expense?.CreatorEmployeeId != request.UpdaterId)
+            return new ApiResponse(ExpenseMessages.EmployeeUpdateAccessError);
+
+        if (expense?.IsActive != true)
             return new ApiResponse(ExpenseMessages.ExpenseNotFound);
 
         if (expense.Status != ExpenseStatus.Pending)

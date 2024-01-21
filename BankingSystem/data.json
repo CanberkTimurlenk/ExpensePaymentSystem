@@ -1,18 +1,1 @@
-[
-  {
-    "Id": 0,
-    "Amount": 0,
-    "ReceiverIban": "string",
-    "ReceiverName": "string",
-    "Date": "2024-01-15T04:08:32.789Z",
-    "Description": "string"
-  },
-  {
-    "Id": 0,
-    "Amount": 1000.00,
-    "ReceiverIban": "asd",
-    "ReceiverName": "bbbb ccccc",
-    "Date": "0001-01-01T00:00:00",
-    "Description": "MSw2"
-  }
-]
+[{"Id":1,"Amount":333333.00,"ReceiverIban":"TR777777777777777777777777","ReceiverName":"John Doe","Date":"2024-01-21T00:25:37.449874+03:00","Description":"5"},{"Id":2,"Amount":200.75,"ReceiverIban":"TR777777777777777777777777","ReceiverName":"John Doe","Date":"2024-01-21T00:25:37.4498762+03:00","Description":"6"},{"Id":3,"Amount":120.50,"ReceiverIban":"TR777777777777777777777777","ReceiverName":"John Doe","Date":"2024-01-21T00:25:37.4498763+03:00","Description":"8"},{"Id":4,"Amount":333333.00,"ReceiverIban":"TR777777777777777777777777","ReceiverName":"John Doe","Date":"2024-01-21T00:25:37.4498764+03:00","Description":"3"},{"Id":5,"Amount":333333.00,"ReceiverIban":"TR777777777777777777777777","ReceiverName":"John Doe","Date":"2024-01-21T00:25:37.4498765+03:00","Description":"4"},{"Id":6,"Amount":75.30,"ReceiverIban":"TR666666666666666666666666","ReceiverName":"Alice Brown","Date":"2024-01-21T00:25:37.4498765+03:00","Description":"7"},{"Id":7,"Amount":333333.00,"ReceiverIban":"TR777777777777777777777777","ReceiverName":"tukenmez kalem","Date":"2024-01-21T00:25:37.4498766+03:00","Description":"2"},{"Id":0,"Amount":200.75,"ReceiverIban":"TR666666666666666666666666","ReceiverName":"string string","Date":"0001-01-01T00:00:00","Description":"9"}]

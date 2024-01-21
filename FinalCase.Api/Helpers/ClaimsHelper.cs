@@ -5,21 +5,20 @@ namespace FinalCase.Api.Helpers;
 public static class ClaimsHelper
 {
     /// <summary>
-    /// Get the user id from the claims if it exists
+    /// Get the user id and role from the claims if they exist
     /// </summary>
     /// <param name="identity">The claim identity</param>
-    /// <param name="userId">The id will be obtained from the claim</param>
-    /// <param name="claimType">Claim type</param>
-    /// <returns>True if id is obtained, otherwise false</returns>
-    public static bool TryGetUserIdFromClaims(ClaimsIdentity identity, out int userId, string claimType = JwtPayloadFields.Id)
+    /// <param name="idClaimType">ID claim </param>
+    /// <param name="roleClaimType">Role claim </param>
+    /// <returns>the user id and role, tuple</returns>
+    public static (int UserId, string Role) GetUserIdAndRoleFromClaims(ClaimsIdentity identity, string idClaimType = JwtPayloadFields.Id, string roleClaimType = ClaimTypes.Role)
     {
-        userId = 0;
+        var idClaim = identity.FindFirst(idClaimType);
+        var roleClaim = identity.FindFirst(roleClaimType);
 
-        if (identity == null)
-            return false;
+        if (idClaim == null || roleClaim == null)
+            throw new ArgumentException("Invalid Claims");
 
-        var claim = identity.FindFirst(claimType);
-
-        return claim != null && int.TryParse(claim.Value, out userId);
+        return (int.Parse(idClaim.Value), roleClaim.Value);
     }
 }

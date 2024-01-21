@@ -23,9 +23,10 @@ public class GetExpenseByIdQueryQueryHandler(FinalCaseDbContext dbContext, IMapp
                                 .Include(e => e.ReviewerAdmin)
                                 .Include(e => e.Payment)
                                 .Include(e => e.Documents)
+                                .Where(e => e.Id.Equals(request.Id))
                                 .ProjectTo<ExpenseResponse>(mapper.ConfigurationProvider)
                                 .AsNoTracking() // Since the operation is read-only, this method can be used to improve performance
-                                .FirstOrDefaultAsync(e => e.Id.Equals(request.Id), cancellationToken);
+                                .FirstOrDefaultAsync(cancellationToken);
 
         if (expense == null)
             return new ApiResponse<ExpenseResponse>(ExpenseMessages.ExpenseNotFound);

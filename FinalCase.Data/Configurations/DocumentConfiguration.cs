@@ -13,7 +13,7 @@ public class DocumentConfiguration : BaseEntityWithIdTypeConfiguration<Document>
 
         builder.Property(x => x.Name).HasMaxLength(100).IsRequired();
         builder.Property(x => x.Description).HasMaxLength(250);
-        builder.Property(x => x.Url).HasMaxLength(150).IsRequired();
+        builder.Property(x => x.Url).HasMaxLength(150).IsRequired();        
 
         builder.HasOne(x => x.Expense)
                .WithMany(x => x.Documents)

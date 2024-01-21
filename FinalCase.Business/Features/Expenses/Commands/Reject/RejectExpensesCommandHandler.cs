@@ -8,13 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FinalCase.Business.Features.Expenses.Commands.Reject;
 
-public class RejectExpensesCommandHandler(FinalCaseDbContext dbContext, IMapper mapper)
-    : IRequestHandler<RejectExpensesCommand, ApiResponse<IEnumerable<ExpenseResponse>>>
+public class RejectExpensesCommandHandler(FinalCaseDbContext dbContext)
+    : IRequestHandler<RejectExpensesCommand, ApiResponse>
 {
     private readonly FinalCaseDbContext dbContext = dbContext;
-    private readonly IMapper mapper = mapper;
 
-    public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> Handle(RejectExpensesCommand request, CancellationToken cancellationToken)
+    public async Task<ApiResponse> Handle(RejectExpensesCommand request, CancellationToken cancellationToken)
     {
         var expenseIds = request.Model.Select(e => e.Id).ToList(); // Get the expense ids from the request.
 
@@ -23,7 +22,8 @@ public class RejectExpensesCommandHandler(FinalCaseDbContext dbContext, IMapper 
             .ToListAsync(cancellationToken);
 
         var modelDictionary = request.Model.ToDictionary(r => r.Id, r => r.AdminDescription);
-        // A dictionary is created to efficiently access the admin description(value) from the expense id(key).        
+        // A dictionary is created to efficiently access the admin description(value) from the expense id(key).
+        // Lookup
 
         expenses.ForEach(e =>
         {
@@ -33,7 +33,6 @@ public class RejectExpensesCommandHandler(FinalCaseDbContext dbContext, IMapper 
 
         await dbContext.SaveChangesAsync(cancellationToken);
 
-        var response = mapper.Map<IEnumerable<ExpenseResponse>>(expenses);
-        return new ApiResponse<IEnumerable<ExpenseResponse>>(response);
+        return new ApiResponse();
     }
 }

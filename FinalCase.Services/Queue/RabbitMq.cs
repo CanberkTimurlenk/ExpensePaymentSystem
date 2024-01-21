@@ -1,14 +1,13 @@
-﻿using FinalCase.BackgroundJobs.QueueService;
-using FinalCase.Services.Queue.Constants;
+﻿using FinalCase.Services.Queue.Constants;
 using Microsoft.Extensions.Configuration;
 using RabbitMQ.Client;
 
-namespace FinalCase.BackgroundJobs.QueueOperations;
+namespace FinalCase.Services.Queue;
 
 /// <summary>
-/// A queue service implementation.
+/// Rabbit mq implementation.
 /// </summary>
-public class QueueService : IQueueService
+public static class RabbitMq
 {
     private readonly static IConfiguration configuration = new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
@@ -19,7 +18,7 @@ public class QueueService : IQueueService
     /// </summary>
     /// <param name="queueNameKey">The key of the queue name where the value is specified in the "RabbitMQ" section in the appsettings.json.</param>
     /// <param name="body">The message body to be sent</param>
-    public void SendMessage(string queueNameKey, byte[] body)
+    public static void SendMessage(string queueNameKey, byte[] body)
     {
         var rabbitMqConfig = configuration.GetSection(Brokers.RabbitMq);
         var factory = new ConnectionFactory

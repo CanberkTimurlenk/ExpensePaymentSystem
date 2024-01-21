@@ -1,6 +1,4 @@
-﻿using FinalCase.Api.Helpers;
-using FinalCase.Base.Response;
-using FinalCase.Business.Features.Authentication.Constants.Jwt;
+﻿using FinalCase.Base.Response;
 using FinalCase.Business.Features.Authentication.Constants.Roles;
 using FinalCase.Business.Features.Expenses.Commands.Approve;
 using FinalCase.Business.Features.Expenses.Commands.Create;
@@ -12,6 +10,7 @@ using FinalCase.Business.Features.Expenses.Queries.GetExpenseByParameter;
 using FinalCase.Schema.Entity.Requests;
 using FinalCase.Schema.Entity.Responses;
 using MediatR;
+using static FinalCase.Api.Helpers.ClaimsHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -43,22 +42,18 @@ public class ExpensesController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id:min(1)}")]
-    ////[Authorize(Roles = Roles.Employee)]   
+    [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<ExpenseResponse>> GetById(int id)
     {
         var operation = new GetExpenseByIdQuery(id);
         return await mediator.Send(operation);
     }
 
-
-
     [HttpPost]
     [Authorize(Roles = Roles.Employee)]
     public async Task<ApiResponse<ExpenseResponse>> CreateExpense([FromBody] ExpenseRequest request)
     {
-        if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int employeeId))
-            return new ApiResponse<ExpenseResponse>(false);
-
+        var (employeeId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
         var operation = new CreateExpenseCommand(employeeId, request);
         return await mediator.Send(operation);
     }
@@ -67,38 +62,33 @@ public class ExpensesController(IMediator mediator) : ControllerBase
     [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> ApprovePendingExpenses(ICollection<ApproveExpenseRequest> request)
     {
-        if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int adminId))
-            return new ApiResponse<IEnumerable<ExpenseResponse>>(false);
-
+        var (adminId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
         return await mediator.Send(new ApproveExpensesCommand(adminId, request));
     }
 
     [HttpPost("reject")]
     [Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> RejectPendingExpenses(ICollection<RejectExpensesRequest> request)
+    public async Task<ApiResponse> RejectPendingExpenses(ICollection<RejectExpensesRequest> request)
     {
-        if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int adminId))
-            return new ApiResponse<IEnumerable<ExpenseResponse>>(false);
-
+        var (adminId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
         return await mediator.Send(new RejectExpensesCommand(adminId, request));
     }
 
     // Only for pending expenses
     [HttpPut("{id:min(1)}")]
-    //[Authorize(Roles = $"{Roles.Admin},{Roles.Employee}")]
+    [Authorize(Roles = $"{Roles.Employee},{Roles.Admin}")]
     public async Task<ApiResponse> UpdateExpense(int id, ExpenseRequest request)
     {
-        if (!ClaimsHelper.TryGetUserIdFromClaims(User.Identity as ClaimsIdentity, out int userId))
-            return new ApiResponse(false);
-
-        return await mediator.Send(new UpdateExpenseCommand(userId, id, request));
+        var (UserId, Role) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
+        return await mediator.Send(new UpdateExpenseCommand(UserId, Role, id, request));
     }
 
     // Only for pending expenses
     [HttpDelete("{id:min(1)}")]
-    //[Authorize(Roles = $"{Roles.Admin},{Roles.Employee}")]
+    [Authorize(Roles = $"{Roles.Employee},{Roles.Admin}")]
     public async Task<ApiResponse> DeleteExpense(int id)
     {
-        return await mediator.Send(new DeleteExpenseCommand(id));
+        var (UserId, Role) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
+        return await mediator.Send(new DeleteExpenseCommand(UserId, Role, id));
     }
 }

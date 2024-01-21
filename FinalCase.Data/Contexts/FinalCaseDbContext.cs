@@ -2,6 +2,7 @@
 using FinalCase.Data.Enums;
 using FinalCase.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace FinalCase.Data.Contexts;
 
@@ -19,7 +20,7 @@ public class FinalCaseDbContext(DbContextOptions<FinalCaseDbContext> options) : 
     {
         modelBuilder.AddSeedData();
 
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(FinalCaseDbContext).Assembly);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
 
     }

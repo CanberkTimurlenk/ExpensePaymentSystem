@@ -17,6 +17,8 @@ public class UpdatePaymentMethodCommandHandler(FinalCaseDbContext dbContext, IMa
         var paymentMethod = mapper.Map<PaymentMethod>(request.Model);
 
         paymentMethod.InsertDate = DateTime.Now;
+        paymentMethod.InsertUserId = request.InsertUserId;
+        paymentMethod.IsActive = true;
 
         await dbContext.PaymentMethods.AddAsync(paymentMethod, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);

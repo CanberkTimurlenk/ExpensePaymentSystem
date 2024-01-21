@@ -11,10 +11,10 @@ public class ExpenseRequest
     public DateTime Date { get; set; }
     public string Location { get; set; }
     public int PaymentMethodId { get; set; }
-    public int CategoryId { get; set; } // one to one relationship established
+    public int CategoryId { get; set; } 
 
-    [JsonIgnore] // will be filled from jwt, jwt den gelecek bu değer !!!
-    public int CreatorEmployeeId { get; set; } // her employee yalnızca kendisi için expense oluşturabilir, o yüzden değeri jwt den alacağız
+    [JsonIgnore] // will be filled from jwt
+    public int CreatorEmployeeId { get; set; } 
 
     public ICollection<DocumentRequest> Documents { get; set; }
 }

@@ -6,6 +6,10 @@ using static FinalCase.BackgroundJobs.Hangfire.Delayeds.Constants.BankingApiCons
 using RestSharp;
 using System.Net;
 using FinalCase.Schema.ExternalApi;
+using FinalCase.BackgroundJobs.MicroOrm.Dapper;
+using FinalCase.Data.Constants.DbObjects;
+using Dapper;
+using FinalCase.Data.Constants.Storage;
 
 namespace FinalCase.BackgroundJobs.Hangfire.Delayeds.Payment;
 
@@ -27,14 +31,14 @@ public static class PaymentJobs
     /// <param name="cancellationToken">Cancellation Token.</param>
     public static void SendPaymentRequest(OutgoingPaymentRequest request, Email email, INotificationService notificationService, CancellationToken cancellationToken)
     {
-        var jobId = BackgroundJob.Schedule(() => SendPaymentJobAsync(request, cancellationToken), TimeSpan.FromSeconds(3)); // Schedule a job to send the payment request to the banking system.
-        BackgroundJob.ContinueJobWith(jobId, () => notificationService.SendEmail(email)); // Schedule a job to send the email to the employee.        
+        var sendPayment = BackgroundJob.Schedule(() => SendPaymentJobAsync(request, cancellationToken), TimeSpan.FromSeconds(3)); // Schedule a job to send the payment request to the banking system.
+        var sendEmail = BackgroundJob.ContinueJobWith(sendPayment, () => notificationService.SendEmail(email)); // Schedule a job to send the email to the employee.        
+        BackgroundJob.ContinueJobWith(sendEmail, () => CompletePayment(request.Description, cancellationToken));
     }
 
     /// <summary>
     /// Asynchronously sends a payment request to the banking system and handles the response.
-    /// </summary>
-    [AutomaticRetry(Attempts = 3, OnAttemptsExceeded = AttemptsExceededAction.Fail, DelaysInSeconds = [20, 60])]
+    /// </summary>    
     public static async Task SendPaymentJobAsync(OutgoingPaymentRequest request, CancellationToken cancellationToken)
     {
         var bankingApiConfig = configuration.GetSection(BankingApiKey);
@@ -52,6 +56,12 @@ public static class PaymentJobs
             if (payResponse.StatusCode == HttpStatusCode.RequestTimeout)
                 throw new TimeoutException(); // If timeout occurs, the job will be retried.
         }
+        else if (checkResponse.StatusCode == 0)
+        {
+            throw checkResponse.ErrorException;  // connection is not established, the job will be retried.
+        }
+        // the exception will be saved by Hangfire.
+
     }
 
     // Create a private method to make the repeated requests shorter.
@@ -70,5 +80,17 @@ public static class PaymentJobs
         }.AddBody(body);
 
         return client.ExecuteAsync(request, cancellationToken);
+    }
+
+    /// <summary>
+    ///  Updates the payment status in the database.
+    /// </summary>
+    /// <param name="description">payment description(The payment id)</param>
+    public static async Task CompletePayment(string description, CancellationToken cancellationToken)
+    {
+        var parameters = new DynamicParameters();
+        parameters.Add("@Id", int.Parse(description));
+
+        await DapperExecutor.ExecuteStoredProcedureAsync(StoredProcedures.CompletePayment, parameters, configuration.GetConnectionString(DbKeys.SqlServer), cancellationToken);
     }
 }

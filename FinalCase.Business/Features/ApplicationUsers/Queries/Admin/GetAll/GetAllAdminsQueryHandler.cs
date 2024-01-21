@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using FinalCase.Base.Helpers.Linq;
 using FinalCase.Base.Response;
 using FinalCase.Business.Features.Authentication.Constants.Roles;
 using FinalCase.Data.Contexts;
+using FinalCase.Data.Entities;
 using FinalCase.Schema.AppRoles.Responses;
 using FinalCase.Schema.Entity.Responses;
+using LinqKit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,14 +20,15 @@ public class GetAllAdminsQueryHandler(FinalCaseDbContext dbContext, IMapper mapp
 
     public async Task<ApiResponse<IEnumerable<AdminResponse>>> Handle(GetAllAdminsQuery request, CancellationToken cancellationToken)
     {
-        var query = dbContext.ApplicationUsers
-            .Where(a => a.Role.Equals(Roles.Admin))
-            .AsNoTracking();
+        var predicate = PredicateBuilder.New<ApplicationUser>(true)
+            .AddIf(!request.IncludeDeleted, a => a.IsActive);
 
-        if (request.IncludeDeleted)
-            query.IgnoreQueryFilters();
+        predicate = predicate.And(a => a.Role.Equals(Roles.Admin));
 
-        var applicationUsers = await query.ToListAsync(cancellationToken);
+        var applicationUsers = await dbContext.ApplicationUsers
+            .Where(predicate)
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
 
         var response = mapper.Map<IEnumerable<AdminResponse>>(applicationUsers);
         return new ApiResponse<IEnumerable<AdminResponse>>(response);
