@@ -10,7 +10,7 @@ namespace FinalCase.Business.Features.Expenses.Commands.Reject;
 
 public class RejectExpensesCommandHandler(FinalCaseDbContext dbContext)
     : IRequestHandler<RejectExpensesCommand, ApiResponse>
-{
+{   
     private readonly FinalCaseDbContext dbContext = dbContext;
 
     public async Task<ApiResponse> Handle(RejectExpensesCommand request, CancellationToken cancellationToken)

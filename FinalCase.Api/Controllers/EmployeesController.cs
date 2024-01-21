@@ -1,11 +1,8 @@
-﻿using FinalCase.Api.Filters;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using FinalCase.Business.Features.Expenses.Queries.GetExpenseByParameter;
 using FinalCase.Business.Features.Authentication.Constants.Roles;
 using FinalCase.Base.Response;
-using FinalCase.Schema.Entity.Responses;
 using FinalCase.Business.Features.ApplicationUsers.Commands.Delete;
 using FinalCase.Business.Features.ApplicationUsers.Commands.Create.Admin;
 using FinalCase.Schema.AppRoles.Requests;

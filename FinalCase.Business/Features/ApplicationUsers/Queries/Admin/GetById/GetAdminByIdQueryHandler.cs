@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using FinalCase.Base.Helpers.Linq;
 using FinalCase.Base.Response;
 using FinalCase.Business.Features.ApplicationUsers.Constants;
 using FinalCase.Business.Features.Authentication.Constants.Roles;

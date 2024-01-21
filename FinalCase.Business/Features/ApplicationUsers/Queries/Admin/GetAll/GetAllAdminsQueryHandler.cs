@@ -1,12 +1,8 @@
 ﻿using AutoMapper;
-using FinalCase.Base.Helpers.Linq;
 using FinalCase.Base.Response;
 using FinalCase.Business.Features.Authentication.Constants.Roles;
 using FinalCase.Data.Contexts;
-using FinalCase.Data.Entities;
 using FinalCase.Schema.AppRoles.Responses;
-using FinalCase.Schema.Entity.Responses;
-using LinqKit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 

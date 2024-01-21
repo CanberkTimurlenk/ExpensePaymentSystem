@@ -49,7 +49,7 @@ public static class PaymentJobs
         // We have guaranteed the payment is done only once
         if (checkResponse.StatusCode == HttpStatusCode.NotFound)
         {
-            // If the payment description which is the unique key of the payment, "expenseId,employeeId" , is not exists in the banking system,
+            // If the payment description which is the unique key of the payment, "paymentId" , is not exists in the banking system,
             // create a new payment.
             var payResponse = await SendRequestAsync(client, bankingApiConfig.GetValue<string>(CreatePaymentKey), request.ToString(), cancellationToken);
 
@@ -64,7 +64,6 @@ public static class PaymentJobs
 
     }
 
-    // Create a private method to make the repeated requests shorter.
     /// <summary>
     /// Sends a request to the banking system.
     /// </summary>

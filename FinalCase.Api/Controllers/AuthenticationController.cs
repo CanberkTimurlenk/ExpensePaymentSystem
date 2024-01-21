@@ -1,5 +1,6 @@
 ﻿using FinalCase.Base.Response;
 using FinalCase.Business.Features.Authentication;
+using FinalCase.Business.Features.Authentication.Commands;
 using FinalCase.Schema.Authentication;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

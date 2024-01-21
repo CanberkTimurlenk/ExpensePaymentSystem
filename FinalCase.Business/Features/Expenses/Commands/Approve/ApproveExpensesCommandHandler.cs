@@ -128,7 +128,6 @@ public class ApproveExpensesCommandHandler(FinalCaseDbContext dbContext, INotifi
         return null;
     }
 
-
     /// <summary>
     /// Checks if the expenses are already approved.
     /// </summary>

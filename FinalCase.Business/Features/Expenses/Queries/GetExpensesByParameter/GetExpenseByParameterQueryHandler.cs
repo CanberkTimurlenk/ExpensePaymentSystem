@@ -5,7 +5,6 @@ using MediatR;
 using LinqKit;
 using FinalCase.Data.Entities;
 using Microsoft.EntityFrameworkCore;
-using static FinalCase.Base.Helpers.Linq.LinqKitExtensions;
 using FinalCase.Schema.Entity.Responses;
 using AutoMapper.QueryableExtensions;
 
@@ -21,17 +20,34 @@ public class GetExpenseByParameterQueryHandler(FinalCaseDbContext dbContext, IMa
     {
         var p = request.Parameters;
 
-        var predicate = PredicateBuilder.New<Expense>(true)
-            // An extension method was implemented to add a condition to the predicate based on the given boolean condition.                        
-            .AddIf(p.EmployeeId != default, e => e.CreatorEmployeeId == p.EmployeeId)
-            .AddIf(p.CategoryId != default, e => e.CategoryId == p.CategoryId)
-            .AddIf(p.PaymentMethodId != default, e => e.PaymentMethodId == p.PaymentMethodId)
-            .AddIf(p.MinAmount != default, e => e.Amount >= p.MinAmount)
-            .AddIf(p.MaxAmount != default, e => e.Amount <= p.MaxAmount)
-            .AddIf(p.InitialDate != default, e => e.Date >= p.InitialDate)
-            .AddIf(p.FinalDate != default, e => e.Date <= p.FinalDate)
-            .AddIf(p.Status != default, e => e.Status == p.Status)
-            .AddIf(!string.IsNullOrEmpty(p.Location), e => e.Location == p.Location);
+        var predicate = PredicateBuilder.New<Expense>(true);
+
+        if (p.EmployeeId != default)
+            predicate = predicate.And(e => e.CreatorEmployeeId == p.EmployeeId);
+        
+        if (p.CategoryId != default)
+            predicate = predicate.And(e => e.CategoryId == p.CategoryId);
+        
+        if (p.PaymentMethodId != default)
+            predicate = predicate.And(e => e.PaymentMethodId == p.PaymentMethodId);
+        
+        if (p.MinAmount != default)
+            predicate = predicate.And(e => e.Amount >= p.MinAmount);
+        
+        if (p.MaxAmount != default)
+            predicate = predicate.And(e => e.Amount <= p.MaxAmount);
+        
+        if (p.InitialDate != default)
+            predicate = predicate.And(e => e.Date >= p.InitialDate);
+        
+        if (p.FinalDate != default)
+            predicate = predicate.And(e => e.Date <= p.FinalDate);
+        
+        if (p.Status != default)
+            predicate = predicate.And(e => e.Status == p.Status);
+        
+        if (!string.IsNullOrEmpty(p.Location))
+            predicate = predicate.And(e => e.Location == p.Location);
 
         var expenses = await dbContext.Expenses
             .Where(predicate)
@@ -39,6 +55,7 @@ public class GetExpenseByParameterQueryHandler(FinalCaseDbContext dbContext, IMa
             .ProjectTo<ExpenseResponse>(mapper.ConfigurationProvider)
             .AsNoTrackingWithIdentityResolution()
             .ToListAsync(cancellationToken);
+        
 
         var response = mapper.Map<IEnumerable<ExpenseResponse>>(expenses);
         return new ApiResponse<IEnumerable<ExpenseResponse>>(response);

@@ -11,7 +11,8 @@ public static class ClaimsHelper
     /// <param name="idClaimType">ID claim </param>
     /// <param name="roleClaimType">Role claim </param>
     /// <returns>the user id and role, tuple</returns>
-    public static (int UserId, string Role) GetUserIdAndRoleFromClaims(ClaimsIdentity identity, string idClaimType = JwtPayloadFields.Id, string roleClaimType = ClaimTypes.Role)
+    public static (int UserId, string Role) GetUserIdAndRoleFromClaims(ClaimsIdentity identity,
+        string idClaimType = JwtPayloadFields.Id, string roleClaimType = ClaimTypes.Role)
     {
         var idClaim = identity.FindFirst(idClaimType);
         var roleClaim = identity.FindFirst(roleClaimType);
