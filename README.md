@@ -35,6 +35,9 @@ dotnet run ./FinalCase.Api
 ```
 komutlarını uygulayabilirsiniz.
 
+Seed Datalar için
+[Seed Datalar](#seed-datalar)
+
 
 # Roller
 Uygulama Admin ve Employee olarak 2 farklı rol içerir.
