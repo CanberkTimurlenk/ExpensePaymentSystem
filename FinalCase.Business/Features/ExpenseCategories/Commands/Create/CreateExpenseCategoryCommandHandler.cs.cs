@@ -21,8 +21,7 @@ public class CreateExpenseCategoryCommandHandler(FinalCaseDbContext dbContext, I
         expenseCategory.IsActive = true;
         expenseCategory.InsertUserId = request.InsertUserId;
 
-
-        await dbContext.ExpenseCategories.AddAsync(expenseCategory);
+        await dbContext.ExpenseCategories.AddAsync(expenseCategory, cancellationToken);
         await dbContext.SaveChangesAsync(cancellationToken);
 
         var response = mapper.Map<ExpenseCategoryResponse>(expenseCategory);

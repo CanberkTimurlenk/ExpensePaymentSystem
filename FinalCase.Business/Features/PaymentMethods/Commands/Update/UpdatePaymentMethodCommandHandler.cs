@@ -6,22 +6,21 @@ using FinalCase.Data.Entities;
 using MediatR;
 
 namespace FinalCase.Business.Features.PaymentMethods.Commands.Update;
-public class UpdatePaymentMethodCommandHandler(FinalCaseDbContext dbContext, IMapper mapper)
+public class UpdatePaymentMethodCommandHandler(FinalCaseDbContext dbContext)
     : IRequestHandler<UpdatePaymentMethodCommand, ApiResponse>
 {
     private readonly FinalCaseDbContext dbContext = dbContext;
-    private readonly IMapper mapper = mapper;
 
     public async Task<ApiResponse> Handle(UpdatePaymentMethodCommand request, CancellationToken cancellationToken)
     {
         var paymentMethod = await dbContext.FindAsync<PaymentMethod>(request.Id, cancellationToken);
 
-        if (paymentMethod is null || !paymentMethod.IsActive)
+        if (paymentMethod is null)
             return new ApiResponse(PaymentMethodMessages.PaymentMethodNotFound);
 
         request.Model.Id = paymentMethod.Id;
-        mapper.Map(request.Model, paymentMethod);
-        // Model includes two properties, mapper maps all of them (name,desc)
+        request.Model.Name = paymentMethod.Name;
+        request.Model.Description = paymentMethod.Description;                
 
         paymentMethod.UpdateDate = DateTime.Now;
         paymentMethod.UpdateUserId = request.UpdaterId;

@@ -50,8 +50,8 @@ public class ReportsController(IMediator mediator) : ControllerBase
 
     [HttpGet("expenses/{employee-id:min(1)}")]
     [Authorize(Roles = $"{Roles.Admin}, {Roles.Employee}")]
-    [EmployeeRouteIdAuthorize]
-    public async Task<ApiResponse<IEnumerable<EmployeeExpenseReport>>> GetMonthlyExpenseAmountSummary([FromRoute(Name = "employee-id")] int employeeId)
+    [EmployeeIdFromRouteAuthorize]
+    public async Task<ApiResponse<IEnumerable<EmployeeExpenseReport>>> GetEmployeeExpenseReport([FromRoute(Name = "employee-id")] int employeeId)
     {
         return await mediator.Send(new GetEmployeeAllExpenseReportByIdQuery(employeeId));
     }

@@ -20,13 +20,8 @@ public class GetAllAdminsQueryHandler(FinalCaseDbContext dbContext, IMapper mapp
 
     public async Task<ApiResponse<IEnumerable<AdminResponse>>> Handle(GetAllAdminsQuery request, CancellationToken cancellationToken)
     {
-        var predicate = PredicateBuilder.New<ApplicationUser>(true)
-            .AddIf(!request.IncludeDeleted, a => a.IsActive);
-
-        predicate = predicate.And(a => a.Role.Equals(Roles.Admin));
-
         var applicationUsers = await dbContext.ApplicationUsers
-            .Where(predicate)
+            .Where(a => a.Role.Equals(Roles.Admin))
             .AsNoTracking()
             .ToListAsync(cancellationToken);
 

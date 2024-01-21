@@ -17,9 +17,6 @@ using System.Security.Claims;
 
 namespace FinalCase.Api.Controllers;
 
-/// <summary>
-/// The controller class for the role 'employee'.
-/// </summary>
 [Route("api/[controller]")]
 [ApiController]
 public class EmployeesController(IMediator mediator) : ControllerBase
@@ -28,36 +25,23 @@ public class EmployeesController(IMediator mediator) : ControllerBase
 
     [HttpGet]
     [Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse<IEnumerable<EmployeeResponse>>> GetAll(bool includeDeleted = false)
+    public async Task<ApiResponse<IEnumerable<EmployeeResponse>>> GetAll()
     {
-        return await mediator.Send(new GetAllEmployeesQuery(includeDeleted));
+        return await mediator.Send(new GetAllEmployeesQuery());
     }
 
     [HttpGet("{id:min(1)}")]
     [Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse<EmployeeResponse>> GetById(int id, bool includeDeleted = false)
+    public async Task<ApiResponse<EmployeeResponse>> GetById(int id)
     {
-        return await mediator.Send(new GetEmployeeByIdQuery(id, includeDeleted));
-    }
-
-
-    [HttpGet("{id:min(1)}/expenses")] // EmployeeId is a constant defined in ControllerConstants.cs, 
-    [Authorize(Roles = Roles.Employee)]
-    [EmployeeRouteIdAuthorize]
-    //is extracted from the JWT token,
-    //but by adding it to the route, we are making the semantic structure of the URI more meaningful.        
-    public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> Get([FromRoute] int id, [FromQuery] GetExpensesQueryParameters parameters)
-    {
-        var operation = new GetExpensesByParameterQuery(id, parameters);
-        return await mediator.Send(operation);
-
+        return await mediator.Send(new GetEmployeeByIdQuery(id));
     }
 
     [HttpPost]
     [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<EmployeeResponse>> Create(EmployeeRequest request)
     {
-        var (userId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
+        var (userId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity); // to add InsertUserId
 
         return await mediator.Send(new CreateEmployeeCommand(userId, request));
     }
@@ -66,7 +50,7 @@ public class EmployeesController(IMediator mediator) : ControllerBase
     [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> Update(int id, EmployeeRequest request)
     {
-        var (userId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
+        var (userId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity); // to add UpdateUserId
 
         return await mediator.Send(new UpdateEmployeeCommand(userId, id, request));
     }

@@ -4,7 +4,6 @@ using FinalCase.Business.Features.Pipelines.Cache;
 using FinalCase.Data.Constants.Storage;
 using FinalCase.Data.Contexts;
 using FinalCase.Services.NotificationService;
-using FinalCase.Services.Queue;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Hangfire;
@@ -13,17 +12,13 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Serilog;
 using StackExchange.Redis;
-using System.Configuration;
 using System.Text;
 
 namespace FinalCase.Api.Extensions;
 
 public static class ServicesExtensions
 {
-
-
     public static void ConfigureSqlContext(this IServiceCollection services,
             IConfiguration configuration) => services.AddDbContext<FinalCaseDbContext>(
                 options => options.UseSqlServer(configuration.GetConnectionString(DbKeys.SqlServer)));
@@ -55,16 +50,9 @@ public static class ServicesExtensions
 
     public static void AddSwagger(this IServiceCollection services)
     {
-
-
-
         services.AddSwaggerGen(c =>
         {
             c.SwaggerDoc("v1", new OpenApiInfo { Title = "Final Case Api Management", Version = "v1.0" });
-
-            //c.SelectSchemasForMediaType("application/json", _ => true);
-            //c.PostProcess = document => { };
-
 
             var securityScheme = new OpenApiSecurityScheme
             {

@@ -19,8 +19,6 @@ public class CreateAdminCommandHandler(FinalCaseDbContext dbContext, IMapper map
 
     public async Task<ApiResponse<AdminResponse>> Handle(CreateAdminCommand request, CancellationToken cancellationToken)
     {
-        // more logic for creating an admin could be added here
-
         var user = mapper.Map<ApplicationUser>(request.Model);
         user.Password = Md5Extension.GetHash(request.Model.Password);
         user.Role = Roles.Admin;

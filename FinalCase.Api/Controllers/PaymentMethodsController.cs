@@ -10,6 +10,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using static FinalCase.Api.Helpers.ClaimsHelper;
 using System.Security.Claims;
+using FinalCase.Business.Features.Authentication.Constants.Roles;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FinalCase.Api.Controllers;
 
@@ -20,21 +22,21 @@ public class PaymentMethodsController(IMediator mediator) : ControllerBase
     private readonly IMediator mediator = mediator;
 
     [HttpGet]
-    //[Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<IEnumerable<PaymentMethodResponse>>> GetPaymentMethods()
     {
         return await mediator.Send(new GetAllPaymentMethodsQuery());
     }
 
     [HttpGet("{id:min(1)}")]
-    //[Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<PaymentMethodResponse>> GetPaymentMethodById(int id)
     {
         return await mediator.Send(new GetPaymentMethodByIdQuery(id));
     }
 
     [HttpPost]
-    //[Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<PaymentMethodResponse>> CreatePaymentMethod(PaymentMethodRequest command)
     {
         var (userId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
@@ -43,7 +45,7 @@ public class PaymentMethodsController(IMediator mediator) : ControllerBase
     }
 
     [HttpPut("{id:min(1)}")]
-    //[Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> UpdatePaymentMethod(int id, PaymentMethodRequest command)
     {
         var (userId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
@@ -52,7 +54,7 @@ public class PaymentMethodsController(IMediator mediator) : ControllerBase
     }
 
     [HttpDelete("{id:min(1)}")]
-    //[Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> DeletePaymentMethod(int id)
     {
         return await mediator.Send(new DeletePaymentMethodCommand(id));

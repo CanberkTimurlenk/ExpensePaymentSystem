@@ -9,8 +9,7 @@ public static class DapperReportHelper
 {
     /// <summary>
     /// Since documents are a collection, there is a need to use a dictionary to avoid duplicates.
-    /// expenses and Documents have one to many relationship
-    /// https://medium.com/@nelsonciofi/the-best-way-to-store-and-retrieve-complex-objects-with-dapper-5eff32e6b29e
+    /// expenses and Documents have one to many relationship    
     /// </summary> 
     public static async Task<IEnumerable<EmployeeExpenseReport>> GetEmployeeExpenseReports(string connectionString, string storedProcedure, DynamicParameters parameters, CancellationToken cancellationToken = default)
     {

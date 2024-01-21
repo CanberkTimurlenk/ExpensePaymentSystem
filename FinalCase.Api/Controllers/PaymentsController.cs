@@ -19,7 +19,7 @@ public class PaymentsController(IMediator mediator) : ControllerBase
     private readonly IMediator mediator = mediator;
 
     [HttpGet]
-    //[Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<IEnumerable<PaymentResponse>>> GetPayments()
     {
         return await mediator.Send(new GetAllPaymentsQuery());
@@ -27,7 +27,7 @@ public class PaymentsController(IMediator mediator) : ControllerBase
 
 
     [HttpGet("{id:min(1)}")]
-    //[Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<PaymentResponse>> GetPaymentById(int id)
     {
         return await mediator.Send(new GetPaymentByIdQuery(id));
@@ -50,7 +50,6 @@ public class PaymentsController(IMediator mediator) : ControllerBase
 
 
     [HttpDelete("{id:min(1)}")]
-    // Since deleting payments violates the business rules, 'IsActive = false' in the handler is commented out.
     [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> DeletePayment(int id)
     {

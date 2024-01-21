@@ -18,9 +18,9 @@ public class DeleteExpenseCommandHandler(FinalCaseDbContext dbContext)
         var expense = await dbContext.FindAsync<Expense>(request.Id, cancellationToken);
 
         if (request.Role.Equals(Roles.Employee) && expense?.CreatorEmployeeId != request.UserId)
-            return new ApiResponse(ExpenseMessages.EmployeeDeleteAccessError);
+            return new ApiResponse(ExpenseMessages.UnauthorizedExpenseDelete);
 
-        if (expense?.IsActive != true)
+        if (expense == null)
             return new ApiResponse(ExpenseMessages.ExpenseNotFound);
 
         if (expense.Status != ExpenseStatus.Pending)

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FinalCase.Base.Response;
+using FinalCase.Business.Features.Authentication.Constants.Roles;
 using FinalCase.Business.Features.Documents.Constants;
 using FinalCase.Data.Contexts;
 using FinalCase.Data.Entities;
@@ -15,8 +16,15 @@ public class DeleteDocumentCommandHandler(FinalCaseDbContext dbContext, IMapper 
     {
         var document = await dbContext.FindAsync<Document>(request.Id, cancellationToken);
 
-        if (document == null || !document.IsActive)
+        if (document == null)
             return new ApiResponse(DocumentMessages.DocumentNotFound);
+
+        if ((await dbContext.Expenses.FindAsync(
+            [document.ExpenseId], cancellationToken))?.CreatorEmployeeId != request.UserId
+                && request.Role == Roles.Employee)
+        {
+            return new ApiResponse(DocumentMessages.UnauthorizedDocumentDelete);
+        }
 
         document.IsActive = false;
         await dbContext.SaveChangesAsync(cancellationToken);

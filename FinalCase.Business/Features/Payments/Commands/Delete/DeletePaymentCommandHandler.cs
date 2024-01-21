@@ -18,8 +18,8 @@ public class DeletePaymentCommandHandler(FinalCaseDbContext dbContext)
         if (payment == null)
             return new ApiResponse(PaymentMessages.PaymentNotFound);
 
-        //payment.IsDeleted = true;
-        // since payment is a reporting table and represents completed payment, there is no soft/hard delete operation exists
+        //payment.IsActive = true;
+        // since payment is a reporting table, there is no soft/hard delete operation exists
         // this method implemented to show how to implement soft delete operation
 
         await dbContext.SaveChangesAsync(cancellationToken);

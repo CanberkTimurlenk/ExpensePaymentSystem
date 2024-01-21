@@ -20,8 +20,7 @@ public class GetAdminByIdQueryHandler(FinalCaseDbContext dbContext, IMapper mapp
 
     public async Task<ApiResponse<AdminResponse>> Handle(GetAdminByIdQuery request, CancellationToken cancellationToken)
     {
-        var predicate = PredicateBuilder.New<ApplicationUser>(true)
-            .AddIf(!request.IncludeDeleted, a => a.IsActive);
+        var predicate = PredicateBuilder.New<ApplicationUser>(true);
 
         predicate.And(a => a.Role.Equals(Roles.Admin));
         predicate.And(u => u.Id.Equals(request.Id));

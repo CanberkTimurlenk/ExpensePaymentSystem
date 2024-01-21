@@ -18,9 +18,9 @@ public class UpdateExpenseCommandHandler(FinalCaseDbContext dbContext)
         var expense = await dbContext.FindAsync<Expense>(request.Id);
 
         if (request.Role.Equals(Roles.Employee) && expense?.CreatorEmployeeId != request.UpdaterId)
-            return new ApiResponse(ExpenseMessages.EmployeeUpdateAccessError);
+            return new ApiResponse(ExpenseMessages.UnauthorizedExpenseUpdate);
 
-        if (expense?.IsActive != true)
+        if (expense == null)
             return new ApiResponse(ExpenseMessages.ExpenseNotFound);
 
         if (expense.Status != ExpenseStatus.Pending)

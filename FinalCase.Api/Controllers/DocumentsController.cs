@@ -1,6 +1,4 @@
-﻿using FinalCase.Api.Helpers;
-using FinalCase.Base.Response;
-using FinalCase.Business.Features.ApplicationUsers.Commands.Create.Admin;
+﻿using FinalCase.Base.Response;
 using FinalCase.Business.Features.Authentication.Constants.Roles;
 using FinalCase.Business.Features.Documents.Commands.CreateDocument;
 using FinalCase.Business.Features.Documents.Commands.DeleteDocument;
@@ -31,17 +29,19 @@ public class DocumentsController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("{id:min(1)}")]
-    [Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = $"{Roles.Admin}, {Roles.Employee}")]
     public async Task<ApiResponse<DocumentResponse>> GetDocumentById(int id)
     {
-        return await mediator.Send(new GetDocumentByIdQuery(id));
+        var (userId, role) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
+
+        return await mediator.Send(new GetDocumentByIdQuery(userId, role, id));
     }
 
     [HttpPost]
     [Authorize(Roles = $"{Roles.Admin}, {Roles.Employee}")]
     public async Task<ApiResponse<DocumentResponse>> CreateDocument(DocumentRequest request)
     {
-        var (userId, role) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
+        var (userId, role) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity); // to add InsertUserId
 
         return await mediator.Send(new CreateDocumentCommand(userId, role, request));
     }
@@ -50,12 +50,12 @@ public class DocumentsController(IMediator mediator) : ControllerBase
     [Authorize(Roles = $"{Roles.Admin}, {Roles.Employee}")]
     public async Task<ApiResponse> UpdateDocument(int id, DocumentRequest request)
     {
-        var (userId, role) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
+        var (userId, role) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity); // to add UpdateUserId
         return await mediator.Send(new UpdateDocumentCommand(userId, role, id, request));
     }
 
     [HttpDelete("{id:min(1)}")]
-    [Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = $"{Roles.Admin}, {Roles.Employee}")]
     public async Task<ApiResponse> DeleteDocument(int id)
     {
         var (userId, role) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);

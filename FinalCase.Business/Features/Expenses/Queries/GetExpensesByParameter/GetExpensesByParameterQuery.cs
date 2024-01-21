@@ -5,13 +5,11 @@ using MediatR;
 
 namespace FinalCase.Business.Features.Expenses.Queries.GetExpenseByParameter;
 public record GetExpensesByParameterQuery // for creator employee id, there is jwt token restriction. The employee could only retrieve his/her own expenses
-    (int? CreatorEmployeeId, GetExpensesQueryParameters Parameters)
-
-    : IRequest<ApiResponse<IEnumerable<ExpenseResponse>>>;
-
+    (GetExpensesQueryParameters Parameters) : IRequest<ApiResponse<IEnumerable<ExpenseResponse>>>;
 
 public record GetExpensesQueryParameters
 {
+    public int? EmployeeId { get; set; }
     public int? CategoryId { get; set; }
     public int? PaymentMethodId { get; set; }
     public int? MinAmount { get; set; }

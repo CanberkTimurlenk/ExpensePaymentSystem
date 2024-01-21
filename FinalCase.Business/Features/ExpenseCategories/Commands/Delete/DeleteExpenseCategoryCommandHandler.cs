@@ -18,9 +18,8 @@ public class DeleteExpenseCategoryCommandHandler(FinalCaseDbContext dbContext)
         if (dbContext.Expenses.Any(e => e.CategoryId == request.Id))
             return new ApiResponse(ExpenseCategoryMessages.ExpenseCategoryDeleteRestricted);
 
-        if (expenseCategory == null || !expenseCategory.IsActive)
+        if (expenseCategory == null)
             return new ApiResponse(ExpenseCategoryMessages.ExpenseCategoryNotFound);
-
 
         expenseCategory.IsActive = false;
         await dbContext.SaveChangesAsync(cancellationToken);

@@ -39,7 +39,7 @@ public class ExpenseCategoriesController(IMediator mediator) : ControllerBase
     [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<ExpenseCategoryResponse>> CreateExpenseCategory(ExpenseCategoryRequest request)
     {
-        var (userId, _) = ClaimsHelper.GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
+        var (userId, _) = ClaimsHelper.GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity); // to add InsertUserId
 
         return await mediator.Send(new CreateExpenseCategoryCommand(userId, request));
     }
@@ -48,7 +48,7 @@ public class ExpenseCategoriesController(IMediator mediator) : ControllerBase
     [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> UpdateExpenseCategory(int id, ExpenseCategoryRequest request)
     {
-        var (userId, _) = ClaimsHelper.GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
+        var (userId, _) = ClaimsHelper.GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity); // to add UpdateUserId
 
         return await mediator.Send(new UpdateExpenseCategoryCommand(userId, id, request));
     }

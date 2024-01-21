@@ -4,23 +4,21 @@ using FinalCase.Business.Features.Authentication.Constants.Roles;
 using FinalCase.Business.Features.Documents.Constants;
 using FinalCase.Data.Contexts;
 using FinalCase.Data.Entities;
-using FinalCase.Schema.Entity.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinalCase.Business.Features.Documents.Commands.UpdateDocument;
 
-public class UpdateDocumentCommandHandler(FinalCaseDbContext dbContext, IMapper mapper)
+public class UpdateDocumentCommandHandler(FinalCaseDbContext dbContext)
     : IRequestHandler<UpdateDocumentCommand, ApiResponse>
 {
     private readonly FinalCaseDbContext dbContext = dbContext;
-    private readonly IMapper mapper = mapper;
 
     public async Task<ApiResponse> Handle(UpdateDocumentCommand request, CancellationToken cancellationToken)
     {
         var document = await dbContext.FindAsync<Document>(request.Id, cancellationToken);
 
-        if (document?.IsActive != true)
+        if (document == null)
             return new ApiResponse(DocumentMessages.DocumentNotFound);
 
         var expense = await dbContext.Expenses.AsNoTracking()
@@ -30,15 +28,18 @@ public class UpdateDocumentCommandHandler(FinalCaseDbContext dbContext, IMapper 
             return new ApiResponse(DocumentMessages.UnauthorizedDocumentUpdate);
 
         if (expense == null)
-            return new ApiResponse(string.Format(DocumentMessages.ExpenseNotFound, request.ExpenseId));
+            return new ApiResponse(string.Format(DocumentMessages.ExpenseNotFound, request.Model.ExpenseId));
 
         request.Model.Id = document.Id;
-        mapper.Map(request.Model, document);
+
+        document.Name = request.Model.Name;
+        document.Description = request.Model.Description;
+        document.Url = request.Model.Url;
+        document.ExpenseId = request.Model.ExpenseId;
         document.UpdateDate = DateTime.Now;
         document.UpdateUserId = request.UpdaterId;
 
         await dbContext.SaveChangesAsync(cancellationToken);
         return new ApiResponse();
-
     }
 }

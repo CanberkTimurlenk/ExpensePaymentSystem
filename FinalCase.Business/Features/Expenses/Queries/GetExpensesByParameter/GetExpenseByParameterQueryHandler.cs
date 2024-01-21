@@ -23,7 +23,7 @@ public class GetExpenseByParameterQueryHandler(FinalCaseDbContext dbContext, IMa
 
         var predicate = PredicateBuilder.New<Expense>(true)
             // An extension method was implemented to add a condition to the predicate based on the given boolean condition.                        
-            .AddIf(request.CreatorEmployeeId != default, e => e.CreatorEmployeeId == request.CreatorEmployeeId)
+            .AddIf(p.EmployeeId != default, e => e.CreatorEmployeeId == p.EmployeeId)
             .AddIf(p.CategoryId != default, e => e.CategoryId == p.CategoryId)
             .AddIf(p.PaymentMethodId != default, e => e.PaymentMethodId == p.PaymentMethodId)
             .AddIf(p.MinAmount != default, e => e.Amount >= p.MinAmount)

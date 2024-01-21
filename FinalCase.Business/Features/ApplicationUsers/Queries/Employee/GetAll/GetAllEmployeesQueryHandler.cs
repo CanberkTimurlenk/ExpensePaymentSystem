@@ -21,9 +21,6 @@ public class GetAllEmployeesQueryHandler(FinalCaseDbContext dbContext, IMapper m
              .Where(a => a.Role.Equals(Roles.Employee))
              .AsNoTracking();
 
-        if (request.IncludeDeleted)
-            query.IgnoreQueryFilters();
-
         var applicationUsers = await query.ToListAsync(cancellationToken);
 
         var response = mapper.Map<IEnumerable<EmployeeResponse>>(applicationUsers);

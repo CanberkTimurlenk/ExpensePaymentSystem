@@ -14,6 +14,7 @@ using static FinalCase.Api.Helpers.ClaimsHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using FinalCase.Api.Filters;
 
 namespace FinalCase.Api.Controllers;
 
@@ -34,18 +35,20 @@ public class ExpensesController(IMediator mediator) : ControllerBase
     }*/
 
     [HttpGet]
-    //[Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> GetByParameter(int? employeeId, [FromQuery] GetExpensesQueryParameters parameters)
+    [Authorize(Roles = $"{Roles.Employee},{Roles.Admin}")]
+    [EmployeeIdFromQueryAuthorize]
+    public async Task<ApiResponse<IEnumerable<ExpenseResponse>>> GetByParameter([FromQuery] GetExpensesQueryParameters parameters)
     {
-        var operation = new GetExpensesByParameterQuery(employeeId, parameters);
+        var operation = new GetExpensesByParameterQuery(parameters);
         return await mediator.Send(operation);
     }
 
     [HttpGet("{id:min(1)}")]
-    [Authorize(Roles = Roles.Admin)]
+    [Authorize(Roles = $"{Roles.Employee},{Roles.Admin}")]
     public async Task<ApiResponse<ExpenseResponse>> GetById(int id)
     {
-        var operation = new GetExpenseByIdQuery(id);
+        var (userId, role) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
+        var operation = new GetExpenseByIdQuery(userId, role, id);
         return await mediator.Send(operation);
     }
 
@@ -53,7 +56,7 @@ public class ExpensesController(IMediator mediator) : ControllerBase
     [Authorize(Roles = Roles.Employee)]
     public async Task<ApiResponse<ExpenseResponse>> CreateExpense([FromBody] ExpenseRequest request)
     {
-        var (employeeId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
+        var (employeeId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity); // to add InsertUserId
         var operation = new CreateExpenseCommand(employeeId, request);
         return await mediator.Send(operation);
     }
@@ -79,7 +82,7 @@ public class ExpensesController(IMediator mediator) : ControllerBase
     [Authorize(Roles = $"{Roles.Employee},{Roles.Admin}")]
     public async Task<ApiResponse> UpdateExpense(int id, ExpenseRequest request)
     {
-        var (UserId, Role) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
+        var (UserId, Role) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity); // to add UpdateUserId
         return await mediator.Send(new UpdateExpenseCommand(UserId, Role, id, request));
     }
 

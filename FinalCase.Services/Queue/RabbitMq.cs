@@ -5,7 +5,7 @@ using RabbitMQ.Client;
 namespace FinalCase.Services.Queue;
 
 /// <summary>
-/// Rabbit mq implementation.
+/// Rabbit Mq implementation.
 /// </summary>
 public static class RabbitMq
 {

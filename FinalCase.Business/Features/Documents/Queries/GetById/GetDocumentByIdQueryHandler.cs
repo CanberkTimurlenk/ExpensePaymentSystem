@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using FinalCase.Base.Response;
+using FinalCase.Business.Features.Authentication.Constants.Roles;
 using FinalCase.Business.Features.Documents.Constants;
 using FinalCase.Data.Contexts;
 using FinalCase.Schema.Entity.Responses;
@@ -23,6 +24,17 @@ public class GetDocumentByIdQueryHandler(FinalCaseDbContext dbContext, IMapper m
                                 .AsNoTracking() // Since the operation is readonly (query)
                                                 // we can use AsNoTracking to improve performance.
                                 .FirstOrDefaultAsync(cancellationToken);
+
+
+
+        var expense = await dbContext.Expenses.FindAsync(document?.ExpenseId);
+
+        if (request.Role.Equals(Roles.Employee)
+            && (document == null
+                 || expense?.CreatorEmployeeId != request.UserId))
+        {
+            return new ApiResponse<DocumentResponse>(DocumentMessages.UnauthorizedDocumentRead);
+        }
 
         if (document == null)
             return new ApiResponse<DocumentResponse>(DocumentMessages.DocumentNotFound);

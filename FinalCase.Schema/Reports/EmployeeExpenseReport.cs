@@ -19,7 +19,7 @@ public record EmployeeExpenseReport
 
 }
 
-public record DocumentReport
+public record DocumentReport 
 {
     public string DocumentName { get; set; }
     public string DocumentDescription { get; set; }

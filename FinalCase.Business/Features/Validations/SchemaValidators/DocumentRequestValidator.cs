@@ -7,9 +7,6 @@ public class DocumentRequestValidator : AbstractValidator<DocumentRequest>
 {
     public DocumentRequestValidator()
     {
-        const string validUrlRegex = @"https ?:\/\/ (www\.)?[-a - zA - Z0 - 9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)\";
-        // check if the url is valid
-
         RuleFor(x => x.Name)
             .NotEmpty().WithMessage("Name is required.")
             .Length(1, 100).WithMessage("Name should be between 1 and 100 characters.");

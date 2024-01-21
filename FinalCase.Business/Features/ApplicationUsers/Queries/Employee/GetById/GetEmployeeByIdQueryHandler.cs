@@ -27,9 +27,6 @@ public class GetEmployeeByIdQueryHandler(FinalCaseDbContext dbContext, IMapper m
         var query = dbContext.ApplicationUsers
             .AsNoTracking();
 
-        if (request.IncludeDeleted)
-            query = query.IgnoreQueryFilters();
-
         var user = await query.SingleOrDefaultAsync(predicate, cancellationToken);
 
         if (user is null)

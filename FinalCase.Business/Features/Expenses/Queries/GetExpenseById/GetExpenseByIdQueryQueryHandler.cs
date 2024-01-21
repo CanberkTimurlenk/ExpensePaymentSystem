@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using FinalCase.Base.Response;
+using FinalCase.Business.Features.Authentication.Constants.Roles;
 using FinalCase.Business.Features.Expenses.Constants;
 using FinalCase.Data.Contexts;
 using FinalCase.Schema.Entity.Responses;
@@ -26,10 +27,20 @@ public class GetExpenseByIdQueryQueryHandler(FinalCaseDbContext dbContext, IMapp
                                 .Where(e => e.Id.Equals(request.Id))
                                 .ProjectTo<ExpenseResponse>(mapper.ConfigurationProvider)
                                 .AsNoTracking() // Since the operation is read-only, this method can be used to improve performance
+                                                // project to behaves like select however, in select operation tracking is
+                                                // disabled by default and not allowed to use. ProjectTo is allowed to use
                                 .FirstOrDefaultAsync(cancellationToken);
+
+        if (request.Role.Equals(Roles.Employee)
+            && (expense == null
+                || expense.CreatorEmployeeId != request.UserId))
+        {
+            return new ApiResponse<ExpenseResponse>(ExpenseMessages.UnauthorizedExpenseRead);
+        }
 
         if (expense == null)
             return new ApiResponse<ExpenseResponse>(ExpenseMessages.ExpenseNotFound);
+
 
         var response = mapper.Map<ExpenseResponse>(expense);
         return new ApiResponse<ExpenseResponse>(response);

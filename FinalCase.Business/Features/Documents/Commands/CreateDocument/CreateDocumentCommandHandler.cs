@@ -20,7 +20,7 @@ public class CreateDocumentCommandHandler(FinalCaseDbContext dbContext, IMapper 
         .FirstOrDefaultAsync(e => e.Id == request.Model.ExpenseId, cancellationToken: cancellationToken);
 
         if (request.Role == Roles.Employee && expense?.CreatorEmployeeId != request.InsertUserId)
-            return new ApiResponse<DocumentResponse>(DocumentMessages.ExpenseNotBelongingToUser);
+            return new ApiResponse<DocumentResponse>(DocumentMessages.UnauthorizedDocumentInsert);
 
         if (expense == null)
             return new ApiResponse<DocumentResponse>(string.Format(DocumentMessages.ExpenseNotFound, request.Model.ExpenseId));

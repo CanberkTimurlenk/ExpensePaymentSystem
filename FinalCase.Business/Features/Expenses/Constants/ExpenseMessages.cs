@@ -13,6 +13,9 @@ public static class ExpenseMessages
     public const string ExpenseAlreadyApprovedError = "Some expenses have already been approved or rejected. Only pending expenses can be requested. Related Ids: {0}";
     public const string ExpenseToApprovedNotFoundError = "Some expenses that were requested for approval were not found. Related Ids: {0}";
 
-    public const string EmployeeUpdateAccessError = "Employees can only update your own expenses. Unauthorized Attempt!";
-    public const string EmployeeDeleteAccessError = "Employees can only delete your own expenses. Unauthorized Attempt!";
+
+    public const string UnauthorizedExpenseUpdate = "You do not have permission to update this expense.";
+    public const string UnauthorizedExpenseDelete = "You do not have permission to delete this expense.";
+    public const string UnauthorizedExpenseRead = "You do not have permission to access this expense.";
 }
+

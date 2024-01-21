@@ -16,7 +16,6 @@ public class AuthenticateUserCommandHandler(FinalCaseDbContext dbContext, IOptio
 {
     private readonly FinalCaseDbContext dbContext = dbContext;
     private readonly JwtConfig jwtConfig = jwtConfig.CurrentValue;
-
     public async Task<ApiResponse<AuthenticationResponse>> Handle(AuthenticateUserCommand request, CancellationToken cancellationToken)
     {
         var user = await dbContext.Set<ApplicationUser>()
@@ -33,18 +32,6 @@ public class AuthenticateUserCommandHandler(FinalCaseDbContext dbContext, IOptio
             await dbContext.SaveChangesAsync(cancellationToken);
             return new ApiResponse<AuthenticationResponse>(AuthenticationMessages.InvalidCredentials);
         }
-
-        //if (user.Status != 1)
-        //{
-        //    return new ApiResponse<AuthenticationResponse>("AuthenticationMessages.InvalidCredentials");
-        //}
-        //if (user.PasswordRetryCount > 3)
-        //{
-        //    return new ApiResponse<AuthenticationResponse>("AuthenticationMessages.InvalidCredentials");
-        //}
-
-        //user.PasswordRetryCount = 0;
-
         user.LastActivityDate = DateTime.UtcNow;
         await dbContext.SaveChangesAsync(cancellationToken);
 

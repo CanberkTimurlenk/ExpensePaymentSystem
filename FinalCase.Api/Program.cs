@@ -3,13 +3,10 @@ using FinalCase.Api.Middlewares;
 using FinalCase.Business.Assembly;
 using FluentValidation.AspNetCore;
 using Hangfire;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Extensions.Options;
 using Serilog;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
-
 
 // Add services to the container.
 
@@ -43,7 +40,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-//app.UseMiddleware<ErrorHandlerMiddleware>();
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 

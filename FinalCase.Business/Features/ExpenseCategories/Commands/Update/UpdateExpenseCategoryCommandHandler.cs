@@ -16,12 +16,11 @@ public class UpdateExpenseCategoryCommandHandler(FinalCaseDbContext dbContext, I
     {
         var expenseCategory = await dbContext.FindAsync<ExpenseCategory>(request.Id, cancellationToken);
 
-        if (expenseCategory == null || !expenseCategory.IsActive)
+        if (expenseCategory == null)
             return new ApiResponse(ExpenseCategoryMessages.ExpenseCategoryNotFound);
 
-        mapper.Map(request.Request, expenseCategory);
-        // since the request is only includes the part of the model that needs to be updated (name,desc)
-        // directly map the request to the entity
+        expenseCategory.Name = request.Request.Name;
+        expenseCategory.Description = request.Request.Description;     
 
         expenseCategory.UpdateDate = DateTime.Now;
         expenseCategory.UpdateUserId = request.UpdaterId;

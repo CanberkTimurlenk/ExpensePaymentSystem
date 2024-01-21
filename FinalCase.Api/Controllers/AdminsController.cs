@@ -23,23 +23,23 @@ public class AdminsController(IMediator mediator) : ControllerBase
 
     [HttpGet]
     [Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse<IEnumerable<AdminResponse>>> GetAll(bool includeDeleted = false)
+    public async Task<ApiResponse<IEnumerable<AdminResponse>>> GetAll()
     {
-        return await mediator.Send(new GetAllAdminsQuery(includeDeleted));
+        return await mediator.Send(new GetAllAdminsQuery());
     }
 
     [HttpGet("{id:min(1)}")]
     [Authorize(Roles = Roles.Admin)]
-    public async Task<ApiResponse<AdminResponse>> GetById(int id, bool includeDeleted = false)
+    public async Task<ApiResponse<AdminResponse>> GetById(int id)
     {
-        return await mediator.Send(new GetAdminByIdQuery(id, includeDeleted));
+        return await mediator.Send(new GetAdminByIdQuery(id));
     }
 
     [HttpPost]
     [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse<AdminResponse>> Create(AdminRequest request)
     {
-        var (adminId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
+        var (adminId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity); // to add InsertUserId
 
         return await mediator.Send(new CreateAdminCommand(adminId, request));
     }
@@ -48,7 +48,7 @@ public class AdminsController(IMediator mediator) : ControllerBase
     [Authorize(Roles = Roles.Admin)]
     public async Task<ApiResponse> Update(int id, AdminRequest admin)
     {
-        var (adminId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity);
+        var (adminId, _) = GetUserIdAndRoleFromClaims(User.Identity as ClaimsIdentity); // to add UpdateUserId
 
         return await mediator.Send(new UpdateAdminCommand(adminId, id, admin));
     }

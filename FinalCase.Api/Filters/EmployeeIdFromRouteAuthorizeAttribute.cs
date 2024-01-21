@@ -13,12 +13,16 @@ namespace FinalCase.Api.Filters;
 /// - If the token does not contain an 'id', the result will be Unauthorized(401).
 /// </summary>
 [AttributeUsage(AttributeTargets.Method)]
-public class EmployeeRouteIdAuthorizeAttribute : Attribute, IAuthorizationFilter
+public class EmployeeIdFromRouteAuthorizeAttribute : Attribute, IAuthorizationFilter
 {
     public void OnAuthorization(AuthorizationFilterContext context)
     {
-        var userIdClaim = context.HttpContext.User.FindFirst(JwtPayloadFields.Id)?.Value;
         var userRoleClaim = context.HttpContext.User.FindFirst(ClaimTypes.Role)?.Value;
+
+        if (userRoleClaim != Roles.Employee)
+            return;
+
+        var userIdClaim = context.HttpContext.User.FindFirst(JwtPayloadFields.Id)?.Value;
 
         if (string.IsNullOrEmpty(userIdClaim) || string.IsNullOrEmpty(userRoleClaim))
         {
@@ -28,7 +32,7 @@ public class EmployeeRouteIdAuthorizeAttribute : Attribute, IAuthorizationFilter
 
         var idFromRoute = context.RouteData.Values["employee-id"] as string;
 
-        if (userIdClaim != idFromRoute && userRoleClaim.Equals(Roles.Employee))
+        if (userIdClaim != idFromRoute)
             context.Result = new ForbidResult();
     }
 }
