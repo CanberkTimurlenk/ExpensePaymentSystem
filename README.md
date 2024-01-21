@@ -10,8 +10,31 @@ ve aynı zamanda yöneticilerin de vakit kaybetmeden harcamayı onaylayıp, geci
 Masraflar ile alakalı; her bir masraf için dökümanların ayrı ayrı ele alınması Çalışanın evrak, fiş, fatura toplamak zorunda kalması durumunu da epey kolaylaştırıyor. 
 
 
-# API Dokumantasyonu
+# API Dökümantasyonu
 https://documenter.getpostman.com/view/28176839/2s9YsT7USt
+
+# Uygulamanın çalıştırılması
+Migrationlar FinalCase.Data projesinde yer alır,  FinalCase.Api projesinde yer alan ``appsettings.json`` üzerinden sql server ve diğer alanlar için gerekli alanları belirtmelisiniz.
+EmailFunctions projesi de RabbitMq için queue dinlemeye ihtiyaç duyar içerisinde yer alan ``appsettings.json`` dosyasına değerler uygun şekilde eklenmelidir.
+
+Migrationları database e uygulamak için 
+
+solution dizininde
+```cs
+dotnet ef database update --project "./FinalCase.Data" --startup-project "./FinalCase.Api"
+```
+komutunu uygulayabilirsiniz. 
+
+<br>
+FinalCase.Api & EmailFunction & BankingSystem birlikte çalışıyor olmalıdır. 
+
+```
+dotnet run ./EmailFunctions
+dotnet run ./BankingSystem
+dotnet run ./FinalCase.Api
+```
+komutlarını uygulayabilirsiniz.
+
 
 # Roller
 Uygulama Admin ve Employee olarak 2 farklı rol içerir.
