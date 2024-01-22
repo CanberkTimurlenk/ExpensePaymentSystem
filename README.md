@@ -295,7 +295,7 @@ Banka sistemini simüle etmek adına bir başka api projesi oluşturdum. Bu proj
 
 Saha personeli tarafından oluşturulan ödeme, bir yönetici tarafından onaylandığında;
 
-1. Expense in status bilgisi approved a çekilirken aynı zamanda payment da oluşturulur, tüm bunlar savechanges öncesi gerçekleştirildiği için tek bir transaction oluşturulur, atomicity de söz konusu (ya hep ya hiç !)
+1. Expense in status bilgisi approved a çekilirken aynı zamanda payment da oluşturulur, tek bir ``SaveChanges()`` çağrımı öncesinde gerçekleştirildikleri için için tek bir transaction oluşturulur, atomicity söz konusu.
 
 ``ApproveExpensesCommandHandler.cs``
 
@@ -375,6 +375,8 @@ API ile alakalı dökümantasyonda Raporlar ile ilgili bilgiler de yer almaktad�
 
 StoredProcedure ve View isimleri constant stringler olarak ayrı birer dosyada tutuluyor. Dapper üzerinde basit şekilde view ve stored procedure işletmek için bir static method da oluşturdum.
 
+İstenen tüm raporlar sırasıyla sırasıyla,
+
 <img title="" src="https://github.com/CanberkTimurlenk/Akbank-Net-Bootcamp-FinalCase/assets/18058846/4e156eff-c801-42ae-88c5-747086916b9b" width="1000" height="500" alt="foldering"  />
 
 Document ile alakalı sorgu sonuçlarında tekrarlı veriler bulunduğunu, bunu aşmak için aşağıdaki söz konusu makaleden de faydalandığımı söylemeliyim.
@@ -416,6 +418,10 @@ public static IEnumerable<T> QueryView<T>(string view, string connectionString)
 
 Masraf için kategorisi bilgisi ve döküman bilgisi ``Expense.cs`` isimli class içerisinde yer almaktadır.
 
+<br>
+
+Talep alındığında gerçekleşecek ödeme sistemi Banking System projesinde yer alıyor.
+
 # Yönetici İşlemleri
 
 ## Seed Datalar
@@ -443,7 +449,7 @@ Yalnızca yönetici tarafından gerçekleştirilebilmesi için attribute kullan�
 
 
 # Caching
-PaymentMethod ve ExpenseCategory gibi çok değişmeyeceğini düşündüğüm değerleri cache üzerinde MediatR sayesinde kullanılabilen IPipeline Behavior özelliğini kullanarak Cacheledim. GetById ya da GetAll gibi işlevler için okuma Cache üzerinden yapılıyor.
+PaymentMethod ve ExpenseCategory gibi çok değişmeyeceğini düşündüğüm değerleri cache üzerinde MediatR sayesinde kullanılabilen IPipeline Behavior özelliğini kullanarak Cache e ekledim. GetById ya da GetAll gibi işlevler için okuma Cache üzerinden yapılıyor. Yine değerlerde değişiklik ya da silme gibi bir durum söz konusu olursa cache üzerinde tutulan değerler siliniyor.
 
 # Validations
 Tüm requestler için validationlar oluşturdum. Regex ifadeleri de ekledim.
